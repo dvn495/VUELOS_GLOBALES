@@ -8,7 +8,7 @@ import com.vuelos_globales.Airlines.domain.Airlines;
 public interface AirlinesRepository {
     void save(Airlines airlines);
     void update(Airlines airlines);
-    Optional<Airlines> findById(int id);
-    void delete(int id);
+    Optional<Airlines> findById(String id);
+    void delete(String id);
     List<Airlines> findAll();
 }

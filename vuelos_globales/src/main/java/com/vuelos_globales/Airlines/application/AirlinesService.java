@@ -22,11 +22,11 @@ public class AirlinesService {
         airlinesRepository.update(airline);
     }
 
-    public Optional<Airlines> getAirlineById(int id){
+    public Optional<Airlines> getAirlineById(String id){
         return airlinesRepository.findById(id);
     }
 
-    public void deleteAirline(int id){
+    public void deleteAirline(String id){
         airlinesRepository.delete(id);
     }
 
