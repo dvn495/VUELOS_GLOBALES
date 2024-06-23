@@ -80,7 +80,9 @@ CREATE TABLE IF NOT EXISTS plane(
 	capacity INT NOT NULL,
 	fabricationDate DATE NOT NULL,
 	idModel VARCHAR(5) NOT NULL,
-	idStatus INT NOT NULL
+	idStatus VARCHAR(5) NOT NULL,
+		CONSTRAINT FK_PlaneModel FOREIGN KEY (idModel) REFERENCES model(id),
+		CONSTRAINT FK_PlaneStatus FOREIGN KEY (idStatus) REFERENCES status(id)
 );
 
  CREATE TABLE IF NOT EXISTS country(
@@ -111,7 +113,7 @@ CREATE TABLE IF NOT EXISTS gate(
 
 CREATE TABLE IF NOT EXISTS tripulation_role(
 	id VARCHAR(5) PRIMARY KEY,
-	role VARCHAR(30) NOT NULL
+	roleName VARCHAR(30) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS employee(
@@ -169,7 +171,3 @@ CREATE TABLE IF NOT EXISTS revision_employee(
 		CONSTRAINT FK_EmployeeRevision FOREIGN KEY (idEmployee) REFERENCES employee(id),
 		CONSTRAINT FK_RevisionRevision FOREIGN KEY (idRevision) REFERENCES revision(id)
 );
-
-
-
-
