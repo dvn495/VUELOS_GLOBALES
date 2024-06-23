@@ -33,6 +33,4 @@ public class AirlinesService {
     public List<Airlines> getAllAirlines(){
         return airlinesRepository.findAll();
     }
-
-    
 }
