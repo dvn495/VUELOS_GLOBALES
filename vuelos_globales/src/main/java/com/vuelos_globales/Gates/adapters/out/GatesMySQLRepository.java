@@ -1,33 +1,36 @@
-package com.vuelos_globales.FlightFares.adapters.out;
+package com.vuelos_globales.Gates.adapters.out;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.vuelos_globales.FlightFares.domain.FlightFares;
-import com.vuelos_globales.FlightFares.infrastructure.FlightFaresRepository;
+import com.vuelos_globales.Gates.domain.Gates;
+import com.vuelos_globales.Gates.infrastructure.GatesRepository;
 
-public class FlightFaresMySQLRepository implements FlightFaresRepository {
+public class GatesMySQLRepository implements GatesRepository {
     private final String url;
     private final String user;
     private final String password;
 
-    public FlightFaresMySQLRepository(String url, String user, String password) {
+    public GatesMySQLRepository(String url, String user, String password) {
         this.url = url;
         this.user = user;
         this.password = password;
     }
 
     @Override
-    public void save(FlightFares flightfare){
+    public void save(Gates gates){
         try (Connection connection = DriverManager.getConnection(url, user, password)){
-            String query = "INSERT INTO flight_fares (id, description, details, value) VALUES (?, ?, ? , ?)";
+            String query = "INSERT INTO gate (id, gate, idAirport) VALUES (?, ?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(query)){
-                statement.setString(1, flightfare.getId());
-                statement.setString(2, flightfare.getDescription());
-                statement.setString(3, flightfare.getDetails());
-                statement.setDouble(4, flightfare.getValue());
+                statement.setString(1, gates.getId());
+                statement.setString(2, gates.getGate());
+                statement.setString(3, gates.getIdAirport());
                 statement.executeUpdate();
             }
         } catch (SQLException e){
@@ -36,13 +39,12 @@ public class FlightFaresMySQLRepository implements FlightFaresRepository {
     }
 
     @Override
-    public void update(FlightFares flightFares){
+    public void update(Gates gates){
         try (Connection connection = DriverManager.getConnection(url, user, password)){
-            String query = "UPDATE flight_fares SET description = ?, details = ? , value = ? WHERE id = ?";
+            String query = "UPDATE gate SET gate = ?, idAirport = ? WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)){
-                statement.setString(1, flightFares.getDescription());
-                statement.setString(2, flightFares.getDetails());
-                statement.setDouble(3, flightFares.getValue());
+                statement.setString(1, gates.getGate());
+                statement.setString(2, gates.getIdAirport());
                 statement.executeUpdate();
             }
         } catch (SQLException e){
@@ -51,20 +53,19 @@ public class FlightFaresMySQLRepository implements FlightFaresRepository {
     }
 
     @Override
-    public Optional<FlightFares> findById(String id){
+    public Optional<Gates> findById(String id){
         try (Connection connection = DriverManager.getConnection(url, user, password)){
-            String query = "SELECT * FROM flight_fares WHERE id = ?";
+            String query = "SELECT * FROM gate WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)){
                 statement.setString(1, id);
                 try (ResultSet resultSet = statement.executeQuery()){
                     if (resultSet.next()){
-                        FlightFares flightfare = new FlightFares(
+                        Gates gates = new Gates(
                             resultSet.getString("id"),
-                            resultSet.getString("description"),
-                            resultSet.getString("details"),
-                            resultSet.getDouble("value")
+                            resultSet.getString("gate"),
+                            resultSet.getString("idAirport")
                         );
-                        return Optional.of(flightfare);
+                        return Optional.of(gates);
                     }
 
                 }
@@ -78,7 +79,7 @@ public class FlightFaresMySQLRepository implements FlightFaresRepository {
     @Override 
     public void delete(String id){
         try (Connection connection = DriverManager.getConnection(url, user, password)){
-            String query = "DELETE FROM flight_fares WHERE id = ?";
+            String query = "DELETE FROM gate WHERE id = ?";
             try(PreparedStatement statement = connection.prepareStatement(query)){
                 statement.setString(1, id);
                 statement.executeUpdate();
@@ -89,30 +90,26 @@ public class FlightFaresMySQLRepository implements FlightFaresRepository {
     }
 
     @Override
-    public List<FlightFares> findAll(){
-        List<FlightFares> flightFares = new ArrayList<>();
+    public List<Gates> findAll(){
+        List<Gates> gates = new ArrayList<>();
         try (Connection connection =  DriverManager.getConnection(url, user, password)){
-            String query = "SELECT * FROM flight_fares";
+            String query = "SELECT * FROM gate";
             try (PreparedStatement statement = connection.prepareStatement(query);
                 ResultSet resultSet = statement.executeQuery()) {
                     while (resultSet.next()){
-                        FlightFares flightFare = new FlightFares(
+                        Gates gate = new Gates(
                             resultSet.getString("id"),
-                            resultSet.getString("description"),
-                            resultSet.getString("details"),
-                            resultSet.getDouble("value")
+                            resultSet.getString("gate"),
+                            resultSet.getString("idAirport")
                         );
-                        flightFares.add(flightFare);
+                        gates.add(gate);
                     }
                 }
             
         } catch (SQLException e){
             e.printStackTrace();
         }
-        return flightFares;
+        return gates;
     }
 
-    
-
-    
 }
