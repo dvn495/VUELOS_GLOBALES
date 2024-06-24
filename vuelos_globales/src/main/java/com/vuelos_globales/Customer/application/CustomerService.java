@@ -17,7 +17,7 @@ public class CustomerService {
         customerRepository.save(customer);
     }
 
-    public void updateCity(Customer customer) {
+    public void updateCustomer(Customer customer) {
         customerRepository.update(customer);
     }
 
@@ -29,7 +29,7 @@ public class CustomerService {
         customerRepository.delete(id);
     }
 
-    public List<Customer> getAllCountries() {
+    public List<Customer> getAllCustomers() {
         return customerRepository.findAll();
     }
 
