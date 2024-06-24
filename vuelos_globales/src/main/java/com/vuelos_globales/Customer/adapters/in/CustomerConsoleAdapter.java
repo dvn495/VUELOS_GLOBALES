@@ -68,6 +68,7 @@ public class CustomerConsoleAdapter {
             sc.nextLine();
         } else {
             ConsoleUtils.limpiarConsola();
+            System.out.println("*************** BUSCAR CLIENTE ***************");
             System.out.println("[?] INGRESE EL ID DEL CLIENTE A BUSCAR: ");
             String findId = sc.nextLine();
 
@@ -84,6 +85,7 @@ public class CustomerConsoleAdapter {
                     System.out.println("[!]  CLIENTE NO ENCONTRADO");
                     sc.nextLine();
                 });
+                ConsoleUtils.limpiarConsola();
                 System.out.println("[*]  PRESIONE CUALQUIER TECLA PARA CONTINUAR...");
                 sc.nextLine();
         }
@@ -122,6 +124,7 @@ public class CustomerConsoleAdapter {
             
                 Customer updatedCustomer = new Customer(c.getId(), updateName, updateLastName, updateAge, updateCostumerClient);
                 customerService.updateCustomer(updatedCustomer);
+                sc.nextLine();
 
                 ConsoleUtils.limpiarConsola();
                 System.out.println("[*] CLIENTE ACTUALIZADO CORRECTAMENTE.");
