@@ -16,20 +16,35 @@ public class FlightFaresConsoleController {
     }
 
     public void createFlightFare(){
-        System.out.println("[*]  INGRESE EL ID DE LA TARIFA DE VUELO");
-        String newId = sc.nextLine();
+        String option = "S";
 
-        System.out.println("\n[*]  INGRESA UNA DESCRIPCION");
-        String newDescription = sc.nextLine();
+        while (option.equalsIgnoreCase("S")){
+            System.out.println("[*]  INGRESE EL ID DE LA TARIFA DE VUELO");
+            String newId = sc.nextLine();
+            Optional<FlightFares> flightFare = flightFaresService.getFlightFareById(newId);
+            flightFare.ifPresentOrElse(
+                f -> {
+                    System.out.println("[!]  TARIFA DE VUELO YA EXISTENTE");
+                    System.out.println("[*]  PRESIONE CUALQUIER TECLA PARA CONTINUAR...");
+                    sc.nextLine();
+                }, 
+                () -> {
+                    System.out.println("\n[*]  INGRESA UNA DESCRIPCION");
+                    String newDescription = sc.nextLine();
 
-        System.out.println("\n[*]  INGRESE LOS DETALLES");
-        String newDetails = sc.nextLine();
+                    System.out.println("\n[*]  INGRESE LOS DETALLES");
+                    String newDetails = sc.nextLine();
 
-        System.out.println("\n[*] INGRESE EL VALOR DE LA TARIFA DE VUELO");
-        double newValue = sc.nextDouble();
+                    System.out.println("\n[*] INGRESE EL VALOR DE LA TARIFA DE VUELO");
+                    double newValue = sc.nextDouble();
 
-        FlightFares flightfare = new FlightFares(newId, newDescription, newDetails, newValue);
-        flightFaresService.createFlightFare(flightfare);
+                    FlightFares flightfare = new FlightFares(newId, newDescription, newDetails, newValue);
+                    flightFaresService.createFlightFare(flightfare);
+                }
+            );
+            System.out.println("[*]  DESEA CREAR OTRA TARIFA DE VUELO? [S] SI | [CUALQUIER TECLA] NO");
+            option = sc.nextLine(); 
+        }
     }
 
     public void searchFlightFare(){
@@ -53,8 +68,8 @@ public class FlightFaresConsoleController {
         flightFare.ifPresentOrElse(
             f -> {
                 System.out.println("  [*]  ID: "+ f.getId() + "\n  [*]  DESCRIPCION: " + f.getDescription() + "\n  [*]  DETALLES: " + f.getDetails() + "\n  [*]  VALOR:  " + f.getValue());
-                System.out.println("[*]  INGRESE EL NUEVO ID DE LA TARIFA DE VUELO");
-                String updateId = sc.nextLine();
+
+                String updateId = f.getId();
 
                 System.out.println("[*]  INGRESE LA DESCRIPCION ACTUALIZADA");
                 String updateDescription = sc.nextLine();

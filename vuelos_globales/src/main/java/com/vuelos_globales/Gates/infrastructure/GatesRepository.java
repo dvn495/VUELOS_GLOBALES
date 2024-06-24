@@ -1,9 +1,9 @@
 package com.vuelos_globales.Gates.infrastructure;
 
-import com.vuelos_globales.Gates.domain.Gates;
-
-import java.util.Optional;
 import java.util.List;
+import java.util.Optional;
+
+import com.vuelos_globales.Gates.domain.Gates;
 
 public interface GatesRepository {
     void save(Gates gate);
