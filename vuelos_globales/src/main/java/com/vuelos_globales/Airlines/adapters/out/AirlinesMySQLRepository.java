@@ -22,7 +22,7 @@ public class AirlinesMySQLRepository implements AirlinesRepository {
     @Override
     public void save(Airlines airline) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "INSERT INTO airline (nombre) VALUES (?)";
+            String query = "INSERT INTO airline (id, airline) VALUES (?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, airline.getName());
                 statement.executeUpdate();
@@ -35,10 +35,10 @@ public class AirlinesMySQLRepository implements AirlinesRepository {
     @Override
     public void update(Airlines airline) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "UPDATE airline SET nombre = ? WHERE id = ?";
+            String query = "UPDATE airline SET id = ? ,aerolinea = ? WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setString(1, airline.getName());
-                statement.setString(2, airline.getId());
+                statement.setString(1, airline.getId());
+                statement.setString(2, airline.getName());
                 statement.executeUpdate();
             }
         } catch (SQLException e) {
@@ -87,7 +87,7 @@ public class AirlinesMySQLRepository implements AirlinesRepository {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
             String query = "SELECT * FROM airline";
             try (PreparedStatement statement = connection.prepareStatement(query);
-                 ResultSet resultSet = statement.executeQuery()) {
+                ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     Airlines airline = new Airlines(
                         resultSet.getString("id"),
