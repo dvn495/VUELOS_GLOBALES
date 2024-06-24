@@ -141,6 +141,7 @@ CREATE TABLE IF NOT EXISTS flight_connection(
 );
 
 CREATE TABLE IF NOT EXISTS trip_crews(
+	id VARCHAR(5) PRIMARY KEY,
 	idEmployee VARCHAR(5),
 	idConnection VARCHAR(5),
 		CONSTRAINT FK_EmployeeTrip FOREIGN KEY (idEmployee) REFERENCES employee(id),
