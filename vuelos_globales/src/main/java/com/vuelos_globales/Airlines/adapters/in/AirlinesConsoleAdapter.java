@@ -78,5 +78,7 @@ public class AirlinesConsoleAdapter {
         airlineService.getAllAirlines().forEach(a -> {
             System.out.println("[*]  ID: "+ a.getId() + "NOMBRE: " + a.getName());
         });
+        System.out.println("[*]  PRESIONE CUALQUIER TECLA PARA CONTINUAR...");
+        scanner.nextLine();
     }
 }
