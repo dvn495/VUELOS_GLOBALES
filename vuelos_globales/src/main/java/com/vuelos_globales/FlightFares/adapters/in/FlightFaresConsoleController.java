@@ -1,7 +1,7 @@
 package com.vuelos_globales.FlightFares.adapters.in;
 
-import java.util.Scanner;
 import java.util.Optional;
+import java.util.Scanner;
 
 import com.vuelos_globales.FlightFares.application.FlightFaresService;
 import com.vuelos_globales.FlightFares.domain.FlightFares;
@@ -39,6 +39,35 @@ public class FlightFaresConsoleController {
         Optional<FlightFares> flightfare = flightFaresService.getFlightFareById(findId);
         flightfare.ifPresentOrElse(
             f -> System.out.println("  [*]  ID: "+ f.getId() + "\n  [*]  DESCRIPCION: " + f.getDescription() + "\n  [*]  DETALLES: " + f.getDetails() + "\n  [*]  VALOR:  " + f.getValue()),
+            () -> System.out.println("[!]  TARIFA DE VUELO NO ENCONTRADA")
+        );
+        System.out.println("[*]  PRESIONE CUALQUIER TECLA PARA CONTINUAR...");
+        sc.nextLine();
+    }
+
+    public void updateFlightFare(){
+        System.out.println("[*]  INGRESE EL ID DE LA TARIFA DE VUELO A EDITAR\n\n");
+        String findId = sc.nextLine();
+
+        Optional<FlightFares> flightFare = flightFaresService.getFlightFareById(findId);
+        flightFare.ifPresentOrElse(
+            f -> {
+                System.out.println("  [*]  ID: "+ f.getId() + "\n  [*]  DESCRIPCION: " + f.getDescription() + "\n  [*]  DETALLES: " + f.getDetails() + "\n  [*]  VALOR:  " + f.getValue());
+                System.out.println("[*]  INGRESE EL NUEVO ID DE LA TARIFA DE VUELO");
+                String updateId = sc.nextLine();
+
+                System.out.println("[*]  INGRESE LA DESCRIPCION ACTUALIZADA");
+                String updateDescription = sc.nextLine();
+
+                System.out.println("[*]  INGRESE LOS DETALLES ACTUALIZADOS");
+                String updateDetails = sc.nextLine();
+
+                System.out.println("[*]  INGRESE EL NUEVO VALOR"); 
+                Double updateValues = sc.nextDouble();
+
+                FlightFares updatedFlightFare = new FlightFares(updateId, updateDescription, updateDetails, updateValues);
+                flightFaresService.updateFlightFare(updatedFlightFare);
+            },
             () -> System.out.println("[!]  TARIFA DE VUELO NO ENCONTRADA")
         );
         System.out.println("[*]  PRESIONE CUALQUIER TECLA PARA CONTINUAR...");
