@@ -90,7 +90,7 @@ public class ManufacturesMySQLRepository implements ManufacturesRepository {
     public List<Manufactures> findAll(){
         List<Manufactures> manufactures = new ArrayList<>();
         try (Connection connection =  DriverManager.getConnection(url, user, password)){
-            String query = "SELECT * FROM gate";
+            String query = "SELECT * FROM manufacturer";
             try (PreparedStatement statement = connection.prepareStatement(query);
                 ResultSet resultSet = statement.executeQuery()) {
                     while (resultSet.next()){
