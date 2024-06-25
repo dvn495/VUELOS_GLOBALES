@@ -1,7 +1,8 @@
 package com.vuelos_globales.Airlines.adapters.in;
 
-import java.util.Scanner;
+import java.util.List;
 import java.util.Optional;
+import java.util.Scanner;
 
 import com.vuelos_globales.Airlines.application.AirlinesService;
 import com.vuelos_globales.Airlines.domain.Airlines;
@@ -16,11 +17,29 @@ public class AirlinesConsoleAdapter {
     }
 
     public void createAirline(){
-        System.out.println("[*]  INGRESE EL NOMBRE DE LA AIROLINEA A CREAR");
-        String nameAirline =  scanner.nextLine();
+        String option = "S";
 
-        Airlines newAirline = new Airlines(nameAirline);
-        airlineService.createAirline(newAirline);
+        while(option.equalsIgnoreCase("S")){
+            System.out.println("[*]  INGRESE EL ID DE LA AEROLINEA");
+            String newId =  scanner.nextLine();
+            Optional<Airlines> airline = airlineService.getAirlineById(newId);
+            airline.ifPresentOrElse(
+                a -> {
+                    System.out.println("[!]  AIROLINEA YA EXISTENTE");
+                    System.out.println("[*]  PRESIONE CUALQUIER TECLA PARA CONTINUAR...");
+                    scanner.nextLine();
+                },
+                () -> {
+                    System.out.println("[*]  INGRESE EL NOMBRE DE LA AIROLINEA A CREAR");
+                    String nameAirline =  scanner.nextLine();
+            
+                    Airlines newAirline = new Airlines(newId, nameAirline);
+                    airlineService.createAirline(newAirline);
+                }
+            );
+            System.out.println("[*]  DESEA CREAR OTRA AIROLINEA? [S] SI | [CUALQUIER TECLA] NO");
+            option = scanner.nextLine();                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+        }
     }
 
     public void searchAirline(){
@@ -44,8 +63,8 @@ public class AirlinesConsoleAdapter {
         airline.ifPresentOrElse(
             a -> {
                 System.out.println("[*]  ID: "+ a.getId() + "NOMBRE: " + a.getName());
-                System.out.println("[*]  INGRESE EL NUEVO ID DE LA AIROLINEA");
-                String updateId = scanner.nextLine();
+
+                String updateId = a.getId();
 
                 System.out.println("[*]  INGRESE EL NUEVO NOMBRE DE LA AIROLINEA");
                 String updateName = scanner.nextLine();
@@ -75,10 +94,17 @@ public class AirlinesConsoleAdapter {
     }
 
     public void getAllAirlines(){
-        airlineService.getAllAirlines().forEach(a -> {
-            System.out.println("[*]  ID: "+ a.getId() + "NOMBRE: " + a.getName());
-        });
+        List<Airlines> allAirlines = airlineService.getAllAirlines();
+        if(allAirlines.isEmpty()){
+            System.out.println("[!]  NO HAY AEROLINEAS REGISTRADAS");
+        }   else {
+            System.out.println("[*]  AIROLINEAS REGISTRADAS");
+            airlineService.getAllAirlines().forEach(a -> {
+                System.out.println("[*]  ID: "+ a.getId() + "NOMBRE: " + a.getName());
+            });
+        }
         System.out.println("[*]  PRESIONE CUALQUIER TECLA PARA CONTINUAR...");
         scanner.nextLine();
+        
     }
 }

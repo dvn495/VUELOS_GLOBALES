@@ -1,11 +1,16 @@
 package com.vuelos_globales.Airlines.adapters.out;
 
-import com.vuelos_globales.Airlines.infrastructure.AirlinesRepository;
-import com.vuelos_globales.Airlines.domain.Airlines;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import com.vuelos_globales.Airlines.domain.Airlines;
+import com.vuelos_globales.Airlines.infrastructure.AirlinesRepository;
 
 
 public class AirlinesMySQLRepository implements AirlinesRepository {
@@ -35,10 +40,9 @@ public class AirlinesMySQLRepository implements AirlinesRepository {
     @Override
     public void update(Airlines airline) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "UPDATE airline SET id = ? ,aerolinea = ? WHERE id = ?";
+            String query = "UPDATE airline SET aerolinea = ? WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setString(1, airline.getId());
-                statement.setString(2, airline.getName());
+                statement.setString(1, airline.getName());
                 statement.executeUpdate();
             }
         } catch (SQLException e) {

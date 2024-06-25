@@ -1,11 +1,12 @@
 package com.vuelos_globales.Gates.adapters.in;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
-import java.util.List;
 
+import com.vuelos_globales.Gates.application.GatesService;
 import com.vuelos_globales.Gates.domain.Gates;
-import com.vuelos_globales.Gates.application.GatesService;;
+;
 
 public class GatesConsoleController {
     Scanner sc = new Scanner(System.in);
@@ -17,18 +18,34 @@ public class GatesConsoleController {
     }
 
     public void createGates(){
-        System.out.println("[*]  INGRESE EL ID DE LA COMPUERTA");
-        String newId = sc.nextLine();
+        String option = "S";
 
-        System.out.println("\n[*]  INGRESE EL NOMBRE DE LA COMPUERTA");
-        String newGate = sc.nextLine();
+        while(option.equalsIgnoreCase("S")){
+            System.out.println("[*]  INGRESE EL ID DE LA COMPUERTA");
+            String newId = sc.nextLine();
 
-        System.out.println("\n[*]  INGRESE EL ID DEL AEROPUERTO CORRESPONDIENTE");
-        String newIdAirport = sc.nextLine();
+            Optional<Gates> gate = gatesService.getGateById(newId);
+            gate.ifPresentOrElse(
+                g ->  {
+                    System.out.println("[!]  AIROLINEA YA EXISTENTE");
+                    System.out.println("[*]  PRESIONE CUALQUIER TECLA PARA CONTINUAR...");
+                    sc.nextLine();
+                },
+                ()-> {
+                    System.out.println("\n[*]  INGRESE EL NOMBRE DE LA COMPUERTA");
+                    String newGate = sc.nextLine();
+
+                    System.out.println("\n[*]  INGRESE EL ID DEL AEROPUERTO CORRESPONDIENTE");
+                    String newIdAirport = sc.nextLine();
 
 
-        Gates gates = new Gates(newId, newGate, newIdAirport);
-        gatesService.createGate(gates);
+                    Gates gates = new Gates(newId, newGate, newIdAirport);
+                    gatesService.createGate(gates);
+                }
+            );
+            System.out.println("[*]  DESEA CREAR OTRA COMPUERTA? [S] SI | [CUALQUIER TECLA] NO");
+            option = sc.nextLine();   
+        }  
     }
 
     public void searchGates(){
@@ -44,15 +61,55 @@ public class GatesConsoleController {
         sc.nextLine();
     }
 
-    public void deletegates(){
-        System.out.println("[*]  INGRESE EL ID DE LA COMPUERTA A ELIMINAR\n\n");
-        String findId = sc.nextLine();
+    public void updateGate(){
+        List<Gates> gateList = gatesService.getAllGates();
 
-        Optional<Gates> gates = gatesService.getGateById(findId);
-        gates.ifPresentOrElse(
-            f -> gatesService.deleteGates(findId),
+        if(gateList.isEmpty()){
+
+            System.out.println("[!]  NO HAY COMPUERTAS REGISTRADAS");
+
+        }  else {
+
+            System.out.println("[*]  INGRESE EL ID DE LA COMPUERTA A EDITAR\n\n");
+            String findId = sc.nextLine();
+
+            Optional<Gates> gate = gatesService.getGateById(findId);
+            gate.ifPresentOrElse(
+            f -> {
+                System.out.println("  [*]  ID: "+ f.getId() + "\n  [*]  COMPUERTA: " + f.getGate() + "\n  [*]  ID DEL AEROPUERTO: " + f.getIdAirport());
+
+                String updateId = f.getId();
+
+                System.out.println("[*]  INGRESE EL NUEVO NOMBRE DE LA COMPUERTA");
+                String updateName = sc.nextLine();
+
+                System.out.println("[*]  INGRESE EL NUEVO NOMBRE DEL AEROPUERTO CORRESPONDIENTE");
+                String updateIdAirport = sc.nextLine();
+
+                Gates updateGates = new Gates (updateId,updateName, updateIdAirport);
+                gatesService.updateGate(updateGates);
+            },
             () -> System.out.println("[!]  COMPUERTA NO ENCONTRADA")
         );
+        System.out.println("[*]  PRESIONE CUALQUIER TECLA PARA CONTINUAR...");
+        sc.nextLine();
+        }
+    }
+
+    public void deletegates(){
+        List<Gates> gate = gatesService.getAllGates();
+        if(gate.isEmpty()){
+            System.out.println("[!]  NO HAY COMPUERTAS REGISTRADAS");
+        }   else {
+            System.out.println("[*]  INGRESE EL ID DE LA COMPUERTA A ELIMINAR\n\n");
+            String findId = sc.nextLine();
+
+            Optional<Gates> gates = gatesService.getGateById(findId);
+            gates.ifPresentOrElse(
+                f -> gatesService.deleteGates(findId),
+                () -> System.out.println("[!]  COMPUERTA NO ENCONTRADA")
+            );
+        } 
         System.out.println("[*]  PRESIONE CUALQUIER TECLA PARA CONTINUAR...");
         sc.nextLine();
     }
