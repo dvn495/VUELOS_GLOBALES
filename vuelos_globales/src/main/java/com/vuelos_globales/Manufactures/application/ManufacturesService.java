@@ -20,7 +20,7 @@ public class ManufacturesService {
         manufacturesRepository.update(manufacture);
     }
 
-    public Optional<Manufactures> getManufacturerMyId(String id){
+    public Optional<Manufactures> getManufacturerById(String id){
         return manufacturesRepository.findById(id);
     }
 

@@ -1,8 +1,10 @@
 package com.vuelos_globales.FlightFares.adapters.in;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
+import com.vuelos_globales.ConsoleUtils;
 import com.vuelos_globales.FlightFares.application.FlightFaresService;
 import com.vuelos_globales.FlightFares.domain.FlightFares;
 
@@ -19,6 +21,7 @@ public class FlightFaresConsoleController {
         String option = "S";
 
         while (option.equalsIgnoreCase("S")){
+            ConsoleUtils.limpiarConsola();
             System.out.println("[*]  INGRESE EL ID DE LA TARIFA DE VUELO");
             String newId = sc.nextLine();
             Optional<FlightFares> flightFare = flightFaresService.getFlightFareById(newId);
@@ -48,64 +51,95 @@ public class FlightFaresConsoleController {
     }
 
     public void searchFlightFare(){
-        System.out.println("[*]  INGRESE EL ID DE LA TARIFA DE VUELO\n\n");
-        String findId = sc.nextLine();
+        ConsoleUtils.limpiarConsola();
+        List<FlightFares> flightFaresList = flightFaresService.getAllFlightFares();
 
-        Optional<FlightFares> flightfare = flightFaresService.getFlightFareById(findId);
-        flightfare.ifPresentOrElse(
-            f -> System.out.println("  [*]  ID: "+ f.getId() + "\n  [*]  DESCRIPCION: " + f.getDescription() + "\n  [*]  DETALLES: " + f.getDetails() + "\n  [*]  VALOR:  " + f.getValue()),
-            () -> System.out.println("[!]  TARIFA DE VUELO NO ENCONTRADA")
-        );
+        if(flightFaresList.isEmpty()){
+
+            System.out.println("[!] NO HAY TARIFAS DE VUELO REGISTRADAS");
+        }   else {
+
+            System.out.println("[*]  INGRESE EL ID DE LA TARIFA DE VUELO\n\n");
+            String findId = sc.nextLine();
+    
+            Optional<FlightFares> flightfare = flightFaresService.getFlightFareById(findId);
+            flightfare.ifPresentOrElse(
+                f -> System.out.println("  [*]  ID: "+ f.getId() + "\n  [*]  DESCRIPCION: " + f.getDescription() + "\n  [*]  DETALLES: " + f.getDetails() + "\n  [*]  VALOR:  " + f.getValue()),
+                () -> System.out.println("[!]  TARIFA DE VUELO NO ENCONTRADA")
+            );
+        }
         System.out.println("[*]  PRESIONE CUALQUIER TECLA PARA CONTINUAR...");
         sc.nextLine();
     }
 
     public void updateFlightFare(){
-        System.out.println("[*]  INGRESE EL ID DE LA TARIFA DE VUELO A EDITAR\n\n");
-        String findId = sc.nextLine();
+        ConsoleUtils.limpiarConsola();
+        List<FlightFares> flightFaresList = flightFaresService.getAllFlightFares();
 
-        Optional<FlightFares> flightFare = flightFaresService.getFlightFareById(findId);
-        flightFare.ifPresentOrElse(
-            f -> {
-                System.out.println("  [*]  ID: "+ f.getId() + "\n  [*]  DESCRIPCION: " + f.getDescription() + "\n  [*]  DETALLES: " + f.getDetails() + "\n  [*]  VALOR:  " + f.getValue());
+        if(flightFaresList.isEmpty()){
+            System.out.println("[!] NO HAY TARIFAS DE VUELO REGISTRADAS");
+        }   else {
 
-                String updateId = f.getId();
-
-                System.out.println("[*]  INGRESE LA DESCRIPCION ACTUALIZADA");
-                String updateDescription = sc.nextLine();
-
-                System.out.println("[*]  INGRESE LOS DETALLES ACTUALIZADOS");
-                String updateDetails = sc.nextLine();
-
-                System.out.println("[*]  INGRESE EL NUEVO VALOR"); 
-                Double updateValues = sc.nextDouble();
-
-                FlightFares updatedFlightFare = new FlightFares(updateId, updateDescription, updateDetails, updateValues);
-                flightFaresService.updateFlightFare(updatedFlightFare);
-            },
-            () -> System.out.println("[!]  TARIFA DE VUELO NO ENCONTRADA")
-        );
+            System.out.println("[*]  INGRESE EL ID DE LA TARIFA DE VUELO A EDITAR\n\n");
+            String findId = sc.nextLine();
+    
+            Optional<FlightFares> flightFare = flightFaresService.getFlightFareById(findId);
+            flightFare.ifPresentOrElse(
+                f -> {
+                    System.out.println("  [*]  ID: "+ f.getId() + "\n  [*]  DESCRIPCION: " + f.getDescription() + "\n  [*]  DETALLES: " + f.getDetails() + "\n  [*]  VALOR:  " + f.getValue());
+    
+                    String updateId = f.getId();
+    
+                    System.out.println("[*]  INGRESE LA DESCRIPCION ACTUALIZADA");
+                    String updateDescription = sc.nextLine();
+    
+                    System.out.println("[*]  INGRESE LOS DETALLES ACTUALIZADOS");
+                    String updateDetails = sc.nextLine();
+    
+                    System.out.println("[*]  INGRESE EL NUEVO VALOR"); 
+                    Double updateValues = sc.nextDouble();
+    
+                    FlightFares updatedFlightFare = new FlightFares(updateId, updateDescription, updateDetails, updateValues);
+                    flightFaresService.updateFlightFare(updatedFlightFare);
+                },
+                () -> System.out.println("[!]  TARIFA DE VUELO NO ENCONTRADA")
+            );
+        }
         System.out.println("[*]  PRESIONE CUALQUIER TECLA PARA CONTINUAR...");
         sc.nextLine();
     }
 
     public void deleteFlightFare(){
-        System.out.println("[*]  INGRESE EL ID DE LA TARIFA DE VUELO A ELIMINAR\n\n");
-        String findId = sc.nextLine();
+        ConsoleUtils.limpiarConsola();
+        List<FlightFares> flightFaresList = flightFaresService.getAllFlightFares();
 
-        Optional<FlightFares> flightfare = flightFaresService.getFlightFareById(findId);
-        flightfare.ifPresentOrElse(
-            f -> flightFaresService.deleteFlighFare(findId),
-            () -> System.out.println("[!]  TARIFA DE VUELO NO ENCONTRADA")
-        );
+        if(flightFaresList.isEmpty()){
+            System.out.println("[!] NO HAY TARIFAS DE VUELO REGISTRADAS");
+        }   else {
+            System.out.println("[*]  INGRESE EL ID DE LA TARIFA DE VUELO A ELIMINAR\n\n");
+            String findId = sc.nextLine();
+    
+            Optional<FlightFares> flightfare = flightFaresService.getFlightFareById(findId);
+            flightfare.ifPresentOrElse(
+                f -> flightFaresService.deleteFlighFare(findId),
+                () -> System.out.println("[!]  TARIFA DE VUELO NO ENCONTRADA")
+            );
+        }
         System.out.println("[*]  PRESIONE CUALQUIER TECLA PARA CONTINUAR...");
         sc.nextLine();
     }
 
     public void getAllFlightFares(){
-        flightFaresService.getAllFlightFares().forEach(f -> {
-            System.out.println("  [*]  ID: "+ f.getId() + "\n  [*]  DESCRIPCION: " + f.getDescription() + "\n  [*]  DETALLES: " + f.getDetails() + "\n  [*]  VALOR:  " + f.getValue());
-        });
+        ConsoleUtils.limpiarConsola();
+        List<FlightFares> flightFaresList = flightFaresService.getAllFlightFares();
+
+        if(flightFaresList.isEmpty()){
+            System.out.println("[!] NO HAY TARIFAS DE VUELO REGISTRADAS");
+        }   else {
+            flightFaresService.getAllFlightFares().forEach(f -> {
+                System.out.println("  [*]  ID: "+ f.getId() + "\n  [*]  DESCRIPCION: " + f.getDescription() + "\n  [*]  DETALLES: " + f.getDetails() + "\n  [*]  VALOR:  " + f.getValue());
+            });
+        }
         System.out.println("[*]  PRESIONE CUALQUIER TECLA PARA CONTINUAR...");
         sc.nextLine();
     }
