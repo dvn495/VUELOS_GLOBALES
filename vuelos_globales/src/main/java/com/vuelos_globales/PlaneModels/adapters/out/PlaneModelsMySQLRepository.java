@@ -45,6 +45,7 @@ public class PlaneModelsMySQLRepository implements PlaneModelsRepository{
             try (PreparedStatement statement = connection.prepareStatement(query)){
                 statement.setString(1, planeModels.getModel());
                 statement.setString(2, planeModels.getIdManufacturer());
+                statement.setString(3, planeModels.getId());
                 statement.executeUpdate();
             }
         } catch (SQLException e){
