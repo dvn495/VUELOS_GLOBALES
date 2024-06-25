@@ -9,7 +9,7 @@ import com.vuelos_globales.ConsoleUtils;
 import com.vuelos_globales.Customer.domain.Customer;
 import com.vuelos_globales.Customer.application.CustomerService;
 
-// INYECCION
+
 
 
 public class CustomerConsoleAdapter {
@@ -150,7 +150,7 @@ public class CustomerConsoleAdapter {
             sc.nextLine();
         } else {
             ConsoleUtils.limpiarConsola();
-            System.out.println("[?] INGRESE EL ID DEL CLIENTE A BUSCAR: ");
+            System.out.println("[?] INGRESE EL ID DEL CLIENTE A ELIMINAR: ");
             String findId = sc.nextLine();
 
             Optional<Customer> customer = customerService.getCustomerById(findId);
@@ -177,6 +177,7 @@ public class CustomerConsoleAdapter {
             System.out.println("[!] NO HAY NINGUN CLIENTE REGISTRADO");
             sc.nextLine();
         } else {
+            ConsoleUtils.limpiarConsola();
             customerService.getAllCustomers().forEach(c -> {
                System.out.println(MessageFormat.format("[*] ID : {0}\n[*] NOMBRE : {1}\n[*] EDAD: {2}\n[*] DOCUMENTO: {3}", c.getId(), c.getName() + c.getLastName(), c.getIdDocumentType())); 
             });

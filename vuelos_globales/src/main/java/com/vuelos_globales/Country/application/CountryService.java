@@ -17,7 +17,7 @@ public class CountryService {
         countryRepository.save(country);
     }
 
-    public void updateCity(Country country) {
+    public void updateCountry(Country country) {
         countryRepository.update(country);
     }
 
