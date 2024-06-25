@@ -1,11 +1,13 @@
 package com.vuelos_globales.Airlines.adapters.in;
 
+import java.io.Console;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
 import com.vuelos_globales.Airlines.application.AirlinesService;
 import com.vuelos_globales.Airlines.domain.Airlines;
+import com.vuelos_globales.ConsoleUtils;
 
 public class AirlinesConsoleAdapter {
     Scanner scanner = new Scanner(System.in);
@@ -20,6 +22,7 @@ public class AirlinesConsoleAdapter {
         String option = "S";
 
         while(option.equalsIgnoreCase("S")){
+            ConsoleUtils.limpiarConsola();
             System.out.println("[*]  INGRESE EL ID DE LA AEROLINEA");
             String newId =  scanner.nextLine();
             Optional<Airlines> airline = airlineService.getAirlineById(newId);
@@ -43,57 +46,79 @@ public class AirlinesConsoleAdapter {
     }
 
     public void searchAirline(){
-        System.out.println("[?]  INGRESE EL NOMBRE DE LA AIROLINEA A BUSCAR\n\n");
-        String findId = scanner.nextLine();
-        
-        Optional<Airlines> airline = airlineService.getAirlineById(findId);
-        airline.ifPresentOrElse(
-            a -> System.out.println("[*]  ID: "+ a.getId() + "NOMBRE: " + a.getName()),
-            () -> System.out.println("[!]  AEROLINEA NO ENCONTRADA")
-        );
+        ConsoleUtils.limpiarConsola();
+        List<Airlines> airlinesList = airlineService.getAllAirlines();
+
+        if(airlinesList.isEmpty()){
+            System.out.println("[!]  NO HAY AIROLINEAS REGISTRADAS");
+        }   else {
+            System.out.println("[?]  INGRESE EL NOMBRE DE LA AIROLINEA A BUSCAR\n\n");
+            String findId = scanner.nextLine();
+            
+            Optional<Airlines> airline = airlineService.getAirlineById(findId);
+            airline.ifPresentOrElse(
+                a -> System.out.println("[*]  ID: "+ a.getId() + "NOMBRE: " + a.getName()),
+                () -> System.out.println("[!]  AEROLINEA NO ENCONTRADA")
+            );
+        }
         System.out.println("[*]  PRESIONE CUALQUIER TECLA PARA CONTINUAR...");
         scanner.nextLine();
     }
 
     public void updateAirline(){
-        System.out.println("[*]  INGRESE EL ID DE LA AIROLINEA A EDITAR\n\n");
-        String findId = scanner.nextLine();
+        ConsoleUtils.limpiarConsola();
+        List<Airlines> airlinesList = airlineService.getAllAirlines();
 
-        Optional<Airlines> airline = airlineService.getAirlineById(findId);
-        airline.ifPresentOrElse(
-            a -> {
-                System.out.println("[*]  ID: "+ a.getId() + "NOMBRE: " + a.getName());
+        if(airlinesList.isEmpty()){
+            System.out.println("[!]  NO HAY AIROLINEAS REGISTRADAS");
+        } else {
+            System.out.println("[*]  INGRESE EL ID DE LA AIROLINEA A EDITAR\n\n");
+            String findId = scanner.nextLine();
 
-                String updateId = a.getId();
+            Optional<Airlines> airline = airlineService.getAirlineById(findId);
+            airline.ifPresentOrElse(
+                a -> {
+                    System.out.println("[*]  ID: "+ a.getId() + "NOMBRE: " + a.getName());
 
-                System.out.println("[*]  INGRESE EL NUEVO NOMBRE DE LA AIROLINEA");
-                String updateName = scanner.nextLine();
+                    String updateId = a.getId();
 
-                Airlines updatedAirline = new Airlines(updateId, updateName);
-                airlineService.updateAirline(updatedAirline);
-            },
-            () -> System.out.println("[!]  AEROLINEA NO ENCONTRADA")
-        );
+                    System.out.println("[*]  INGRESE EL NUEVO NOMBRE DE LA AIROLINEA");
+                    String updateName = scanner.nextLine();
+
+                    Airlines updatedAirline = new Airlines(updateId, updateName);
+                    airlineService.updateAirline(updatedAirline);
+                },
+                () -> System.out.println("[!]  AEROLINEA NO ENCONTRADA")
+            );
+        }
         System.out.println("[*]  PRESIONE CUALQUIER TECLA PARA CONTINUAR...");
         scanner.nextLine();
     }
 
     public void deleteAirline(){
-        System.out.println("[*]  INGRESE EL ID DE LA AIROLINEA A ELIMINAR\n\n");
-        String findId = scanner.nextLine();
+        ConsoleUtils.limpiarConsola();
+        List<Airlines> airlinesList = airlineService.getAllAirlines();
 
-        Optional<Airlines> airline = airlineService.getAirlineById(findId);
-        airline.ifPresentOrElse(
-            a -> {
-                airlineService.deleteAirline(findId);
-            },
-            () -> System.out.println("[!]  AEROLINEA NO ENCONTRADA")
-        );
+        if(airlinesList.isEmpty()){
+            System.out.println("[!]  NO HAY AIROLINEAS REGISTRADAS");
+        }   else {
+            System.out.println("[*]  INGRESE EL ID DE LA AIROLINEA A ELIMINAR\n\n");
+            String findId = scanner.nextLine();
+
+            Optional<Airlines> airline = airlineService.getAirlineById(findId);
+            airline.ifPresentOrElse(
+                a -> {
+                    airlineService.deleteAirline(findId);
+                },
+                () -> System.out.println("[!]  AEROLINEA NO ENCONTRADA")
+            );
+        }
         System.out.println("[*]  PRESIONE CUALQUIER TECLA PARA CONTINUAR...");
         scanner.nextLine();
     }
 
     public void getAllAirlines(){
+        ConsoleUtils.limpiarConsola();
         List<Airlines> allAirlines = airlineService.getAllAirlines();
         if(allAirlines.isEmpty()){
             System.out.println("[!]  NO HAY AEROLINEAS REGISTRADAS");

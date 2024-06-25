@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
+import com.vuelos_globales.ConsoleUtils;
 import com.vuelos_globales.Gates.application.GatesService;
 import com.vuelos_globales.Gates.domain.Gates;
-;
 
 public class GatesConsoleController {
     Scanner sc = new Scanner(System.in);
@@ -21,6 +21,7 @@ public class GatesConsoleController {
         String option = "S";
 
         while(option.equalsIgnoreCase("S")){
+            ConsoleUtils.limpiarConsola();
             System.out.println("[*]  INGRESE EL ID DE LA COMPUERTA");
             String newId = sc.nextLine();
 
@@ -49,19 +50,27 @@ public class GatesConsoleController {
     }
 
     public void searchGates(){
-        System.out.println("[*]  INGRESE EL ID DE LA COMPUERTA\n\n");
-        String findId = sc.nextLine();
+        ConsoleUtils.limpiarConsola();
+        List<Gates> gateList = gatesService.getAllGates();
 
-        Optional<Gates> gates = gatesService.getGateById(findId);
-        gates.ifPresentOrElse(
-            f -> System.out.println("  [*]  ID: "+ f.getId() + "\n  [*]  COMPUERTA: " + f.getGate() + "\n  [*]  ID DEL AEROPUERTO: " + f.getIdAirport()),
-            () -> System.out.println("[!]  COMPUERTA NO ENCONTRADA")
-        );
+        if(gateList.isEmpty()){
+            System.out.println("[!]  NO HAY COMPUERTAS REGISTRADAS");
+        }else {
+            System.out.println("[*]  INGRESE EL ID DE LA COMPUERTA\n\n");
+            String findId = sc.nextLine();
+
+            Optional<Gates> gates = gatesService.getGateById(findId);
+            gates.ifPresentOrElse(
+                f -> System.out.println("  [*]  ID: "+ f.getId() + "\n  [*]  COMPUERTA: " + f.getGate() + "\n  [*]  ID DEL AEROPUERTO: " + f.getIdAirport()),
+                () -> System.out.println("[!]  COMPUERTA NO ENCONTRADA")
+            );
+        }
         System.out.println("[*]  PRESIONE CUALQUIER TECLA PARA CONTINUAR...");
         sc.nextLine();
     }
 
     public void updateGate(){
+        ConsoleUtils.limpiarConsola();
         List<Gates> gateList = gatesService.getAllGates();
 
         if(gateList.isEmpty()){
@@ -97,6 +106,7 @@ public class GatesConsoleController {
     }
 
     public void deletegates(){
+        ConsoleUtils.limpiarConsola();
         List<Gates> gate = gatesService.getAllGates();
         if(gate.isEmpty()){
             System.out.println("[!]  NO HAY COMPUERTAS REGISTRADAS");
@@ -115,6 +125,7 @@ public class GatesConsoleController {
     }
 
     public void getAllGates(){
+        ConsoleUtils.limpiarConsola();
         List<Gates> gates = gatesService.getAllGates();
         if(gates.isEmpty()){
             System.out.println("[!]  NO HAY COMPUERTAS REGISTRADAS");
