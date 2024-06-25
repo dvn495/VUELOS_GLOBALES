@@ -1,6 +1,6 @@
 -- Creacion de la base de datos
 
-CREATE DATABASE airport_database;
+CREATE DATABASE IF NOT EXISTS airport_database;
 
 -- Seleccion de la DB
 
@@ -35,11 +35,18 @@ CREATE TABLE IF NOT EXISTS trip(
 	price DOUBLE NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS booking_status (
+	id INT PRIMARY KEY,
+	bookingStatus VARCHAR(50) NOT NULL;
+);
+
 CREATE TABLE IF NOT EXISTS trip_booking(
 	id VARCHAR(5) PRIMARY KEY,
-	date DATE NOT NULL,
+	bookingDate DATE NOT NULL,
 	idTrip VARCHAR(5) NOT NULL,
+	idBookingStatus INT NOT NULL,
 		CONSTRAINT FK_TripBooking FOREIGN KEY (idTrip) REFERENCES trip(id)
+		CONSTRAINT FK_BookingStatus FOREIGN KEY (idBookingStatus) REFERENCES booking_status(id)
 );
 
 CREATE TABLE IF NOT EXISTS trip_booking_details(
@@ -50,6 +57,15 @@ CREATE TABLE IF NOT EXISTS trip_booking_details(
 		CONSTRAINT FK_TripBookingDetails FOREIGN KEY (idTripBooking) REFERENCES trip_booking(id),
 		CONSTRAINT FK_CustomerBookingDetails FOREIGN KEY (idCustomer) REFERENCES customer(id),
 		CONSTRAINT FK_FlightFares FOREIGN KEY (idFlightFares) REFERENCES flight_fares(id)
+);
+
+CREATE TABLE IF NOT EXISTS payment (
+    id VARCHAR(5) PRIMARY KEY,
+    amount DOUBLE NOT NULL,
+    paymentMethod VARCHAR(20) NOT NULL,
+    creditCardNumber VARCHAR(16) NOT NULL,
+    idTripBookingDetails VARCHAR(5) NOT NULL,
+    CONSTRAINT FK_TripBookingDetailsPayment FOREIGN KEY (idTripBookingDetails) REFERENCES trip_booking_details(id)
 );
 
 CREATE TABLE IF NOT EXISTS manufacturer(
@@ -64,7 +80,7 @@ CREATE TABLE IF NOT EXISTS model(
 		CONSTRAINT FK_Manufacturer FOREIGN KEY (idManufacturer) REFERENCES manufacturer(id)
 );
 
-CREATE TABLE IF NOT EXISTS status(
+CREATE TABLE IF NOT EXISTS plane_status(
 	id VARCHAR(5) PRIMARY KEY,
 	status VARCHAR(40)
 );
@@ -82,7 +98,7 @@ CREATE TABLE IF NOT EXISTS plane(
 	idModel VARCHAR(5) NOT NULL,
 	idStatus VARCHAR(5) NOT NULL,
 		CONSTRAINT FK_PlaneModel FOREIGN KEY (idModel) REFERENCES model(id),
-		CONSTRAINT FK_PlaneStatus FOREIGN KEY (idStatus) REFERENCES status(id)
+		CONSTRAINT FK_PlaneStatus FOREIGN KEY (idStatus) REFERENCES plane_status(id)
 );
 
 CREATE TABLE IF NOT EXISTS country(
