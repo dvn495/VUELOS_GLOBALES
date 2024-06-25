@@ -164,7 +164,7 @@ public class CityConsoleAdapter {
         } else {
             ConsoleUtils.limpiarConsola();
             cityService.getAllCities().forEach(c -> {
-               System.out.println(MessageFormat.format("*] ID : {0}\n [*] CIUDAD : {1}\n[*] PAIS : {2}", c.getId(), c.getCityName(), c.getCountryCity())); 
+               System.out.println(MessageFormat.format("[*] ID : {0}\n [*] CIUDAD : {1}\n[*] PAIS : {2}", c.getId(), c.getCityName(), c.getCountryCity())); 
             });
             System.out.println("[*]  PRESIONE CUALQUIER TECLA PARA CONTINUAR...");
             sc.nextLine();
