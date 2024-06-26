@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
+import com.vuelos_globales.modules.ConsoleUtils;
 import com.vuelos_globales.entities.RevisionDetails.application.RevisionDetailsService;
 import com.vuelos_globales.entities.RevisionDetails.domain.RevisionDetails;
-import com.vuelos_globales.modules.ConsoleUtils;
 
 public class RevisionDetailsConsoleController {
     Scanner sc = new Scanner(System.in);

@@ -2,8 +2,6 @@ package com.vuelos_globales.modules.menus;
 
 import com.vuelos_globales.modules.ConsoleUtils;
 
-
-
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,7 +34,13 @@ public class CustomerMenu {
 
                 switch (opcMenu) {
                     case 1 -> {
-                        
+                        boolean isActiveSearchFlights = true;
+
+                        while (isActiveSearchFlights) {
+                            ConsoleUtils.limpiarConsola();
+                            System.out.println();
+                        }
+
                     }
 
                     case 2 -> {
