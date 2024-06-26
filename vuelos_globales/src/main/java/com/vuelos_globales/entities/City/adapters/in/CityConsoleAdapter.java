@@ -5,9 +5,9 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
 
-import com.vuelos_globales.ConsoleUtils;
 import com.vuelos_globales.entities.City.application.CityService;
 import com.vuelos_globales.entities.City.domain.City;
+import com.vuelos_globales.modules.ConsoleUtils;
 
 public class CityConsoleAdapter {
     Scanner sc = new Scanner(System.in);

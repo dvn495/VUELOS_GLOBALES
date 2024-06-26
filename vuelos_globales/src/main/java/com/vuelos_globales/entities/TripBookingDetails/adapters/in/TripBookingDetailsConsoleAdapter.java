@@ -5,9 +5,10 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
-import com.vuelos_globales.ConsoleUtils;
+
 import com.vuelos_globales.entities.TripBookingDetails.application.TripBookingDetailsService;
 import com.vuelos_globales.entities.TripBookingDetails.domain.TripBookingDetails;
+import com.vuelos_globales.modules.ConsoleUtils;
 
 
 public class TripBookingDetailsConsoleAdapter  {

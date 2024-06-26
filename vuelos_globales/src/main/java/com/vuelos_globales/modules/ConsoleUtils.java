@@ -1,4 +1,4 @@
-package com.vuelos_globales;
+package com.vuelos_globales.modules;
 
 public class ConsoleUtils {
     public static void limpiarConsola() {

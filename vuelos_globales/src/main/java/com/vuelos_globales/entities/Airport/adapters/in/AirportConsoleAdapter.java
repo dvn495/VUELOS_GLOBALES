@@ -5,9 +5,9 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
 
-import com.vuelos_globales.ConsoleUtils;
 import com.vuelos_globales.entities.Airport.application.AirportService;
 import com.vuelos_globales.entities.Airport.domain.Airport;
+import com.vuelos_globales.modules.ConsoleUtils;
 
 
 public class AirportConsoleAdapter {

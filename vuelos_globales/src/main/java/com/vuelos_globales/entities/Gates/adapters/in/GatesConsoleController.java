@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
-import com.vuelos_globales.ConsoleUtils;
 import com.vuelos_globales.entities.Gates.application.GatesService;
 import com.vuelos_globales.entities.Gates.domain.Gates;
+import com.vuelos_globales.modules.ConsoleUtils;
 
 public class GatesConsoleController {
     Scanner sc = new Scanner(System.in);
