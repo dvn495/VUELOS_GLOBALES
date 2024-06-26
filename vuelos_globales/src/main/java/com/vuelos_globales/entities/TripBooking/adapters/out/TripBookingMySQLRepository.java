@@ -4,6 +4,7 @@ import com.vuelos_globales.entities.TripBooking.domain.TripBooking;
 import com.vuelos_globales.entities.TripBooking.infrastructure.TripBookingRepository;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -56,19 +57,22 @@ public class TripBookingMySQLRepository implements TripBookingRepository{
 
     @Override
     public Optional<TripBooking> findById(String id) {
-        String query = "SELECT id, bookingDate, idTrip, idBookingStatus FROM trip_booking WHERE id = ?";
-        try (Connection connection = DriverManager.getConnection(url, user, password);
-             PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setString(1, id);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    TripBooking tripBooking = new TripBooking(
-                        resultSet.getString("id"),
-                        resultSet.getString("bookingDate"), 
-                        resultSet.getString("idTrip"),
-                        resultSet.getString("idBookingStatus")
-                    );
-                    return Optional.of(tripBooking);
+        try (Connection connection = DriverManager.getConnection(url, user, password)) {
+            String query = "SELECT id, bookingDate, idTrip, idBookingStatus FROM trip_booking WHERE id = ?";
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setString(1, id);
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (resultSet.next()) {
+                        java.sql.Date sqlDate = resultSet.getDate("bookingDate");
+                        LocalDate bookingDate = sqlDate.toLocalDate();
+                        TripBooking tripBooking = new TripBooking(
+                            resultSet.getString("id"),
+                            bookingDate,
+                            resultSet.getString("idTrip"),
+                            resultSet.getString("idBookingStatus")
+                        );
+                        return Optional.of(tripBooking);
+                    }
                 }
             }
         } catch (SQLException e) {
@@ -97,9 +101,11 @@ public class TripBookingMySQLRepository implements TripBookingRepository{
             try (PreparedStatement statement = connection.prepareStatement(query);
                  ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
+                    java.sql.Date sqlDate = resultSet.getDate("bookinDate");
+                    LocalDate bookinDate = sqlDate.toLocalDate();
                     TripBooking tripBooking = new TripBooking(
                         resultSet.getString("id"),
-                        resultSet.getString("bookingDate"),
+                        bookinDate,
                         resultSet.getString("idTrip"),
                         resultSet.getString("idBookingStatus")
                     );
