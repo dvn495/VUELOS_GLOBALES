@@ -12,7 +12,7 @@ import com.vuelos_globales.entities.Planes.application.PlanesService;
 import com.vuelos_globales.entities.Planes.domain.Planes;
 
 public class PlanesConsoleController {
-    Scanner sc = new Scanner(System.in);
+   Scanner sc = new Scanner(System.in);
 
     private final PlanesService planesService;
 
@@ -210,5 +210,5 @@ public class PlanesConsoleController {
         }
         System.out.println("[*]  PRESIONE CUALQUIER TECLA PARA CONTINUAR...");
         sc.nextLine();
-    }
+    } 
 }

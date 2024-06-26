@@ -183,6 +183,7 @@ CREATE TABLE IF NOT EXISTS revision(
 );
 
 CREATE TABLE IF NOT EXISTS revision_employee(
+	id VARCHAR(5) PRIMARY KEY,
 	idEmployee VARCHAR(5) NOT NULL,
 	idRevision VARCHAR(5) NOT NULL,
 		CONSTRAINT FK_EmployeeRevision FOREIGN KEY (idEmployee) REFERENCES employee(id),

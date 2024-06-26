@@ -27,7 +27,7 @@ public class PlanesMySQLRepository implements PlanesRepository{
     public void save(Planes planes){
         java.sql.Date sqlDate = java.sql.Date.valueOf(planes.getFabricationDate());
         try (Connection connection = DriverManager.getConnection(url, user, password)){
-            String query = "INSERT INTO plane (id, plates, capacity, fabricationDate, idModel, idStatus ) VALUES (?, ?, ?)";
+            String query = "INSERT INTO plane (id, plates, capacity, fabricationDate, idModel, idStatus ) VALUES (?, ?, ?, ?, ?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(query)){
                 statement.setString(1, planes.getId());
                 statement.setString(2, planes.getPlates());
