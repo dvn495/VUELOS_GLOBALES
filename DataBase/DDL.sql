@@ -59,13 +59,19 @@ CREATE TABLE IF NOT EXISTS trip_booking_details (
 		CONSTRAINT FK_FlightFares FOREIGN KEY (idFlightFares) REFERENCES flight_fares(id)
 );
 
+CREATE TABLE IF NOT EXISTS payment_method (
+	id INT PRIMARY KEY,
+	paymentMethod VARCHAR(40) NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS payment (
 	id VARCHAR(5) PRIMARY KEY,
 	amount DOUBLE NOT NULL,
-	paymentMethod VARCHAR(20) NOT NULL,
-	creditCardNumber VARCHAR(16) NOT NULL,
+	paymentMethod INT NOT NULL,
+	creditCardNumber INT(16) NOT NULL,
 	idTripBookingDetails VARCHAR(5) NOT NULL,
-		CONSTRAINT FK_TripBookingDetailsPayment FOREIGN KEY (idTripBookingDetails) REFERENCES trip_booking_details(id)
+		CONSTRAINT FK_TripBookingDetailsPayment FOREIGN KEY (idTripBookingDetails) REFERENCES trip_booking_details(id),
+		CONSTRAINT FK_PaymentMethod FOREIGN KEY (paymentMethod) REFERENCES payment_method(id)
 );
 
 CREATE TABLE IF NOT EXISTS manufacturer (
