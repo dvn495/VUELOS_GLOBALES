@@ -2,6 +2,7 @@ package com.vuelos_globales.modules.menus;
 
 import java.util.Scanner;
 
+import com.vuelos_globales.entities.PlaneModels.adapters.out.PlaneModelsMySQLRepository;
 import com.vuelos_globales.entities.Planes.adapters.in.PlanesConsoleController;
 import com.vuelos_globales.entities.Planes.adapters.out.PlanesMySQLRepository;
 import com.vuelos_globales.entities.Planes.application.PlanesService;
@@ -29,6 +30,7 @@ public class AdministratorMenu {
         String password = "campus2023";
 
         PlanesMySQLRepository planesMySQLRepository = new PlanesMySQLRepository(url, username, password);
+        PlaneModelsMySQLRepository planesModelsMySQLRepository = new PlaneModelsMySQLRepository(url, username, password);
 
         boolean isActiveAdministrator = true;
 
@@ -40,7 +42,7 @@ public class AdministratorMenu {
 
                 switch (opcMenu) {
                     case 1 -> {
-                        PlanesService planesService = new PlanesService(planesMySQLRepository);
+                        PlanesService planesService = new PlanesService(planesMySQLRepository, planesModelsMySQLRepository);
                         PlanesConsoleController planesConsoleController = new PlanesConsoleController(planesService);
                         planesConsoleController.createPlanes();
                     }

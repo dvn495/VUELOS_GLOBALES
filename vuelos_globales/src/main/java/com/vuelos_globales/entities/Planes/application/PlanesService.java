@@ -1,17 +1,21 @@
 package com.vuelos_globales.entities.Planes.application;
 
+import java.util.List;
 import java.util.Optional;
 
+import com.vuelos_globales.entities.PlaneModels.domain.PlaneModels;
+import com.vuelos_globales.entities.PlaneModels.infrastructure.PlaneModelsRepository;
 import com.vuelos_globales.entities.Planes.domain.Planes;
 import com.vuelos_globales.entities.Planes.infrastructure.PlanesRepository;
 
-import java.util.List;
-
 public class PlanesService {
+    
     private final PlanesRepository planesRepository;
+    private final PlaneModelsRepository planeModelsRepository;
 
-    public PlanesService(PlanesRepository planesRepository){
+    public PlanesService(PlanesRepository planesRepository, PlaneModelsRepository planeModelsRepository){
         this.planesRepository = planesRepository;
+        this.planeModelsRepository = planeModelsRepository; 
     }
 
     public void createPlanes(Planes planes){
@@ -32,6 +36,14 @@ public class PlanesService {
 
     public List<Planes> findAll(){
         return planesRepository.findAll();
+    }
+
+    public void createPlaneModels(PlaneModels planeModels){
+        planeModelsRepository.save(planeModels);
+    }
+
+    public List<PlaneModels> findAllModels(){
+        return planeModelsRepository.findAll();
     }
 }
 

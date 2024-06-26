@@ -7,12 +7,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
+import com.vuelos_globales.entities.PlaneModels.domain.PlaneModels;
 import com.vuelos_globales.entities.Planes.application.PlanesService;
 import com.vuelos_globales.entities.Planes.domain.Planes;
 import com.vuelos_globales.modules.ConsoleUtils;
 
 public class PlanesConsoleController {
-   Scanner sc = new Scanner(System.in);
+    Scanner sc = new Scanner(System.in);
 
     private final PlanesService planesService;
 
@@ -62,7 +63,6 @@ public class PlanesConsoleController {
 
                     while (!isActiveDate) {
                         System.out.println("\n[*] INGRESE LA FECHA DE FABRICACION (dd-MM-yyyy)");
-                        System.out.print("Ingrese la fecha de creación: ");
                         newDate = sc.nextLine();
 
                         try {
@@ -73,7 +73,16 @@ public class PlanesConsoleController {
                         }
                     }
 
-                    
+                    List<PlaneModels> planeModels = planesService.findAllModels();
+                    if(planeModels.isEmpty()){
+                        System.out.println("[!]  NO HAY MODELOS REGISTRADOS");
+                    } else {
+                        planesService.findAllModels().forEach(f -> {
+                            System.out.println("  [*]  ID: "+ f.getId() + "\n  [*]  MODELO: " + f.getModel() + "\n  [*]  ID DEL FABRICANTE: " + f.getIdManufacturer());
+                        });
+                    }
+                    System.out.println("[*]  PRESIONE CUALQUIER TECLA PARA CONTINUAR...");
+                    sc.nextLine();
                     System.out.println("\n[*]  INGRESE EL ID DEL MODELO DEL AVION");
                     String newIdModel = sc.nextLine();
 
