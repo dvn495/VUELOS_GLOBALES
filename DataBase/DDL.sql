@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS payment (
 	id VARCHAR(5) PRIMARY KEY,
 	amount DOUBLE NOT NULL,
 	paymentMethod INT NOT NULL,
-	creditCardNumber VARCHAR(16) NOT NULL,
+	creditCardNumber INT(16) NOT NULL,
 	idTripBookingDetails VARCHAR(5) NOT NULL,
 		CONSTRAINT FK_TripBookingDetailsPayment FOREIGN KEY (idTripBookingDetails) REFERENCES trip_booking_details(id),
 		CONSTRAINT FK_PaymentMethod FOREIGN KEY (paymentMethod) REFERENCES payment_method(id)
