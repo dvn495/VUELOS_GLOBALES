@@ -13,7 +13,7 @@ public class CustomerService {
         this.customerRepository = customerRepository;
     }
 
-        public void createCustomer(Customer customer) {
+    public void createCustomer(Customer customer) {
         customerRepository.save(customer);
     }
 
@@ -32,6 +32,4 @@ public class CustomerService {
     public List<Customer> getAllCustomers() {
         return customerRepository.findAll();
     }
-
-
 }
