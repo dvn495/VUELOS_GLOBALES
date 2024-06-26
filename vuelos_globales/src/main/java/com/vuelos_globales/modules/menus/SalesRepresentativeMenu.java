@@ -2,11 +2,13 @@ package com.vuelos_globales.modules.menus;
 
 import java.util.Scanner;
 
-import com.vuelos_globales.entities.TripBooking.domain.TripBooking;
-import com.vuelos_globales.entities.TripBookingDetails.adapters.out.TripBookingDetailsMySQLRepository;
-import com.vuelos_globales.entities.TripBooking.adapters.in.TripBookingConsoleAdapter;
 import com.vuelos_globales.entities.TripBooking.application.TripBookingService;
+import com.vuelos_globales.entities.TripBooking.adapters.in.TripBookingConsoleAdapter;
+import com.vuelos_globales.entities.Trip.application.TripService;
 import com.vuelos_globales.entities.TripBooking.adapters.out.TripBookingMySQLRepository;
+import com.vuelos_globales.entities.BookingStatus.adapters.out.BookingStatusMySQLRepository;
+import com.vuelos_globales.entities.Trip.adapters.in.TripConsoleAdapter;
+import com.vuelos_globales.entities.Trip.adapters.out.TripMySQLRepository;
 import com.vuelos_globales.modules.ConsoleUtils;
 
 public class SalesRepresentativeMenu {
@@ -15,11 +17,11 @@ public class SalesRepresentativeMenu {
         ConsoleUtils.limpiarConsola();
         System.out.println("------MENU REPRESENTANTE DE VENTAS ------");
 
-        String[] SalesRepOpc = {"CREAR RESERVA DE VUELO", "VOLVER"};
+        String[] salesRepOpc = {"CREAR RESERVA DE VUELO", "VOLVER"};
 
         int i = 0;
 
-        for (String opc : SalesRepOpc) {
+        for (String opc : salesRepOpc) {
             i++;
             System.out.println("       " + i + ". " + opc);
         }
@@ -28,12 +30,11 @@ public class SalesRepresentativeMenu {
     public static void salesRepresentativeMenu() {
         Scanner sc = new Scanner(System.in);
         String url = "jdbc:mysql://localhost:3306/airport_database";
-        String username = "campus2023";
-        String password = "campus2023";
+        String username = "root";
+        String password = "AuzimoLOAD789";
 
         TripBookingMySQLRepository tripBookingMySQLRepository = new TripBookingMySQLRepository(url, username, password);
-        // TripBookingDetailsMySQLRepository tripBookingDetailsMySQLRepository = new TripBookingDetailsMySQLRepository(url, username, password);
-
+        TripMySQLRepository tripMySQLRepository = new TripMySQLRepository(url, username, password);
 
         boolean isActiveSalesRep = true;
 
@@ -41,6 +42,7 @@ public class SalesRepresentativeMenu {
             ConsoleUtils.limpiarConsola();
             menu();
             try {
+                System.out.print("Seleccione una opción: ");
                 int opcMenu = Integer.parseInt(sc.nextLine().trim());
 
                 switch (opcMenu) {
@@ -48,16 +50,10 @@ public class SalesRepresentativeMenu {
                         TripBookingService tripBookingService = new TripBookingService(tripBookingMySQLRepository);
                         TripBookingConsoleAdapter tripBookingConsoleAdapter = new TripBookingConsoleAdapter(tripBookingService);
                         tripBookingConsoleAdapter.createTripBooking();
-
                     }
 
                     case 2 -> {
                         isActiveSalesRep = false;
-
-                    }
-
-                    case 5 -> {
-
                     }
 
                     default -> {
@@ -76,6 +72,7 @@ public class SalesRepresentativeMenu {
         sc.close();
     }
 }
+
 
 
 

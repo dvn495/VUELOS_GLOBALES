@@ -2,13 +2,15 @@ package com.vuelos_globales.entities.TripBooking.application;
 
 import java.util.List;
 import java.util.Optional;
+
+
 import com.vuelos_globales.entities.TripBooking.domain.TripBooking;
 import com.vuelos_globales.entities.TripBooking.infrastructure.TripBookingRepository;
 
 public class TripBookingService {
     private final TripBookingRepository tripBookingRepository;
-
-    public TripBookingService(TripBookingRepository tripBookingRepository){
+    
+    public TripBookingService(TripBookingRepository tripBookingRepository) {
         this.tripBookingRepository = tripBookingRepository;
     }
 
