@@ -1,6 +1,10 @@
 package com.vuelos_globales.entities.Statuses.adapters.out;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -22,7 +26,7 @@ public class StatusMySQLRepository implements StatusRepository{
     @Override
     public void save(Status status){
         try (Connection connection = DriverManager.getConnection(url, user, password)){
-            String query = "INSERT INTO status (id, status) VALUES (?, ?)";
+            String query = "INSERT INTO plane_status (id, status) VALUES (?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(query)){
                 statement.setString(1, status.getId());
                 statement.setString(2, status.getStatus());
@@ -37,7 +41,7 @@ public class StatusMySQLRepository implements StatusRepository{
     @Override
     public void update(Status status){
         try(Connection connection = DriverManager.getConnection(url, user, password)){
-            String query = "UPDATE status SET status = ? WHERE id = ?";
+            String query = "UPDATE plane_status SET status = ? WHERE id = ?";
             try(PreparedStatement statement = connection.prepareStatement(query)){
                 statement.setString(1, status.getStatus());
                 statement.setString(2, status.getId());
@@ -51,7 +55,7 @@ public class StatusMySQLRepository implements StatusRepository{
     @Override 
     public Optional<Status> findById(String id){
         try(Connection connection = DriverManager.getConnection(url, user, password)){
-            String query = "SELECT id, status FROM status WHERE id = ?";
+            String query = "SELECT id, status FROM plane_status WHERE id = ?";
             try(PreparedStatement statement = connection.prepareStatement(query)){
                 statement.setString(1, id);
                 try (ResultSet resultSet = statement.executeQuery()){
@@ -72,7 +76,7 @@ public class StatusMySQLRepository implements StatusRepository{
 
     @Override public void delete(String id){
         try (Connection connection = DriverManager.getConnection(url, user, password)){
-            String query = "DELETE FROM status WHERE id = ?";
+            String query = "DELETE FROM plane_status WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)){
                 statement.setString(1, id);
                 statement.executeUpdate();
@@ -86,7 +90,7 @@ public class StatusMySQLRepository implements StatusRepository{
     public List<Status> findAll(){
         List<Status> statuses = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(url, user, password)){
-            String query = "SELECT id, status FROM status";
+            String query = "SELECT id, status FROM plane_status";
             try (PreparedStatement statement = connection.prepareStatement(query);
                  ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
