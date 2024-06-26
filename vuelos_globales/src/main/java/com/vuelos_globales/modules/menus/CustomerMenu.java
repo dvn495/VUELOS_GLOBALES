@@ -34,7 +34,13 @@ public class CustomerMenu {
 
                 switch (opcMenu) {
                     case 1 -> {
-                        
+                        boolean isActiveSearchFlights = true;
+
+                        while (isActiveSearchFlights) {
+                            ConsoleUtils.limpiarConsola();
+                            System.out.println();
+                        }
+
                     }
 
                     case 2 -> {

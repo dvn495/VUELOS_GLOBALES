@@ -4,10 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
-<<<<<<< HEAD
-=======
 import com.vuelos_globales.modules.ConsoleUtils;
->>>>>>> cecc1ac (feat: :bug: Fixed ConsoleUtils)
 import com.vuelos_globales.entities.RevisionDetails.application.RevisionDetailsService;
 import com.vuelos_globales.entities.RevisionDetails.domain.RevisionDetails;
 import com.vuelos_globales.modules.ConsoleUtils;

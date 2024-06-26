@@ -4,10 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
-<<<<<<< HEAD
-=======
+
 import com.vuelos_globales.modules.ConsoleUtils;
->>>>>>> cecc1ac (feat: :bug: Fixed ConsoleUtils)
 import com.vuelos_globales.entities.RevEmployee.application.RevEmployeesService;
 import com.vuelos_globales.entities.RevEmployee.domain.RevEmployees;
 import com.vuelos_globales.modules.ConsoleUtils;
