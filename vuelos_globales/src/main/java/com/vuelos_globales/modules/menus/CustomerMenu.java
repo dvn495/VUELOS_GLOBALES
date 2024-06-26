@@ -2,8 +2,6 @@ package com.vuelos_globales.modules.menus;
 
 import com.vuelos_globales.modules.ConsoleUtils;
 
-
-
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
