@@ -63,6 +63,7 @@ public class TripConsoleAdapter {
 
                     Trip newTrip = new Trip(id, fechaReserva, tripPrice);
                     tripService.updateTrip(newTrip);
+                    sc.nextLine();
                 });
             System.out.println("[?] DESEA AÑADIR OTRO VIAJE? [S] - SI | [INGRESE CUALQUIER TECLA] - NO");
             rta = sc.nextLine();
