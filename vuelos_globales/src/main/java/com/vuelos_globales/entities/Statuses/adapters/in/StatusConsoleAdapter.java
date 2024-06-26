@@ -2,7 +2,7 @@ package com.vuelos_globales.entities.Statuses.adapters.in;
 
 
 import com.vuelos_globales.entities.Statuses.domain.Status;
-import com.vuelos_globales.ConsoleUtils;
+import com.vuelos_globales.modules.ConsoleUtils;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
