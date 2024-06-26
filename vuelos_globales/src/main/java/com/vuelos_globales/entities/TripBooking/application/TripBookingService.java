@@ -8,7 +8,6 @@ import com.vuelos_globales.entities.TripBooking.infrastructure.TripBookingReposi
 public class TripBookingService {
     private final TripBookingRepository tripBookingRepository;
 
-
     public TripBookingService(TripBookingRepository tripBookingRepository){
         this.tripBookingRepository = tripBookingRepository;
     }

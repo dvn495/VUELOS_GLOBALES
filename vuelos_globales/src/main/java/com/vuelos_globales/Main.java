@@ -6,6 +6,7 @@ import java.util.Scanner;
 import com.vuelos_globales.modules.ConsoleUtils;
 import com.vuelos_globales.modules.menus.AdministratorMenu;
 import com.vuelos_globales.modules.menus.CustomerMenu;
+import com.vuelos_globales.modules.menus.SalesRepresentativeMenu;
 
 public class Main {
     public static void menuPrincipal() {
@@ -50,7 +51,8 @@ public class Main {
                     }
     
                     case 2 -> {
-    
+                        SalesRepresentativeMenu.menu();
+                        SalesRepresentativeMenu.salesRepresentativeMenu();
                     }
     
                     case 3 -> {
