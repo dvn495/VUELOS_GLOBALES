@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
-import com.vuelos_globales.ConsoleUtils;
+import com.vuelos_globales.modules.ConsoleUtils;
 import com.vuelos_globales.entities.TripBooking.domain.TripBooking;
 import com.vuelos_globales.entities.TripBooking.application.TripBookingService;
 

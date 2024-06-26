@@ -2,7 +2,7 @@ package com.vuelos_globales.entities.TripCrew.adapters.in;
 
 import com.vuelos_globales.entities.TripCrew.application.TripCrewService;
 import com.vuelos_globales.entities.TripCrew.domain.TripCrew;
-import com.vuelos_globales.ConsoleUtils;
+import com.vuelos_globales.modules.ConsoleUtils;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;

@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
-import com.vuelos_globales.ConsoleUtils;
+import com.vuelos_globales.modules.ConsoleUtils;
 import com.vuelos_globales.entities.RevEmployee.application.RevEmployeesService;
 import com.vuelos_globales.entities.RevEmployee.domain.RevEmployees;
 
