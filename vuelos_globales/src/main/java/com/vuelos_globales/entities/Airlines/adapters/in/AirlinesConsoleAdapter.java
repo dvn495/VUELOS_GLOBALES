@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
-import com.vuelos_globales.ConsoleUtils;
 import com.vuelos_globales.entities.Airlines.application.AirlinesService;
 import com.vuelos_globales.entities.Airlines.domain.Airlines;
+import com.vuelos_globales.modules.ConsoleUtils;
 
 public class AirlinesConsoleAdapter {
     Scanner scanner = new Scanner(System.in);

@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
-import com.vuelos_globales.ConsoleUtils;
 import com.vuelos_globales.entities.TripulationRoles.application.TripulationRoleService;
 import com.vuelos_globales.entities.TripulationRoles.domain.TripulationRole;
+import com.vuelos_globales.modules.ConsoleUtils;
 
 public class TripulationRolConsoleAdapter {
     Scanner sc = new Scanner(System.in);
