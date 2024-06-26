@@ -1,15 +1,16 @@
 package com.vuelos_globales.entities.TripBooking.domain;
 
+import java.time.LocalDate;
 
 public class TripBooking {
     private String id;
-    private String bookinDate; // Revisar tipo de dato despues
+    private LocalDate bookinDate; // Revisar tipo de dato despues
     private String idTrip;
     private String idBookingStatus;
 
     public TripBooking() {}
 
-    public TripBooking(String id, String bookinDate, String idTrip, String idBookingStatus) {
+    public TripBooking(String id, LocalDate bookinDate, String idTrip, String idBookingStatus) {
         this.id = id;
         this.bookinDate = bookinDate;
         this.idTrip = idTrip;
@@ -27,11 +28,11 @@ public class TripBooking {
         this.id = id;
     }
 
-    public String getBookingDate() {
+    public LocalDate getBookingDate() {
         return bookinDate;
     }
 
-    public void setBookingDate(String bookinDate) {
+    public void setBookingDate(LocalDate bookinDate) {
         this.bookinDate = bookinDate;
     }
 

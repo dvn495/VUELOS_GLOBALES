@@ -62,7 +62,7 @@ public class TripBookingConsoleAdapter {
                     System.out.println("\n[*]  INGRESE EL ID DEL ESTADO DE RESERVA: ");
                     String newIdStatus = sc.nextLine();
 
-                    TripBooking newTripBooking = new TripBooking(id, newDate, newIdTrip, newIdStatus);
+                    TripBooking newTripBooking = new TripBooking(id, fechaReserva, newIdTrip, newIdStatus);
                     tripBookingService.updateTripBooking(newTripBooking);
                 });
             System.out.println("[?] DESEA AÑADIR OTRA RESERVA DE VIAJE? [S] - SI | [INGRESE CUALQUIER TECLA] - NO");
@@ -147,7 +147,7 @@ public class TripBookingConsoleAdapter {
                     String updIdStatus = sc.nextLine();
 
                       
-                    TripBooking tripsBooking = new TripBooking(findId, newDate, updIdTrip, updIdStatus);
+                    TripBooking tripsBooking = new TripBooking(findId, fechaReserva, updIdTrip, updIdStatus);
                     tripBookingService.updateTripBooking(tripsBooking);
             },
             () -> System.out.println("[!]  RESERVA DE VIAJE NO ENCONTRADA")
