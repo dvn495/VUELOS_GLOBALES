@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
-import com.vuelos_globales.ConsoleUtils;
 import com.vuelos_globales.entities.Manufactures.application.ManufacturesService;
 import com.vuelos_globales.entities.Manufactures.domain.Manufactures;
+import com.vuelos_globales.modules.ConsoleUtils;
 
 public class ManufacturesConsoleController {
 Scanner scanner = new Scanner(System.in);

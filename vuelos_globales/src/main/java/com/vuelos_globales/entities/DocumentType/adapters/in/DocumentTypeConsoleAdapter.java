@@ -6,9 +6,9 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
 
-import com.vuelos_globales.ConsoleUtils;
 import com.vuelos_globales.entities.DocumentType.application.DocumentTypeService;
 import com.vuelos_globales.entities.DocumentType.domain.DocumentType;
+import com.vuelos_globales.modules.ConsoleUtils;
 
 public class DocumentTypeConsoleAdapter {
     Scanner sc = new Scanner(System.in);
@@ -121,7 +121,7 @@ public class DocumentTypeConsoleAdapter {
                             String docTypeName = sc.nextLine();
 
                             DocumentType newDocumentType = new DocumentType(id, docTypeName);
-                            docTypeService.createDocumentType(newDocumentType);
+                            docTypeService.updateDocumentType(newDocumentType);
 
                             ConsoleUtils.limpiarConsola();
                             System.out.println("[*] TIPO DE DOCUMENTO ACTUALIZADO CORRECTAMENTE.");
