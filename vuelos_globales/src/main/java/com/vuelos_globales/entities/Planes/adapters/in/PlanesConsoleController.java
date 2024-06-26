@@ -25,7 +25,8 @@ public class PlanesConsoleController {
 
         while(option.equalsIgnoreCase("S")){
             ConsoleUtils.limpiarConsola();
-            System.out.println("[*]  INGRESE EL ID DEL AVION");
+            System.out.println("------REGISTRO DE AVION--------");
+            System.out.println("\n[*]  INGRESE EL ID DEL AVION");
             String newId = sc.nextLine();
 
             Optional<Planes> plane = planesService.findById(newId);
@@ -72,6 +73,7 @@ public class PlanesConsoleController {
                         }
                     }
 
+                    
                     System.out.println("\n[*]  INGRESE EL ID DEL MODELO DEL AVION");
                     String newIdModel = sc.nextLine();
 
@@ -79,7 +81,7 @@ public class PlanesConsoleController {
                     String newIdStatus = sc.nextLine();
 
                       
-                    Planes planes = new Planes(newId, newPlates, newCapacity, newDate, newIdModel, newIdStatus);
+                    Planes planes = new Planes(newId, newPlates, newCapacity, fechaCreacion, newIdModel, newIdStatus);
                     planesService.createPlanes(planes);
                 }
             );
@@ -169,7 +171,7 @@ public class PlanesConsoleController {
                     String newIdStatus = sc.nextLine();
 
                       
-                    Planes planes = new Planes(findId, newPlates, newCapacity, newDate, newIdModel, newIdStatus);
+                    Planes planes = new Planes(findId, newPlates, newCapacity, fechaCreacion, newIdModel, newIdStatus);
                     planesService.createPlanes(planes);
             },
             () -> System.out.println("[!]  MODELO NO ENCONTRADO")

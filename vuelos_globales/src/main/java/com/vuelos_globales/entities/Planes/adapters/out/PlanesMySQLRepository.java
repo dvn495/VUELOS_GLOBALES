@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -62,27 +63,28 @@ public class PlanesMySQLRepository implements PlanesRepository{
     }
 
     @Override
-    public Optional<Planes> findById(String id){
-        try (Connection connection = DriverManager.getConnection(url, user, password)){
+    public Optional<Planes> findById(String id) {
+        try (Connection connection = DriverManager.getConnection(url, user, password)) {
             String query = "SELECT * FROM plane WHERE id = ?";
-            try (PreparedStatement statement = connection.prepareStatement(query)){
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, id);
-                try (ResultSet resultSet = statement.executeQuery()){
-                    if (resultSet.next()){
-                        Planes Planes = new Planes(
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (resultSet.next()) {
+                        java.sql.Date sqlDate = resultSet.getDate("fabricationDate");
+                        LocalDate fabricationDate = sqlDate.toLocalDate();
+                        Planes plane = new Planes(
                             resultSet.getString("id"),
                             resultSet.getString("plates"),
                             resultSet.getInt("capacity"),
-                            resultSet.getString("fabricationDate"),
+                            fabricationDate, 
                             resultSet.getString("idModel"),
                             resultSet.getString("idStatus")
                         );
-                        return Optional.of(Planes);
+                        return Optional.of(plane);
                     }
-
                 }
             }
-        } catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return Optional.empty();
@@ -109,11 +111,13 @@ public class PlanesMySQLRepository implements PlanesRepository{
             try (PreparedStatement statement = connection.prepareStatement(query);
                 ResultSet resultSet = statement.executeQuery()) {
                     while (resultSet.next()){
+                        java.sql.Date sqlDate = resultSet.getDate("fabricationDate");
+                        LocalDate fabricationDate = sqlDate.toLocalDate();
                         Planes plane = new Planes(
                             resultSet.getString("id"),
                             resultSet.getString("plates"),
                             resultSet.getInt("capacity"),
-                            resultSet.getString("fabricationDate"),
+                            fabricationDate, 
                             resultSet.getString("idModel"),
                             resultSet.getString("idStatus")
                         );

@@ -1,13 +1,11 @@
 package com.vuelos_globales;
 
-import com.vuelos_globales.modules.ConsoleUtils;
-import com.vuelos_globales.modules.menus.CustomerMenu;
-
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.InputMismatchException;
 import java.util.Scanner;
+
+import com.vuelos_globales.modules.ConsoleUtils;
+import com.vuelos_globales.modules.menus.AdministratorMenu;
+import com.vuelos_globales.modules.menus.CustomerMenu;
 
 public class Main {
     public static void menuPrincipal() {
@@ -46,7 +44,9 @@ public class Main {
     
                 switch (opMain) {
                     case 1 -> {
-    
+                        AdministratorMenu.menu();
+                        AdministratorMenu.administratorMenu();
+                        break;
                     }
     
                     case 2 -> {

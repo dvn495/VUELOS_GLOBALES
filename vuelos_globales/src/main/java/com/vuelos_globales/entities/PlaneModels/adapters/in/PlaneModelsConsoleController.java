@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
-import com.vuelos_globales.ConsoleUtils;
 import com.vuelos_globales.entities.PlaneModels.application.PlaneModelsService;
 import com.vuelos_globales.entities.PlaneModels.domain.PlaneModels;
+import com.vuelos_globales.modules.ConsoleUtils;
 
 public class PlaneModelsConsoleController {
     Scanner sc = new Scanner(System.in);

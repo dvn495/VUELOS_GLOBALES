@@ -1,17 +1,19 @@
 package com.vuelos_globales.entities.Planes.domain;
 
+import java.time.LocalDate;
+
 
 public class Planes {
     private String id;
     private String plates;
     private int capacity;
-    private String fabricationDate;
+    private LocalDate fabricationDate;
     private String idModel;
     private String idStatus;
 
     public Planes(){}
 
-    public Planes(String id, String plates, int capacity, String fabricationDate, String idModel, String idStatus) {
+    public Planes(String id, String plates, int capacity, LocalDate fabricationDate, String idModel, String idStatus) {
         this.id = id;
         this.plates = plates;
         this.capacity = capacity;
@@ -44,11 +46,11 @@ public class Planes {
         this.capacity = capacity;
     }
 
-    public String getFabricationDate() {
+    public LocalDate getFabricationDate() {
         return fabricationDate;
     }
 
-    public void setFabricationDate (String fabricationDate) {
+    public void setFabricationDate (LocalDate fabricationDate) {
         this.fabricationDate = fabricationDate;
     }
 
