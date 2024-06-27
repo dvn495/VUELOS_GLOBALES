@@ -1,6 +1,10 @@
 package com.vuelos_globales.entities.FlightConnection.adapters.out;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -22,7 +26,7 @@ public class FlightConnectionMySQLRepository implements FlightConnectionReposito
     @Override
     public void save(FlightConnection flightConnection) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "INSERT INTO flight_connection (id, conectionOrder, idTrip, idPlane, idAirportA, idAirportB) VALUES (?, ?, ?, ?, ?, ?)";
+            String query = "INSERT INTO flight_connection (id, connectionOrder, idTrip, idPlane, idAirportA, idAirportB) VALUES (?, ?, ?, ?, ?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, flightConnection.getId());
                 statement.setInt(2, flightConnection.getConnectionOrder());
@@ -41,7 +45,7 @@ public class FlightConnectionMySQLRepository implements FlightConnectionReposito
     @Override
     public void update(FlightConnection flightConnection) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "UPDATE flight_connection SET id, conectionOrder, idTrip, idPlane, idAirportA, idAirportB WHERE id = ?";
+            String query = "UPDATE flight_connection SET id, connectionOrder, idTrip, idPlane, idAirportA, idAirportB WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, flightConnection.getId());
                 statement.setInt(2, flightConnection.getConnectionOrder());
@@ -59,14 +63,14 @@ public class FlightConnectionMySQLRepository implements FlightConnectionReposito
     @Override
     public Optional<FlightConnection> findById(String id) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT id, conectionOrder, idTrip, idPlane, idAirportA, idAirportB  FROM flight_connection WHERE id = ?";
+            String query = "SELECT id, connectionOrder, idTrip, idPlane, idAirportA, idAirportB  FROM flight_connection WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, id);
                 try (ResultSet resultSet = statement.executeQuery()) {
                     if (resultSet.next()) {
                         FlightConnection flightConnection = new FlightConnection(
                             resultSet.getString("id"),
-                            resultSet.getInt("conectionOrder"),
+                            resultSet.getInt("connectionOrder"),
                             resultSet.getString("idTrip"),
                             resultSet.getString("idPlane"),
                             resultSet.getString("idAirportA"),
@@ -85,7 +89,7 @@ public class FlightConnectionMySQLRepository implements FlightConnectionReposito
     @Override
     public void delete(String id) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "DELETE id, conectionOrder, idTrip, idPlane, idAirportA, idAirportB FROM flight_connection WHERE id = ?";
+            String query = "DELETE id, connectionOrder, idTrip, idPlane, idAirportA, idAirportB FROM flight_connection WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, id);
                 statement.executeUpdate();
@@ -100,7 +104,7 @@ public class FlightConnectionMySQLRepository implements FlightConnectionReposito
         List<FlightConnection> flightConnections = new ArrayList<>();
 
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT id, conectionOrder, idTrip, idPlane, idAirportA, idAirportB FROM flight_connection";
+            String query = "SELECT id, connectionOrder, idTrip, idPlane, idAirportA, idAirportB FROM flight_connection";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 ResultSet resultSet = statement.executeQuery();
                 while (resultSet.next()) {

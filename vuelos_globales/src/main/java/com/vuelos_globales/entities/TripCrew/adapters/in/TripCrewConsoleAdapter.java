@@ -1,12 +1,15 @@
 package com.vuelos_globales.entities.TripCrew.adapters.in;
 
-import com.vuelos_globales.entities.TripCrew.application.TripCrewService;
-import com.vuelos_globales.entities.TripCrew.domain.TripCrew;
-import com.vuelos_globales.modules.ConsoleUtils;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
+
+import com.vuelos_globales.entities.Employee.domain.Employee;
+import com.vuelos_globales.entities.FlightConnection.domain.FlightConnection;
+import com.vuelos_globales.entities.TripCrew.application.TripCrewService;
+import com.vuelos_globales.entities.TripCrew.domain.TripCrew;
+import com.vuelos_globales.modules.ConsoleUtils;
 
 public class TripCrewConsoleAdapter {
     Scanner sc = new Scanner(System.in);
@@ -33,8 +36,17 @@ public class TripCrewConsoleAdapter {
                     System.out.println(MessageFormat.format("[!] EL ID (0) DE TRIPULACION DE VIAJE YA ESTA OCUPADO.", tc.getId()));
                 },
                 () -> {
-                    ConsoleUtils.limpiarConsola();
                     System.out.println("*************** CREAR TRIPULACION DE VIAJE ***************");
+                    List<FlightConnection> connections = tripCrewService.getAllFlightConnections();
+                    if (connections.isEmpty()){
+                        System.out.println("|  [!] NO HAY NINGUNA CONEXION REGISTRADA\n|  [*] REGISTRE UNA CONEXION");
+                        sc.nextLine();
+                        createFlightConnection();
+                        sc.nextLine();
+                    }
+                    connections.forEach(e -> {
+                        System.out.println(MessageFormat.format("|  [*] ID DE LA CONEXION: {0}\n|  [*] ORDEN : {1}\n|  [*] VIAJE : {2}\n|  [*] AVION : {3}\n|  [*] AEREOPUERTO SALIDA : {4}\n|  [*] AEREOPUERTO LLEGADA : {5}",e.getId(), e.getConnectionOrder(), e.getIdTrip(), e.getIdPlane(), e.getIdAirportA(), e.getIdArportB()));
+                    });
                     System.out.println("[*] INGRESE EL ID DE LA CONEXION: ");
                     String idConnect = sc.nextLine();
 
@@ -44,6 +56,7 @@ public class TripCrewConsoleAdapter {
                     TripCrew newTripCrew = new TripCrew(id, idEmployee, idConnect);
                     tripCrewService.createTripCrew(newTripCrew);
                 });
+
             System.out.println("[?] DESEA AÑADIR OTRA TRIPULACION DE VIAJE? [S] - SI | [INGRESE CUALQUIER TECLA] - NO");
             rta = sc.nextLine(); 
         }
@@ -171,4 +184,106 @@ public class TripCrewConsoleAdapter {
         System.out.println("[*]  PRESIONE CUALQUIER TECLA PARA CONTINUAR...");
         sc.nextLine();
     }
+
+    // EMPLOYEES
+
+    public void createEmployee() {
+        String rta = "S";
+
+        while (rta.equalsIgnoreCase("S")) {
+            ConsoleUtils.limpiarConsola();
+            System.out.println("*************** REGISTRAR EMPLEADO ***************");
+            System.out.println("[*] INGRESE EL ID DEL EMPLEADO A CREAR: ");
+            String id = sc.nextLine();
+            Optional<Employee> employee = tripCrewService.getEmployeeById(id);
+            employee.ifPresentOrElse(
+                c -> {
+                    System.out.println(MessageFormat.format("[!] EL ID (0) YA ESTA OCUPADO.", c.getId()));
+                },
+                () -> {
+                    ConsoleUtils.limpiarConsola();
+                    System.out.println("*************** REGISTRAR EMPLEADO ***************");
+
+                    System.out.println("[*] INGRESE EL NOMBRE DEL EMPLEADO: ");
+                    String employeeName = sc.nextLine();
+    
+                    System.out.println("[*] INGRESE EL APELLIDO DEL EMPLEADO: ");
+                    String employeeLastName = sc.nextLine();
+    
+                    System.out.println("[*] INGRESE LA FECHA DE INGRESO DEL EMPLEADO: ");
+                    String employeeIngress = sc.nextLine();
+    
+                    System.out.println("[*] INGRESE EL ROL DEL EMPLEADO: ");
+                    String employeeRole = sc.nextLine();
+
+                    System.out.println("[*] INGRESE LA AEREOLINEA DEL EMPLEADO: ");
+                    String employeeAirline = sc.nextLine();
+
+                    System.out.println("[*] INGRESE EL AEREOPUERTO DEL EMPLEADO: ");
+                    String employeeAirport = sc.nextLine();
+    
+                    Employee newEmployee = new Employee(id, employeeName, employeeLastName, employeeIngress, employeeRole, employeeAirline, employeeAirport);
+                    tripCrewService.createEmployee(newEmployee);
+                });
+
+            System.out.println("[?] DESEA AÑADIR OTRO EMPLEADO? [S] - SI | [INGRESE CUALQUIER TECLA] - NO");
+            rta = sc.nextLine();
+        }
+    }
+
+    // FLIGHT CONECCTION
+
+    public void createFlightConnection() {
+        String rta = "S";
+
+        while (rta.equalsIgnoreCase("S")) {
+            System.out.println("*************** REGISTRAR TRAYECTO ***************");
+            System.out.println("[*] INGRESE EL ID DEL TRAYECTO A CREAR: ");
+            String id = sc.nextLine();
+            Optional<FlightConnection> flightConnection = tripCrewService.getFlightConnectionById(id);
+            flightConnection.ifPresentOrElse(
+                f -> {
+                    System.out.println(MessageFormat.format("[!] EL ID (0) YA ESTA OCUPADO.", f.getId()));
+                },
+                () -> {
+                    boolean isActive = true;
+                    System.out.println("*************** REGISTRAR TRAYECTO ***************");
+                    
+                    int flightConnectionOrder = 0;
+                    while (isActive){
+                        System.out.println("[*] INGRESE EL ORDEN DEL TRAMO: ");
+                        try {
+                            flightConnectionOrder = (Integer.parseInt(sc.nextLine()));
+                            isActive = false;
+                        }   catch (NumberFormatException e) {
+                            System.out.println("Por favor, ingrese un número válido.\n Presione cualquier tecla para continuar...");
+                            sc.nextLine();
+                        }  
+                    }
+    
+                    System.out.println("[*] INGRESE EL ID DEL VIAJE: ");
+                    String flightConnectionTrip = sc.nextLine();
+    
+                    
+                    System.out.println("[*] INGRESE ID DEL AVION DEL TRAYECTO: ");
+                    String flightConnectionPlane = sc.nextLine();
+
+                    
+                    System.out.println("[*] INGRESE EL AEREOPUERTO DE SALIDA DEL TRAYECTO: ");
+                    String flightConnectionAirplaneA = sc.nextLine();
+
+
+                    System.out.println("[*] INGRESE EL AEREOPUERTO DE LLEGADA DEL TRAYECTO: ");
+                    String flightConnectionAirplaneB = sc.nextLine();
+
+    
+                    FlightConnection newFlightConnection = new FlightConnection(id, flightConnectionOrder, flightConnectionTrip, flightConnectionPlane, flightConnectionAirplaneA, flightConnectionAirplaneB);
+                    tripCrewService.createFlightConnection(newFlightConnection);
+                });
+
+            System.out.println("[?] DESEA AÑADIR OTRO TRAYECTO? [S] - SI | [INGRESE CUALQUIER TECLA] - NO");
+            rta = sc.nextLine();
+        }
+    }
+
 }

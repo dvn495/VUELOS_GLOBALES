@@ -1,12 +1,16 @@
 package com.vuelos_globales.entities.TripCrew.adapters.out;
 
-import com.vuelos_globales.entities.TripCrew.domain.TripCrew;
-import com.vuelos_globales.entities.TripCrew.infrastructure.TripCrewRepository;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import com.vuelos_globales.entities.TripCrew.domain.TripCrew;
+import com.vuelos_globales.entities.TripCrew.infrastructure.TripCrewRepository;
 
 
 public class TripCrewMySQLRepository implements TripCrewRepository {
