@@ -21,7 +21,7 @@ public class DocTypeMySQLRepository implements DocumentTypeRepository{
     
     public void save(DocumentType documentType) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "INSERT INTO document_type (id, documentType) VALUES (?, ?)";
+            String query = "INSERT INTO document_types (id, documentType) VALUES (?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, documentType.getId());
                 statement.setString(2, documentType.getDocumentType());
@@ -35,7 +35,7 @@ public class DocTypeMySQLRepository implements DocumentTypeRepository{
     @Override
     public void update(DocumentType documentType) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "UPDATE document_type SET documentType = ? WHERE id = ?";
+            String query = "UPDATE document_types SET documentType = ? WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, documentType.getDocumentType());
                 statement.executeUpdate();
@@ -48,7 +48,7 @@ public class DocTypeMySQLRepository implements DocumentTypeRepository{
     @Override
     public Optional<DocumentType> findById(int id) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT id, documenType FROM document_type WHERE id = ?";
+            String query = "SELECT id, documentType FROM document_types WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, id);
                 try (ResultSet resultSet = statement.executeQuery()) {
@@ -70,7 +70,7 @@ public class DocTypeMySQLRepository implements DocumentTypeRepository{
     @Override
     public void delete(int id) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "DELETE FROM document_type WHERE id = ?";
+            String query = "DELETE FROM document_types WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, id);
                 statement.executeQuery();
@@ -84,7 +84,7 @@ public class DocTypeMySQLRepository implements DocumentTypeRepository{
     public List<DocumentType> findAll() {
         List<DocumentType> documentTypes = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT id, documentType FROM document_type";
+            String query = "SELECT id, documentType FROM document_types";
             try (PreparedStatement statement = connection.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
