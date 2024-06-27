@@ -2,10 +2,18 @@ package com.vuelos_globales.modules.menus;
 
 import java.util.Scanner;
 
+import com.vuelos_globales.entities.BookingStatus.adapters.out.BookingStatusMySQLRepository;
+import com.vuelos_globales.entities.BookingStatus.domain.BookingStatus;
 import com.vuelos_globales.entities.Customer.adapters.in.CustomerConsoleAdapter;
 import com.vuelos_globales.entities.Customer.adapters.out.CustomerMySQLRepository;
 import com.vuelos_globales.entities.Customer.application.CustomerService;
 import com.vuelos_globales.entities.DocumentType.adapters.out.DocTypeMySQLRepository;
+import com.vuelos_globales.entities.Trip.adapters.in.TripConsoleAdapter;
+import com.vuelos_globales.entities.Trip.adapters.out.TripMySQLRepository;
+import com.vuelos_globales.entities.Trip.application.TripService;
+import com.vuelos_globales.entities.TripBooking.adapters.in.TripBookingConsoleAdapter;
+import com.vuelos_globales.entities.TripBooking.adapters.out.TripBookingMySQLRepository;
+import com.vuelos_globales.entities.TripBooking.application.TripBookingService;
 import com.vuelos_globales.modules.ConsoleUtils;
 
 public class SalesRepresentativeMenu {
@@ -33,6 +41,9 @@ public class SalesRepresentativeMenu {
 
         CustomerMySQLRepository customerMySQLRepository = new CustomerMySQLRepository(url, username, password);
         DocTypeMySQLRepository docTypeMySQLRepository = new DocTypeMySQLRepository(url, username, password);
+        TripMySQLRepository tripMySQLRepository = new TripMySQLRepository(url, username, password);
+        BookingStatusMySQLRepository bookingStatusMySQLRepository = new BookingStatusMySQLRepository(url, username, password);
+        TripBookingMySQLRepository tripBookingMySQLRepository = new TripBookingMySQLRepository(url, username, password);
 
 
         boolean isActiveSalesRep = true;
@@ -46,7 +57,9 @@ public class SalesRepresentativeMenu {
 
                 switch (opcMenu) {
                     case 1 -> {
-
+                        TripBookingService tripBookingService = new TripBookingService(tripBookingMySQLRepository, tripMySQLRepository, bookingStatusMySQLRepository);
+                        TripBookingConsoleAdapter tripBookingConsoleAdapter = new TripBookingConsoleAdapter(tripBookingService);
+                        tripBookingConsoleAdapter.createTripBooking();
                     }
 
                     case 2 -> {
@@ -91,6 +104,15 @@ public class SalesRepresentativeMenu {
         sc.close();
     }
 }
+
+
+
+
+// ESTO ES PARA CREAR UN VIAJE:
+
+// TripService tripService = new TripService(tripMySQLRepository, bookingStatusMySQLRepository, tripBookingMySQLRepository);
+// TripConsoleAdapter tripConsoleAdapter = new TripConsoleAdapter(tripService);
+// tripConsoleAdapter.createTrip();
 
 
 
