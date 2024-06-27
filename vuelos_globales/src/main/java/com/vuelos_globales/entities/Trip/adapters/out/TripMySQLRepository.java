@@ -25,7 +25,7 @@ public class TripMySQLRepository implements TripRepository {
     public void save(Trip trip){
         java.sql.Date sqlDate = java.sql.Date.valueOf(trip.getTripDate());
         try (Connection connection = DriverManager.getConnection(url, user, password)){
-            String query = "INSERT INTO trip (id, date, price) VALUES (?, ?, ?)";
+            String query = "INSERT INTO trip (id, tripDate, price) VALUES (?, ?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(query)){
                 statement.setString(1, trip.getId());
                 statement.setDate(2, sqlDate);
@@ -39,21 +39,21 @@ public class TripMySQLRepository implements TripRepository {
     }
 
     @Override
-    public void update(Trip trip){
+    public void update(Trip trip) {
         java.sql.Date sqlDate = java.sql.Date.valueOf(trip.getTripDate());
-        try(Connection connection = DriverManager.getConnection(url, user, password)){
-            String query = "UPDATE trip SET tripDate = ?, price = ?, idBookingStatus = ? WHERE id = ?";
-            try(PreparedStatement statement = connection.prepareStatement(query)){
-                statement.setString(1, trip.getId());
-                statement.setDate(2, sqlDate);
-                statement.setDouble(3, trip.getPrice());
+        try (Connection connection = DriverManager.getConnection(url, user, password)) {
+            String query = "UPDATE trip SET tripDate = ?, price = ? WHERE id = ?";
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setDate(1, sqlDate);
+                statement.setDouble(2, trip.getPrice());
+                statement.setString(3, trip.getId());
                 statement.executeUpdate();
             }
-        } catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
+    
     @Override
     public Optional<Trip> findById(String id) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {

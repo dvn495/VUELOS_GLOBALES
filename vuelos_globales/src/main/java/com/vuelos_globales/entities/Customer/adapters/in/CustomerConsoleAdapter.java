@@ -58,6 +58,8 @@ public class CustomerConsoleAdapter {
                 }
             }
     
+            // DOCUMENT TYPE 
+            
             int idDocument = 0;
             boolean documentTypeCreated = false;
     
