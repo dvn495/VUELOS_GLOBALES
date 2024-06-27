@@ -2,13 +2,10 @@ package com.vuelos_globales.modules.menus;
 
 import java.util.Scanner;
 
-import com.vuelos_globales.entities.TripBooking.application.TripBookingService;
-import com.vuelos_globales.entities.TripBooking.adapters.in.TripBookingConsoleAdapter;
-import com.vuelos_globales.entities.Trip.application.TripService;
-import com.vuelos_globales.entities.TripBooking.adapters.out.TripBookingMySQLRepository;
-import com.vuelos_globales.entities.BookingStatus.adapters.out.BookingStatusMySQLRepository;
-import com.vuelos_globales.entities.Trip.adapters.in.TripConsoleAdapter;
-import com.vuelos_globales.entities.Trip.adapters.out.TripMySQLRepository;
+import com.vuelos_globales.entities.Customer.adapters.in.CustomerConsoleAdapter;
+import com.vuelos_globales.entities.Customer.adapters.out.CustomerMySQLRepository;
+import com.vuelos_globales.entities.Customer.application.CustomerService;
+import com.vuelos_globales.entities.DocumentType.adapters.out.DocTypeMySQLRepository;
 import com.vuelos_globales.modules.ConsoleUtils;
 
 public class SalesRepresentativeMenu {
@@ -17,7 +14,7 @@ public class SalesRepresentativeMenu {
         ConsoleUtils.limpiarConsola();
         System.out.println("------MENU REPRESENTANTE DE VENTAS ------");
 
-        String[] salesRepOpc = {"CREAR RESERVA DE VUELO", "VOLVER"};
+        String[] salesRepOpc = {"CREAR RESERVA DE VIAJE","CREAR CLIENTE","CONSULTAR INFORMACION DE CLIENTE","ACTUALIZAR INFORMACION DE CLIENTE","VOLVER"};
 
         int i = 0;
 
@@ -33,8 +30,10 @@ public class SalesRepresentativeMenu {
         String username = "root";
         String password = "AuzimoLOAD789";
 
-        TripBookingMySQLRepository tripBookingMySQLRepository = new TripBookingMySQLRepository(url, username, password);
-        TripMySQLRepository tripMySQLRepository = new TripMySQLRepository(url, username, password);
+
+        CustomerMySQLRepository customerMySQLRepository = new CustomerMySQLRepository(url, username, password);
+        DocTypeMySQLRepository docTypeMySQLRepository = new DocTypeMySQLRepository(url, username, password);
+
 
         boolean isActiveSalesRep = true;
 
@@ -47,12 +46,32 @@ public class SalesRepresentativeMenu {
 
                 switch (opcMenu) {
                     case 1 -> {
-                        TripBookingService tripBookingService = new TripBookingService(tripBookingMySQLRepository);
-                        TripBookingConsoleAdapter tripBookingConsoleAdapter = new TripBookingConsoleAdapter(tripBookingService);
-                        tripBookingConsoleAdapter.createTripBooking();
+
                     }
 
                     case 2 -> {
+                        CustomerService customerService = new CustomerService(customerMySQLRepository, docTypeMySQLRepository);
+                        CustomerConsoleAdapter customerConsoleAdapter = new CustomerConsoleAdapter(customerService);
+                        customerConsoleAdapter.createCustomer();
+                    }
+
+                    case 3 -> {
+                        CustomerService customerService = new CustomerService(customerMySQLRepository, docTypeMySQLRepository);
+                        CustomerConsoleAdapter customerConsoleAdapter = new CustomerConsoleAdapter(customerService);
+                        customerConsoleAdapter.searchCustomer();
+                    }
+                    case 4 -> {
+                        CustomerService customerService = new CustomerService(customerMySQLRepository, docTypeMySQLRepository);
+                        CustomerConsoleAdapter customerConsoleAdapter = new CustomerConsoleAdapter(customerService);
+                        customerConsoleAdapter.updateCustomer();
+                    }
+                    case 5 -> {
+                        isActiveSalesRep = false;
+                    }
+                    case 6 -> {
+                        isActiveSalesRep = false;
+                    }
+                    case 7 -> {
                         isActiveSalesRep = false;
                     }
 

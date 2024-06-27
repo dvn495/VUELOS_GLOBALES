@@ -27,9 +27,9 @@ public class DocumentTypeConsoleAdapter {
             try {
                 System.out.println("*************** REGISTRAR TIPO DE DOCUMENTO ***************");
                 System.out.println("[*] INGRESE EL ID DEL TIPO DE DOCUMENTO A CREAR: ");
-                int id = Integer.parseInt(sc.nextLine().trim());
+                int newIdDoc = Integer.parseInt(sc.nextLine().trim());
 
-                Optional<DocumentType> docType = docTypeService.getDocumentTypeById(id);
+                Optional<DocumentType> docType = docTypeService.getDocumentTypeById(newIdDoc);
                 docType.ifPresentOrElse(
                     d -> {
                         System.out.println(MessageFormat.format("[!] EL ID (0) YA ESTA OCUPADO.", d.getId()));
@@ -41,7 +41,7 @@ public class DocumentTypeConsoleAdapter {
                         System.out.println("[*] INGRESE EL NOMBRE DEL TIPO DE DOCUMENTO: ");
                         String docTypeName = sc.nextLine();
                 
-                        DocumentType newDocumentType = new DocumentType(id, docTypeName);
+                        DocumentType newDocumentType = new DocumentType(newIdDoc, docTypeName);
                         docTypeService.createDocumentType(newDocumentType);
                     });
 

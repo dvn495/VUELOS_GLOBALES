@@ -21,16 +21,15 @@ public class CustomerMySQLRepository implements CustomerRepository {
 
     @Override
     public void save(Customer customer) {
-        try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "INSERT INTO customer (id, name, lastName, age, idDocumentType) VALUES (?, ?, ?, ?)";
-            try (PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setString(1, customer.getId());
-                statement.setString(2, customer.getName());
-                statement.setString(3, customer.getLastName());
-                statement.setInt(4, customer.getIdDocumentType());
-                statement.executeUpdate();
-
-            }
+        String query = "INSERT INTO customer (id, name, lastName, age, idDocumentType) VALUES (?, ?, ?, ?, ?)";
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, customer.getId());
+            statement.setString(2, customer.getName());
+            statement.setString(3, customer.getLastName());
+            statement.setInt(4, customer.getAge());
+            statement.setInt(5, customer.getIdDocumentType());
+            statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -38,37 +37,36 @@ public class CustomerMySQLRepository implements CustomerRepository {
 
     @Override
     public void update(Customer customer) {
-        try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "UPDATE customer SET name = ?, lastName = ?, age = ?, idDocumentType = ? WHERE id = ?";
-            try (PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setString(1, customer.getName());
-                statement.setString(2, customer.getLastName());
-                statement.setInt(4, customer.getAge());
-                statement.setString(5, customer.getId());
-                statement.executeUpdate();
-            }
-        } catch (SQLException e) { 
+        String query = "UPDATE customer SET name = ?, lastName = ?, age = ?, idDocumentType = ? WHERE id = ?";
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, customer.getName());
+            statement.setString(2, customer.getLastName());
+            statement.setInt(3, customer.getAge());
+            statement.setInt(4, customer.getIdDocumentType());
+            statement.setString(5, customer.getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     @Override
     public Optional<Customer> findById(String id) {
-        try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT id, name, lastName, age, idDocumentType FROM customer WHERE id = ?";
-            try (PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setString(1, id);
-                try (ResultSet resultSet = statement.executeQuery()) {
-                    if (resultSet.next()) {
-                        Customer customer = new Customer(
-                                resultSet.getString("id"),
-                                resultSet.getString("name"),
-                                resultSet.getString("lastName"),
-                                resultSet.getInt("age"),
-                                resultSet.getInt("idDocumentType")
-                        );
-                        return Optional.of(customer);
-                    }
+        String query = "SELECT id, name, lastName, age, idDocumentType FROM customer WHERE id = ?";
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, id);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    Customer customer = new Customer(
+                            resultSet.getString("id"),
+                            resultSet.getString("name"),
+                            resultSet.getString("lastName"),
+                            resultSet.getInt("age"),
+                            resultSet.getInt("idDocumentType")
+                    );
+                    return Optional.of(customer);
                 }
             }
         } catch (SQLException e) {
@@ -79,12 +77,11 @@ public class CustomerMySQLRepository implements CustomerRepository {
 
     @Override
     public void delete(String id) {
-        try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "DELETE id, name, lastName, age, idDocumentType FROM customer WHERE id = ?";
-            try (PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setString(1, id);
-                statement.executeUpdate();
-            }
+        String query = "DELETE FROM customer WHERE id = ?";
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, id);
+            statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -93,26 +90,23 @@ public class CustomerMySQLRepository implements CustomerRepository {
     @Override
     public List<Customer> findAll() {
         List<Customer> customers = new ArrayList<>();
-
-        try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT id, name, lastName, age, idDocumentType FROM customer";
-            try (PreparedStatement statement = connection.prepareStatement(query)) {
-                ResultSet resultSet = statement.executeQuery();
-                while (resultSet.next()) {
-                    Customer customer = new Customer(
+        String query = "SELECT id, name, lastName, age, idDocumentType FROM customer";
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement statement = connection.prepareStatement(query);
+             ResultSet resultSet = statement.executeQuery()) {
+            while (resultSet.next()) {
+                Customer customer = new Customer(
                         resultSet.getString("id"),
                         resultSet.getString("name"),
                         resultSet.getString("lastName"),
                         resultSet.getInt("age"),
                         resultSet.getInt("idDocumentType")
-                    );
-                    customers.add(customer);
-                }
+                );
+                customers.add(customer);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return customers;
     }
-    
 }
