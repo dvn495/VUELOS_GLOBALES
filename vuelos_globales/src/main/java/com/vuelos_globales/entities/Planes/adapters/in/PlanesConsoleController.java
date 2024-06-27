@@ -164,6 +164,8 @@ public class PlanesConsoleController {
                         isActiveModels = false;
                     }
 
+                    //ESTADOS
+
                     boolean isActiveState = true;
                     String newIdStatus = "";
                     while (isActiveState) {
@@ -226,6 +228,7 @@ public class PlanesConsoleController {
         if(planesList.isEmpty()){
             System.out.println("[!]  NO HAY AVIONES REGISTRADOS");
         }else {
+            System.out.println("[*]  AVION BUSCADO\n");
             System.out.println("[*]  INGRESE EL ID DEL AVION\n\n");
             String findId = sc.nextLine();
 

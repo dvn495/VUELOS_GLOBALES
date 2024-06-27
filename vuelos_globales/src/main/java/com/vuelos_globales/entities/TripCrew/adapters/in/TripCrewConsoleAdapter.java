@@ -36,6 +36,8 @@ public class TripCrewConsoleAdapter {
                     System.out.println(MessageFormat.format("[!] EL ID (0) DE TRIPULACION DE VIAJE YA ESTA OCUPADO.", tc.getId()));
                 },
                 () -> {
+                    //flight connections
+
                     System.out.println("*************** CREAR TRIPULACION DE VIAJE ***************");
                     List<FlightConnection> connections = tripCrewService.getAllFlightConnections();
                     if (connections.isEmpty()){
@@ -50,6 +52,18 @@ public class TripCrewConsoleAdapter {
                     System.out.println("[*] INGRESE EL ID DE LA CONEXION: ");
                     String idConnect = sc.nextLine();
 
+                    //employees
+
+                    List<Employee> employees = tripCrewService.getAllEmployees();
+                    if (employees.isEmpty()){
+                        System.out.println("|  [!] NO HAY NINGUN EMPLEADO REGISTRADO\n|  [*] REGISTRE UN EMPLEADO");
+                        sc.nextLine();
+                        createEmployee();
+                        sc.nextLine();
+                    }
+                    employees.forEach( e ->
+                        System.out.println(MessageFormat.format("|  [*] ID : {0}\n|  [*] NOMBRE : {1}\n|  [*] APELLIDO : {2}\n|  [*] FECHA DE INGRESO: {3}\n|  [*] ROL : {4}\n|  [*] AEREOLINEA : {5}\n|  [*] AEREOPUERTO : {6}", e.getId(), e.getName() + e.getLastName(), e.getIngressDate(), e.getIdRole(), e.getIdAirline(), e.getIdAirport()))
+                    );
                     System.out.println("[*] INGRESE EL ID DEL EMPLEADO A CREAR: ");
                     String idEmployee = sc.nextLine();
 
@@ -57,7 +71,7 @@ public class TripCrewConsoleAdapter {
                     tripCrewService.createTripCrew(newTripCrew);
                 });
 
-            System.out.println("[?] DESEA AÑADIR OTRA TRIPULACION DE VIAJE? [S] - SI | [INGRESE CUALQUIER TECLA] - NO");
+            System.out.println("[?] DESEA AÑADIR OTRO EMPLEADO A LA TRIPULACION DE VIAJE? [S] - SI | [INGRESE CUALQUIER TECLA] - NO");
             rta = sc.nextLine(); 
         }
     }

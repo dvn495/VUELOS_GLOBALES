@@ -21,7 +21,7 @@ public class AdministratorMenu {
         ConsoleUtils.limpiarConsola();
         System.out.println("------MENU ADMINISTRADOR------");
 
-        String[] administratorOpc = {"REGISTRAR AVION", "ASIGNAR TRIPULACION","VOLVER"};
+        String[] administratorOpc = {"REGISTRAR AVION", "ASIGNAR TRIPULACION A TRAYECTO","CONSULTAR INFORMACION DE AVION","CONSULTAR INFORMACION DE TRAYECTO", "VOLVER"};
 
         int i = 0;
 
@@ -66,11 +66,13 @@ public class AdministratorMenu {
                     }
                     
                     case 3 -> {
-                        
+                        PlanesService planesService = new PlanesService(planesMySQLRepository, planesModelsMySQLRepository, statusMySQLRepository, manufacturesMySQLRepository);
+                        PlanesConsoleController planesConsoleController = new PlanesConsoleController(planesService);
+                        planesConsoleController.searchPlane();
                     }
 
                     case 4 -> {
-                        isActiveAdministrator = false;
+                        
                     }
                         
                     default -> {
