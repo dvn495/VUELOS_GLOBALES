@@ -28,7 +28,7 @@ public class TripBookingDetailsMySQLRepository implements TripBookingDetailsRepo
     @Override
         public void save(TripBookingDetails tripBookingDetails){
         try (Connection connection = DriverManager.getConnection(url, user, password)){
-            String query = "INSERT INTO tripBookingDetail (id, idTripBooking, idCustomer, idFlightFares) VALUES (?, ?, ?, ?)";
+            String query = "INSERT INTO trip_booking_details (id, idTripBooking, idCustomer, idFlightFares) VALUES (?, ?, ?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(query)){
                 statement.setString(1, tripBookingDetails.getId());
                 statement.setString(2, tripBookingDetails.getIdTripBooking());
@@ -62,7 +62,7 @@ public class TripBookingDetailsMySQLRepository implements TripBookingDetailsRepo
     @Override
     public Optional<TripBookingDetails> findById(String id){
         try (Connection connection = DriverManager.getConnection(url, user, password)){
-            String query = "SELECT * FROM tripBookingDetail WHERE id = ?";
+            String query = "SELECT * FROM trip_booking_details WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)){
                 statement.setString(1, id);
                 try (ResultSet resultSet = statement.executeQuery()){

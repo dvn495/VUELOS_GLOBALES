@@ -42,7 +42,7 @@ public class TripBookingDetailsConsoleAdapter  {
                     System.out.println("[*] INGRESE EL ID DE LA RESERVA VIAJE : ");
                     String idTripBking = sc.nextLine();
     
-                    System.out.println("[*] INGRESE EL ID DE CLIENTE: ");
+                    System.out.println("[*] INGRESE EL ID DEL CLIENTE: ");
                     String idCustomer = sc.nextLine();
     
                     System.out.println("[*] INGRESE EL ID DE TARIFA DE VUELO : ");
@@ -50,6 +50,8 @@ public class TripBookingDetailsConsoleAdapter  {
             
                     TripBookingDetails newTripBookingDetails = new TripBookingDetails(newId, idTripBking, idCustomer, idFlightFare);
                     tripBookingDetailsService.createTripBookingDetails(newTripBookingDetails);
+                    System.out.println("LOS DETALLES DE LA RESERVA DE VIAJE HAN SIDO REGISTRADOS CON EXITO");
+                    ConsoleUtils.esperarEntrada();
                 }
             );
             System.out.println("[*]  DESEA CREAR OTRO DETALLE DE RESERVA? [S] SI | [CUALQUIER TECLA] NO");
