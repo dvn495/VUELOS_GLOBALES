@@ -2,6 +2,9 @@ package com.vuelos_globales.entities.Payment.adapters.in;
 
 import java.util.Scanner;
 import java.text.MessageFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Optional;
 import java.util.List;
 
@@ -51,6 +54,58 @@ public class PaymentConsoleController {
         }
     }
 
+    public void createTripBooking() {
+        String rta = "S";
+
+        while (rta.equalsIgnoreCase("S")){
+            ConsoleUtils.limpiarConsola();
+            System.out.println("*************** REGISTRAR RESERVA DE VIAJE ***************");
+            System.out.println("[*] INGRESE EL ID DE LA RESERVA DE VIAJE A CREAR: ");
+            String id = sc.nextLine();
+            Optional<TripBooking> tripBooking = paymentService.getTripBookingById(id);
+            tripBooking.ifPresentOrElse(
+                t -> {
+                    System.out.println(MessageFormat.format("[!] LA RESERVA CON ID (0) YA ESTA OCUPADA.", t.getId()));
+                },
+                () -> {
+                    ConsoleUtils.esperarEntrada();
+                    System.out.println("*************** REGISTRAR RESERVA DE VIAJE ***************");
+
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                    LocalDate fechaReserva = null;
+                    boolean isActiveDate = false;
+                    String newDate = "";
+
+                    while (!isActiveDate) {
+                        System.out.println("\n[*] INGRESE LA FECHA DE RESERVA DE VIAJE (dd-MM-yyyy)");
+                        System.out.print("INGRESE LA FECHA DE LA RESERVA DE VIAJE: ");
+                        newDate = sc.nextLine();
+
+                        try {
+                            fechaReserva = LocalDate.parse(newDate, formatter);
+                            isActiveDate = true;
+                        } catch (DateTimeParseException e) {
+                            System.out.println("Fecha ingresada no válida. Use el formato dd-MM-yyyy.");
+                        }
+                    }
+
+                    System.out.println("\n[*]  INGRESE EL ID DEL VIAJE: ");
+                    String newIdTrip = sc.nextLine();
+
+                    System.out.println("\n[*]  INGRESE EL ID DEL ESTADO DE RESERVA: ");
+                    String newIdStatus = sc.nextLine();
+
+                    System.out.println("\n[*]  INGRESE EL ID DEL CLIENTE: ");
+                    String newIdCustomer = sc.nextLine();
+
+                    TripBooking newTripBooking = new TripBooking(id, fechaReserva, newIdTrip, newIdStatus, newIdCustomer);
+                    paymentService.createTripBooking(newTripBooking);
+                });
+            System.out.println("[?] DESEA AÑADIR OTRA RESERVA DE VIAJE? [S] - SI | [INGRESE CUALQUIER TECLA] - NO");
+            rta = sc.nextLine();
+        }
+    }
+
     public void createPayment() {
         String rta = "S";
 
@@ -78,6 +133,7 @@ public class PaymentConsoleController {
                             System.out.println(MessageFormat.format("[{0}] - {1}", pm.getId(), pm.getPaymentMethod()));
                         });
                     }
+                    int idPayMethod = Integer.parseInt(sc.nextLine());
 
                     String newAccount;
                     boolean isActiveRegCreditNum = true;
@@ -94,16 +150,21 @@ public class PaymentConsoleController {
                         }
                     }
 
-                    System.out.println("[*] INGRESE EL ID DE LA RESERVA DE VIAJE: ");
+                    ConsoleUtils.limpiarConsola();
                     List<TripBooking>  tripBookings = paymentService.getAllTripBookings();
+                    if (tripBookings.isEmpty()) {
+                        createTripBooking();
+                    }
+                    tripBookings.forEach(tb -> {
+                        System.out.println(MessageFormat.format("[{0}] - VIAJE : {1}", tb.getId(), tb.getIdTrip()));
+                    });
+                    
+                    System.out.println("[*] INGRESE EL ID DE LA RESERVA DE VIAJE: ");
+                    String idTripBooking = sc.nextLine();
 
-                    // REGISTRAR TRIP BOOKING (CONDICIONAL, ETC)
-
-
+                    Payment newPayment = new Payment(id, newAmount, idPayMethod, rta, idTripBooking);
+                    paymentService.createPayment(newPayment);
                 });
-
-
-
         }
     }
 
