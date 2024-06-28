@@ -255,7 +255,7 @@ public class TripCrewConsoleAdapter {
             Optional<Employee> employee = tripCrewService.getEmployeeById(id);
             employee.ifPresentOrElse(
                 c -> {
-                    System.out.println(MessageFormat.format("[!] EL ID (0) YA ESTA OCUPADO.", c.getId()));
+                    System.out.println(MessageFormat.format("[!] EL ID {0} YA ESTA OCUPADO.", c.getId()));
                 },
                 () -> {
                     ConsoleUtils.limpiarConsola();

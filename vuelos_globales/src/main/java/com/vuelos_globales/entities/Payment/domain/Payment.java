@@ -2,14 +2,14 @@ package com.vuelos_globales.entities.Payment.domain;
 
 public class Payment {
     private String id;
-    private int amount;
+    private double amount;
     private int idPaymentMethod;
     private String creditCardNumber;
     private String idTripBookingDetails;
     
     public Payment() {}
 
-    public Payment(String id, int amount, int idPaymentMethod, String creditCardNumber, String idTripBookingDetails) {
+    public Payment(String id, double amount, int idPaymentMethod, String creditCardNumber, String idTripBookingDetails) {
         this.id = id;
         this.amount = amount;
         this.idPaymentMethod = idPaymentMethod;
@@ -25,11 +25,11 @@ public class Payment {
         this.id = id;
     }
 
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 
