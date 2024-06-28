@@ -17,7 +17,9 @@ import com.vuelos_globales.entities.FlightFares.adapters.out.FlightFaresMySQLRep
 import com.vuelos_globales.entities.Trip.adapters.in.TripConsoleAdapter;
 import com.vuelos_globales.entities.Trip.adapters.out.TripMySQLRepository;
 import com.vuelos_globales.entities.Trip.application.TripService;
+import com.vuelos_globales.entities.TripBooking.adapters.in.TripBookingConsoleAdapter;
 import com.vuelos_globales.entities.TripBooking.adapters.out.TripBookingMySQLRepository;
+import com.vuelos_globales.entities.TripBooking.application.TripBookingService;
 import com.vuelos_globales.entities.TripBookingDetails.adapters.in.TripBookingDetailsConsoleAdapter;
 import com.vuelos_globales.entities.TripBookingDetails.adapters.out.TripBookingDetailsMySQLRepository;
 import com.vuelos_globales.entities.TripBookingDetails.application.TripBookingDetailsService;
@@ -72,9 +74,9 @@ public class SalesRepresentativeMenu {
 
                     // CREAR RESERVA DE VIAJE 
                     case 1 -> {
-                        TripBookingDetailsService tripBookingDetailsService = new TripBookingDetailsService(tripBookingDetailsMySQLRepository, tripMySQLRepository, customerMySQLRepository, flightFaresMySQLRepository);
-                        TripBookingDetailsConsoleAdapter tripBookingDetailsConsoleAdapter = new TripBookingDetailsConsoleAdapter(tripBookingDetailsService);
-                        tripBookingDetailsConsoleAdapter.createTripBookingDetails();
+                        TripBookingService tripBookingService = new TripBookingService(tripBookingMySQLRepository, tripMySQLRepository, bookingStatusMySQLRepository);
+                        TripBookingConsoleAdapter tripBookingConsoleAdapter = new TripBookingConsoleAdapter(tripBookingService);
+                        tripBookingConsoleAdapter.createTripBooking();
                     }
 
                     // CONSULTAR INFORMACION DE CLIENTE
@@ -86,9 +88,9 @@ public class SalesRepresentativeMenu {
 
                     //CONSULTAR RESERVA DE VUELO
                     case 3 -> {
-                        TripBookingDetailsService tripBookingDetailsService = new TripBookingDetailsService(tripBookingDetailsMySQLRepository, tripMySQLRepository, customerMySQLRepository, flightFaresMySQLRepository);
-                        TripBookingDetailsConsoleAdapter tripBookingDetailsConsoleAdapter = new TripBookingDetailsConsoleAdapter(tripBookingDetailsService);
-                        tripBookingDetailsConsoleAdapter.searchTripBookingDetails();
+                        TripBookingService tripBookingService = new TripBookingService(tripBookingMySQLRepository, tripMySQLRepository, bookingStatusMySQLRepository);
+                        TripBookingConsoleAdapter tripBookingConsoleAdapter = new TripBookingConsoleAdapter(tripBookingService);
+                        tripBookingConsoleAdapter.createTripBooking();
                     }
 
                     //REGISTRAR CLIENTE
@@ -107,7 +109,9 @@ public class SalesRepresentativeMenu {
 
                     //ELIMINAR RESERVA DE VUELO
                     case 6 -> {
-
+                        TripBookingService tripBookingService = new TripBookingService(tripBookingMySQLRepository, tripMySQLRepository, bookingStatusMySQLRepository);
+                        TripBookingConsoleAdapter tripBookingConsoleAdapter = new TripBookingConsoleAdapter(tripBookingService);
+                        tripBookingConsoleAdapter.deleteTripBooking();
                     }
 
                     //CONSULTAR INFORMACION DE VUELO

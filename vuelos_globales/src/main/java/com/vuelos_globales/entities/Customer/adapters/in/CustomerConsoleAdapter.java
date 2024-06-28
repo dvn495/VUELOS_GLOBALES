@@ -87,7 +87,11 @@ public class CustomerConsoleAdapter {
                         validDocumentType = true;
                     } else {
                         System.out.println(MessageFormat.format("[!] EL ID ({0}) NO EXISTE.", idDocumentType));
-                        ConsoleUtils.esperarEntrada();
+                        System.out.println("PRESIONE F PARA SALIR");
+                        String respuesta = sc.nextLine().trim();
+                        if (respuesta.equalsIgnoreCase("F")) {
+                            break; 
+                        }                        
                     }
                 } catch (NumberFormatException e) {
                     System.out.println("[!] INGRESASTE UNA OPCION INVALIDA PARA ID DE DOCUMENTO.");
