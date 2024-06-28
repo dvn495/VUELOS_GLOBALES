@@ -53,6 +53,8 @@ public class TripCrewConsoleAdapter {
                         ConsoleUtils.esperarEntrada();
                         createFlightConnection();
                     }
+                    
+
                     connections.forEach(e -> {
                         System.out.println(MessageFormat.format("\n|  [*] ID DE LA CONEXION: {0}\n|  [*] ORDEN : {1}\n|  [*] VIAJE : {2}\n|  [*] AVION : {3}\n|  [*] AEREOPUERTO SALIDA : {4}\n|  [*] AEREOPUERTO LLEGADA : {5}",e.getId(), e.getConnectionOrder(), e.getIdTrip(), e.getIdPlane(), e.getIdAirportA(), e.getIdArportB()));
                     });
@@ -67,8 +69,10 @@ public class TripCrewConsoleAdapter {
                         ConsoleUtils.esperarEntrada();
                         createEmployee();
                     }
+
+                    
                     employees.forEach( e ->
-                        System.out.println(MessageFormat.format("|  [*] ID : {0}\n|  [*] NOMBRE : {1}\n|  [*] APELLIDO : {2}\n|  [*] FECHA DE INGRESO: {3}\n|  [*] ROL : {4}\n|  [*] AEREOLINEA : {5}\n|  [*] AEREOPUERTO : {6}", e.getId(), e.getName() + e.getLastName(), e.getIngressDate(), e.getIdRole(), e.getIdAirline(), e.getIdAirport()))
+                        System.out.println(MessageFormat.format("|  [*] ID : {0}\n|  [*] NOMBRE : {1}\n|  [*] APELLIDO : {2}\n|  [*] FECHA DE INGRESO: {3}\n|  [*] ROL : {4}\n|  [*] AEREOLINEA : {5}\n|  [*] AEREOPUERTO : {6}", e.getId(), e.getName(), e.getLastName(), e.getIngressDate(), e.getIdRole(), e.getIdAirline(), e.getIdAirport()))
                     );
                     System.out.println("[*] INGRESE EL ID DEL EMPLEADO A AÑADIR: ");
                     String idEmployee = sc.nextLine();

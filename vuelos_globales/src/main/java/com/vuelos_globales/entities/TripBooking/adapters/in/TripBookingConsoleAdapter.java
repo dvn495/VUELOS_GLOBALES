@@ -4,13 +4,13 @@ import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Scanner;
-import com.vuelos_globales.modules.ConsoleUtils;
-import com.vuelos_globales.entities.TripBooking.domain.TripBooking;
-import com.vuelos_globales.entities.TripBooking.application.TripBookingService;
-
 import java.util.List;
 import java.util.Optional;
+import java.util.Scanner;
+
+import com.vuelos_globales.entities.TripBooking.application.TripBookingService;
+import com.vuelos_globales.entities.TripBooking.domain.TripBooking;
+import com.vuelos_globales.modules.ConsoleUtils;
 
 public class TripBookingConsoleAdapter {
     Scanner sc = new Scanner(System.in);
@@ -62,7 +62,10 @@ public class TripBookingConsoleAdapter {
                     System.out.println("\n[*]  INGRESE EL ID DEL ESTADO DE RESERVA: ");
                     String newIdStatus = sc.nextLine();
 
-                    TripBooking newTripBooking = new TripBooking(id, fechaReserva, newIdTrip, newIdStatus);
+                    System.out.println("\n[*]  INGRESE EL ID DEL CLIENTE: ");
+                    String newIdCustomer = sc.nextLine();
+
+                    TripBooking newTripBooking = new TripBooking(id, fechaReserva, newIdTrip, newIdStatus, newIdCustomer);
                     tripBookingService.updateTripBooking(newTripBooking);
                 });
             System.out.println("[?] DESEA AÑADIR OTRA RESERVA DE VIAJE? [S] - SI | [INGRESE CUALQUIER TECLA] - NO");
@@ -89,7 +92,7 @@ public class TripBookingConsoleAdapter {
                 t -> {
                     ConsoleUtils.limpiarConsola();
                     System.out.println("*************** RESERVA DE VIAJE ***************");
-                    System.out.println(MessageFormat.format("[*] ID : {0}\n[*] FECHA DE RESERVA : {1}\n[*] ID DE VIAJE: {2}\n[*] ID DE ESTADO DE RESERVA: {3}", t.getId(), t.getBookingDate() + t.getIdTrip(), t.getIdBookingStatus()));
+                    System.out.println(MessageFormat.format("[*] ID : {0}\n[*] FECHA DE RESERVA : {1}\n[*] ID DE VIAJE: {2}\n[*] ID DE ESTADO DE RESERVA: {3}\n[*] ID DEL CLIENTE: {4}", t.getId(), t.getBookingDate() + t.getIdTrip(), t.getIdBookingStatus(), t.getIdCustomer()));
                     sc.nextLine();
                 },
                 () -> {
@@ -120,7 +123,7 @@ public class TripBookingConsoleAdapter {
             Optional<TripBooking> tripBooking = tripBookingService.getTripBookingById(findId);
             tripBooking.ifPresentOrElse(
             t -> {
-                System.out.println("  [*]  ID: "+ t.getId() + "\n  [*]  FECHA DE RESERVA: " + t.getBookingDate() + "\n  [*]  ID DE VIAJE: " + t.getIdTrip() + "\n  [*]  ID DE ESTADO DE RESERVA: " + t.getBookingDate());
+                System.out.println(MessageFormat.format("[*] ID : {0}\n[*] FECHA DE RESERVA : {1}\n[*] ID DE VIAJE: {2}\n[*] ID DE ESTADO DE RESERVA: {3}\n[*] ID DEL CLIENTE: {4}", t.getId(), t.getBookingDate() + t.getIdTrip(), t.getIdBookingStatus(), t.getIdCustomer()));
 
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
                     LocalDate fechaReserva = null;
@@ -139,16 +142,17 @@ public class TripBookingConsoleAdapter {
                             System.out.println("Fecha ingresada no válida. Use el formato dd-MM-yyyy.");
                         }
                     }
-
                     System.out.println("\n[*]  INGRESE EL ID DEL VIAJE: ");
-                    String updIdTrip = sc.nextLine();
+                    String newIdTrip = sc.nextLine();
 
                     System.out.println("\n[*]  INGRESE EL ID DEL ESTADO DE RESERVA: ");
-                    String updIdStatus = sc.nextLine();
+                    String newIdStatus = sc.nextLine();
 
-                      
-                    TripBooking tripsBooking = new TripBooking(findId, fechaReserva, updIdTrip, updIdStatus);
-                    tripBookingService.updateTripBooking(tripsBooking);
+                    System.out.println("\n[*]  INGRESE EL ID DEL CLIENTE: ");
+                    String newIdCustomer = sc.nextLine();
+
+                    TripBooking newTripBooking = new TripBooking(findId, fechaReserva, newIdTrip, newIdStatus, newIdCustomer);
+                    tripBookingService.updateTripBooking(newTripBooking);
             },
             () -> System.out.println("[!]  RESERVA DE VIAJE NO ENCONTRADA")
         );
@@ -198,7 +202,7 @@ public class TripBookingConsoleAdapter {
         } else {
             ConsoleUtils.limpiarConsola();
             tripBookingService.getAllTripBookings().forEach(t -> {
-                System.out.println(MessageFormat.format("[*] ID : {0}\n[*] FECHA DE RESERVA : {1}\n[*] ID DE VIAJE: {2}\n[*] ID DE ESTADO DE RESERVA: {3}", t.getId(), t.getBookingDate() + t.getIdTrip(), t.getIdBookingStatus()));
+                System.out.println(MessageFormat.format("[*] ID : {0}\n[*] FECHA DE RESERVA : {1}\n[*] ID DE VIAJE: {2}\n[*] ID DE ESTADO DE RESERVA: {3}\n[*] ID DEL CLIENTE: {4}", t.getId(), t.getBookingDate() + t.getIdTrip(), t.getIdBookingStatus(), t.getIdCustomer()));
             });
             System.out.println("[*]  PRESIONE CUALQUIER TECLA PARA CONTINUAR...");
             sc.nextLine();

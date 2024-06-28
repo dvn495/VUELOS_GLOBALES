@@ -24,33 +24,22 @@ public class AirportConsoleAdapter {
 
         while (rta.equalsIgnoreCase("S")) {
             ConsoleUtils.limpiarConsola();
-            System.out.println("*************** REGISTRAR CLIENTE ***************");
-            System.out.println("[*] INGRESE EL ID DEL CLIENTE A CREAR: ");
-            String id = sc.nextLine();
-            Optional<Airport> airport = airportService.getAirportById(id);
-            airport.ifPresentOrElse(
-                a -> {
-                    System.out.println(MessageFormat.format("[!] EL ID (0) YA ESTA OCUPADO.", a.getId()));
-                },
-                () -> {
-                    ConsoleUtils.limpiarConsola();
-                    System.out.println("*************** REGISTRAR AEREOPUERTO ***************");
+            System.out.println("*************** REGISTRAR AEREOPUERTO ***************");
 
-                    System.out.println("[*] INGRESE EL ID DEL AEREOPUERTO: ");
-                    String airportID = sc.nextLine();
+            System.out.println("[*] INGRESE EL ID DEL AEREOPUERTO: ");
+            String airportID = sc.nextLine();
     
-                    System.out.println("[*] INGRESE EL NOMBRE DEL AEREOPUERTO: ");
-                    String airportName = sc.nextLine();
+            System.out.println("[*] INGRESE EL NOMBRE DEL AEREOPUERTO: ");
+            String airportName = sc.nextLine();
     
-                    System.out.println("[*] INGRESE LA CIUDAD DEL AEREOPUERTO: ");
-                    String airportCity = sc.nextLine();
+            System.out.println("[*] INGRESE LA CIUDAD DEL AEREOPUERTO: ");
+            String airportCity = sc.nextLine();
 
     
-                    Airport newAirport = new Airport(airportID, airportName, airportCity);
-                    airportService.createAirport(newAirport);
-                });
-
-            System.out.println("[?] DESEA AÑADIR OTRO CLIENTE? [S] - SI | [INGRESE CUALQUIER TECLA] - NO");
+            Airport newAirport = new Airport(airportID, airportName, airportCity);
+            airportService.createAirport(newAirport);
+    
+            System.out.println("[?] DESEA AÑADIR OTRO AEROPUERTO? [S] - SI | [INGRESE CUALQUIER TECLA] - NO");
             rta = sc.nextLine();
         }
     }

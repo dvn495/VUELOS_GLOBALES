@@ -1,6 +1,5 @@
 package com.vuelos_globales.entities.Trip.application;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -84,10 +83,6 @@ public class TripService {
         return tripRepository.findAll();
     }
 
-    public List<Trip> getTripsByParameters(LocalDate tripDate, String idAirportA, String idAirportB) {
-        return tripRepository.findByCriteries(tripDate, idAirportA, idAirportB);
-    }
-
     public List<Airport> getAllAirports() {
         return airportRepository.findAll();
     }
@@ -95,5 +90,7 @@ public class TripService {
     public List<Customer> getCustomers() {
         return customerRepository.findAll();
     }
+
+    
 
 }

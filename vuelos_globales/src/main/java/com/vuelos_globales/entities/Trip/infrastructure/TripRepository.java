@@ -1,8 +1,9 @@
 package com.vuelos_globales.entities.Trip.infrastructure;
 
-import com.vuelos_globales.entities.Trip.domain.Trip;
 import java.util.List;
 import java.util.Optional;
+
+import com.vuelos_globales.entities.Trip.domain.Trip;
 
 public interface TripRepository {
     void save(Trip trip);

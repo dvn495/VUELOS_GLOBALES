@@ -1,13 +1,17 @@
 package com.vuelos_globales.entities.TripBooking.adapters.out;
 
-import com.vuelos_globales.entities.TripBooking.domain.TripBooking;
-import com.vuelos_globales.entities.TripBooking.infrastructure.TripBookingRepository;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import com.vuelos_globales.entities.TripBooking.domain.TripBooking;
+import com.vuelos_globales.entities.TripBooking.infrastructure.TripBookingRepository;
 
 public class TripBookingMySQLRepository implements TripBookingRepository {
     private final String url;
@@ -24,12 +28,13 @@ public class TripBookingMySQLRepository implements TripBookingRepository {
     public void save(TripBooking tripBooking) {
         java.sql.Date sqlDate = java.sql.Date.valueOf(tripBooking.getBookingDate());
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "INSERT INTO trip_booking (id, bookingDate, idTrip, idBookingStatus) VALUES (?, ?, ?, ?)";
+            String query = "INSERT INTO trip_booking (id, bookingDate, idTrip, idBookingStatus, idCustomer) VALUES (?, ?, ?, ?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, tripBooking.getId());
                 statement.setDate(2, sqlDate);
                 statement.setString(3, tripBooking.getIdTrip());
                 statement.setString(4, tripBooking.getIdBookingStatus());
+                statement.setString(5, tripBooking.getIdCustomer());
                 statement.executeUpdate();
             }
         } catch (SQLException e) {
@@ -41,12 +46,13 @@ public class TripBookingMySQLRepository implements TripBookingRepository {
     public void update(TripBooking tripBooking) {
         java.sql.Date sqlDate = java.sql.Date.valueOf(tripBooking.getBookingDate());
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "UPDATE trip_booking SET bookingDate = ?, idTrip = ?, idBookingStatus = ? WHERE id = ?";
+            String query = "UPDATE trip_booking SET bookingDate = ?, idTrip = ?, idBookingStatus = ?, idCustomer = ? WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setDate(1, sqlDate);
                 statement.setString(2, tripBooking.getIdTrip());
                 statement.setString(3, tripBooking.getIdBookingStatus());
-                statement.setString(4, tripBooking.getId());
+                statement.setString(4, tripBooking.getIdCustomer());
+                statement.setString(5, tripBooking.getId());
                 statement.executeUpdate();
             }
         } catch (SQLException e) {
@@ -57,7 +63,7 @@ public class TripBookingMySQLRepository implements TripBookingRepository {
     @Override
     public Optional<TripBooking> findById(String id) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT id, bookingDate, idTrip, idBookingStatus FROM trip_booking WHERE id = ?";
+            String query = "SELECT id, bookingDate, idTrip, idBookingStatus, idCustomer FROM trip_booking WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, id);
                 try (ResultSet resultSet = statement.executeQuery()) {
@@ -68,7 +74,8 @@ public class TripBookingMySQLRepository implements TripBookingRepository {
                             resultSet.getString("id"),
                             bookingDate,
                             resultSet.getString("idTrip"),
-                            resultSet.getString("idBookingStatus")
+                            resultSet.getString("idBookingStatus"),
+                            resultSet.getString("idCustomer")
                         );
                         return Optional.of(tripBooking);
                     }
@@ -107,7 +114,8 @@ public class TripBookingMySQLRepository implements TripBookingRepository {
                         resultSet.getString("id"),
                         bookingDate,
                         resultSet.getString("idTrip"),
-                        resultSet.getString("idBookingStatus")
+                        resultSet.getString("idBookingStatus"),
+                        resultSet.getString("idCustomer")
                     );
                     tripBookings.add(tripBooking);
                 }

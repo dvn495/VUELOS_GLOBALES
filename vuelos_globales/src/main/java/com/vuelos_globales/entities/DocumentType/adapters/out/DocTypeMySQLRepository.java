@@ -1,6 +1,11 @@
 package com.vuelos_globales.entities.DocumentType.adapters.out;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -18,7 +23,7 @@ public class DocTypeMySQLRepository implements DocumentTypeRepository{
         this.user = user;
         this.password = password;
     }
-    
+    @Override
     public void save(DocumentType documentType) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
             String query = "INSERT INTO document_types (id, documentType) VALUES (?, ?)";
@@ -70,15 +75,24 @@ public class DocTypeMySQLRepository implements DocumentTypeRepository{
     @Override
     public void delete(int id) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
+            try (Statement disableFK = connection.createStatement()) {
+                disableFK.execute("SET FOREIGN_KEY_CHECKS = 0");
+            }
+            
             String query = "DELETE FROM document_types WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, id);
-                statement.executeQuery();
+                statement.executeUpdate();
             }
+            
+            try (Statement enableFK = connection.createStatement()) {
+                enableFK.execute("SET FOREIGN_KEY_CHECKS = 1");
+            }   
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
 
     @Override
     public List<DocumentType> findAll() {

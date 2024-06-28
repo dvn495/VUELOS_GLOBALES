@@ -9,10 +9,16 @@ import com.vuelos_globales.entities.Airport.adapters.out.AirportMySQLRepository;
 import com.vuelos_globales.entities.Airport.application.AirportService;
 import com.vuelos_globales.entities.BookingStatus.adapters.out.BookingStatusMySQLRepository;
 import com.vuelos_globales.entities.Customer.adapters.out.CustomerMySQLRepository;
+import com.vuelos_globales.entities.DocumentType.adapters.in.DocumentTypeConsoleAdapter;
+import com.vuelos_globales.entities.DocumentType.adapters.out.DocTypeMySQLRepository;
+import com.vuelos_globales.entities.DocumentType.application.DocumentTypeService;
 import com.vuelos_globales.entities.Employee.adapters.out.EmployeeMySQLRepository;
 import com.vuelos_globales.entities.FlightConnection.adapters.in.FlightConnectionConsoleAdapter;
 import com.vuelos_globales.entities.FlightConnection.adapters.out.FlightConnectionMySQLRepository;
 import com.vuelos_globales.entities.FlightConnection.application.FlightConnectionService;
+import com.vuelos_globales.entities.FlightFares.adapters.in.FlightFaresConsoleController;
+import com.vuelos_globales.entities.FlightFares.adapters.out.FlightFaresMySQLRepository;
+import com.vuelos_globales.entities.FlightFares.application.FlightFaresService;
 import com.vuelos_globales.entities.Manufactures.adapters.out.ManufacturesMySQLRepository;
 import com.vuelos_globales.entities.PlaneModels.adapters.out.PlaneModelsMySQLRepository;
 import com.vuelos_globales.entities.Planes.adapters.in.PlanesConsoleController;
@@ -41,13 +47,6 @@ public class AdministratorMenu {
         "ACTUALIZAR INFORMACION DE AEROPUERTO","ELIMINAR AEROPUERTO", "CONSULTAR INFORMACION DE VUELO ","CONSULTAR ASIGNACION DE TRIPULACION","CONSULTAR ESCALAS DE UN PROYECTO",
         "ACTUALIZAR INFORMACION DE ESCALA","ELIMINAR ESCALA","REGISTRAR TARIFA DE VUELO","ACTUALIZAR INFORMACION DE TARIFA DE VUELO","ELIMINAR TARIFA DE VUELO","CONSULTAR TARIFA DE VUELO", 
         "REGISTRAR TIPO DE DOCUMENTO","ACTUALIZAR TIPO DE DOCUMENTO","ELIMINAR TIPO DE DOCUMENTO ", "CONSULTAR TIPO DE DOCUMENTO","VOLVER"};
-
-        System.out.println(banner);
-
-        int i = 1;
-        for (String opc : administratorOpc) {
-            System.out.println(MessageFormat.format("    [{0}]. {1}", i++, opc));
-        }
     
         Scanner sc = new Scanner(System.in);
         String url = "jdbc:mysql://localhost:3306/airport_database";
@@ -56,6 +55,8 @@ public class AdministratorMenu {
 
         //MySQL REPOSITORIES
 
+        FlightFaresMySQLRepository flightFaresMySQLRepository = new FlightFaresMySQLRepository(url, username, password);
+        DocTypeMySQLRepository docTypeMySQLRepository = new DocTypeMySQLRepository(url, username, password);
         CustomerMySQLRepository customerMySQLRepository = new CustomerMySQLRepository(url, username, password);
         AirlinesMySQLRepository airlinesMySQLRepository = new AirlinesMySQLRepository(url, username, password);
         TripulationRoleMySQLRepository tripulationRoleMySQLRepository = new TripulationRoleMySQLRepository(url, username, password);
@@ -74,6 +75,13 @@ public class AdministratorMenu {
         boolean isActiveAdministrator = true;
 
         while (isActiveAdministrator) {
+            ConsoleUtils.limpiarConsola();
+            System.out.println(banner);
+
+            int i = 1;
+            for (String opc : administratorOpc) {
+                System.out.println(MessageFormat.format("    [{0}]. {1}", i++, opc));
+            }
             try {
                 int opcMenu = Integer.parseInt(sc.nextLine().trim());
 
@@ -104,7 +112,9 @@ public class AdministratorMenu {
                     }
 
                     case 5 -> {
-                        //REGISTRAR AEROPUERTO
+                        AirportService airportService = new AirportService(airporMySQLRepository);
+                        AirportConsoleAdapter airportConsoleAdapter = new AirportConsoleAdapter(airportService);
+                        airportConsoleAdapter.createAirport();
                     }
 
                     case 6 -> {
@@ -156,7 +166,9 @@ public class AdministratorMenu {
                     }
 
                     case 16 -> {
-                        //CONSULTAR ESCALAS DE UN PROYECTO
+                        FlightConnectionService flightConnectionService = new FlightConnectionService(flightConnectionMySQLRepository);
+                        FlightConnectionConsoleAdapter flightConnectionConsoleAdapter = new FlightConnectionConsoleAdapter(flightConnectionService);
+                        flightConnectionConsoleAdapter.getFlightConnectionByTrip();
                     }
 
                     case 17 -> {
@@ -168,35 +180,51 @@ public class AdministratorMenu {
                     }
 
                     case 19 -> {
-                        //REGISTRAR TARIFA DE VUELO
+                        FlightFaresService flightFaresService = new FlightFaresService(flightFaresMySQLRepository);
+                        FlightFaresConsoleController flightFaresConsoleController = new FlightFaresConsoleController(flightFaresService);
+                        flightFaresConsoleController.createFlightFare();
                     }
 
                     case 20 -> {
-                        //ACTUALIZAR INFORMACION DE TARIFA DE VUELO
+                        FlightFaresService flightFaresService = new FlightFaresService(flightFaresMySQLRepository);
+                        FlightFaresConsoleController flightFaresConsoleController = new FlightFaresConsoleController(flightFaresService);
+                        flightFaresConsoleController.updateFlightFare();
                     }
                     
                     case 21 -> {
-                        //ELIMINAR TARIFA DE VUELO
+                        FlightFaresService flightFaresService = new FlightFaresService(flightFaresMySQLRepository);
+                        FlightFaresConsoleController flightFaresConsoleController = new FlightFaresConsoleController(flightFaresService);
+                        flightFaresConsoleController.deleteFlightFare();
                     }
 
                     case 22 -> {
-                        //CONSULTAR TARIFA DE VUELO
+                        FlightFaresService flightFaresService = new FlightFaresService(flightFaresMySQLRepository);
+                        FlightFaresConsoleController flightFaresConsoleController = new FlightFaresConsoleController(flightFaresService);
+                        flightFaresConsoleController.searchFlightFare();
                     }
 
                     case 23 -> {
-                        //REGISTRAR TIPO DE DOCUMENTO
+                        DocumentTypeService documentTypeService = new DocumentTypeService(docTypeMySQLRepository);
+                        DocumentTypeConsoleAdapter documentTypeConsoleAdapter = new DocumentTypeConsoleAdapter(documentTypeService);
+                        documentTypeConsoleAdapter.createDocType();
                     }
 
                     case 24 -> {
-                        //ACTUALIZAR TIPO DE DOCUMENTO
+                        DocumentTypeService documentTypeService = new DocumentTypeService(docTypeMySQLRepository);
+                        DocumentTypeConsoleAdapter documentTypeConsoleAdapter = new DocumentTypeConsoleAdapter(documentTypeService);
+                        documentTypeConsoleAdapter.updateDocumentType();
                     }
 
                     case 25 -> {
-                        //ELIMINAR TIPO DE DOCUMENTO
+                        DocumentTypeService documentTypeService = new DocumentTypeService(docTypeMySQLRepository);
+                        DocumentTypeConsoleAdapter documentTypeConsoleAdapter = new DocumentTypeConsoleAdapter(documentTypeService);
+                        documentTypeConsoleAdapter.deleteDocumentType();
                     }
 
                     case 26 -> {
-                        //CONSULTAR TIPO DE DOCUMENTO
+                        DocumentTypeService documentTypeService = new DocumentTypeService(docTypeMySQLRepository);
+                        DocumentTypeConsoleAdapter documentTypeConsoleAdapter = new DocumentTypeConsoleAdapter(documentTypeService);
+                        documentTypeConsoleAdapter.searchDocumentType();
                     }
 
                     case 27 -> {

@@ -28,11 +28,11 @@ public class TripBookingDetailsMySQLRepository implements TripBookingDetailsRepo
     @Override
         public void save(TripBookingDetails tripBookingDetails){
         try (Connection connection = DriverManager.getConnection(url, user, password)){
-            String query = "INSERT INTO trip_booking_details (id, idTripBooking, idCustomer, idFlightFares) VALUES (?, ?, ?, ?)";
+            String query = "INSERT INTO trip_booking_details (id, seatNumber, idTripBooking , idFlightFares) VALUES (?, ?, ?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(query)){
                 statement.setString(1, tripBookingDetails.getId());
-                statement.setString(2, tripBookingDetails.getIdTripBooking());
-                statement.setString(3, tripBookingDetails.getIdCustomer());
+                statement.setInt(2, tripBookingDetails.getSeatNumber());
+                statement.setString(3, tripBookingDetails.getIdTripBooking());
                 statement.setString(4, tripBookingDetails.getIdFlightFares());
                 statement.executeUpdate();
             }
@@ -45,10 +45,9 @@ public class TripBookingDetailsMySQLRepository implements TripBookingDetailsRepo
     @Override
     public void update(TripBookingDetails tripBookingDetails) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "UPDATE trip_booking_details SET id_trip_booking = ?, id_customer = ?, id_flight_fares = ? WHERE id = ?";
+            String query = "UPDATE trip_booking_details SET idTripBooking = ?, idFlightFares = ? WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, tripBookingDetails.getIdTripBooking());
-                statement.setString(2, tripBookingDetails.getIdCustomer());
                 statement.setString(3, tripBookingDetails.getIdFlightFares());
                 statement.setString(4, tripBookingDetails.getId());
                 statement.executeUpdate();
@@ -69,8 +68,8 @@ public class TripBookingDetailsMySQLRepository implements TripBookingDetailsRepo
                     if (resultSet.next()){
                         TripBookingDetails tripBookingDetails = new TripBookingDetails(
                             resultSet.getString("id"),
+                            resultSet.getInt("seatNumber"),
                             resultSet.getString("idTripBooking"),
-                            resultSet.getString("idCustomer"),
                             resultSet.getString("idFlightFares")
                         );
                         return Optional.of(tripBookingDetails);
@@ -101,14 +100,14 @@ public class TripBookingDetailsMySQLRepository implements TripBookingDetailsRepo
     public List<TripBookingDetails> findAll(){
         List<TripBookingDetails> tripBookingDetails = new ArrayList<>();
         try (Connection connection =  DriverManager.getConnection(url, user, password)){
-            String query = "SELECT id, idTripBooking, idCustomer, idFlightFares FROM trip_booking_details";
+            String query = "SELECT id, idTripBooking, , idFlightFares FROM trip_booking_details";
             try (PreparedStatement statement = connection.prepareStatement(query);
                 ResultSet resultSet = statement.executeQuery()) {
                     while (resultSet.next()){
                         TripBookingDetails tripBookingDetail = new TripBookingDetails(
                             resultSet.getString("id"),
+                            resultSet.getInt("seatNumber"),
                             resultSet.getString("idTripBooking"),
-                            resultSet.getString("idCustomer"),
                             resultSet.getString("idFlightFares")
                         );
                         tripBookingDetails.add(tripBookingDetail);

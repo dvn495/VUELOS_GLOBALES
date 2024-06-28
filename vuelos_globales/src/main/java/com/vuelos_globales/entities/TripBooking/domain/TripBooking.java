@@ -7,14 +7,16 @@ public class TripBooking {
     private LocalDate bookinDate; // Revisar tipo de dato despues
     private String idTrip;
     private String idBookingStatus;
+    private String idCustomer;
 
     public TripBooking() {}
 
-    public TripBooking(String id, LocalDate bookinDate, String idTrip, String idBookingStatus) {
+    public TripBooking(String id, LocalDate bookinDate, String idTrip, String idBookingStatus, String idCustomer) {
         this.id = id;
         this.bookinDate = bookinDate;
         this.idTrip = idTrip;
         this.idBookingStatus = idBookingStatus;
+        this.idCustomer = idCustomer;
     }
 
     // Getters y setters
@@ -50,7 +52,16 @@ public class TripBooking {
 
     public void setIdBookingStatus(String idBookingStatus) {
         this.idBookingStatus = idBookingStatus;
-    }    
-    
+    }
+
+    // JAVI
+
+    public String getIdCustomer() {
+        return idCustomer;
+    }
+
+    public void setIdCustomer(String idCustomer) {
+        this.idCustomer = idCustomer;
+    }
     
 }

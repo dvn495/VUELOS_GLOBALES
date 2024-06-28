@@ -36,26 +36,24 @@ public class TripBookingDetailsConsoleAdapter  {
                     System.out.println(MessageFormat.format("[!] EL ID (0) YA ESTA OCUPADO.", tb.getId()));
                 },
                 () -> {
+                    int seatNumber = 0;
                     ConsoleUtils.limpiarConsola();
                     System.out.println("*************** REGISTRAR DETALLES DE RESERVA DE VIAJE ***************");
 
                     System.out.println("[*] INGRESE EL ID DE LA RESERVA VIAJE : ");
                     String idTripBking = sc.nextLine();
     
-                    System.out.println("[*] INGRESE EL ID DEL CLIENTE: ");
-                    String idCustomer = sc.nextLine();
-    
                     System.out.println("[*] INGRESE EL ID DE TARIFA DE VUELO : ");
                     String idFlightFare = sc.nextLine();
             
-                    TripBookingDetails newTripBookingDetails = new TripBookingDetails(newId, idTripBking, idCustomer, idFlightFare);
+                    TripBookingDetails newTripBookingDetails = new TripBookingDetails(newId, seatNumber, idTripBking, idFlightFare);
                     tripBookingDetailsService.createTripBookingDetails(newTripBookingDetails);
                     System.out.println("LOS DETALLES DE LA RESERVA DE VIAJE HAN SIDO REGISTRADOS CON EXITO");
                     ConsoleUtils.esperarEntrada();
                 }
             );
             System.out.println("[*]  DESEA CREAR OTRO DETALLE DE RESERVA? [S] SI | [CUALQUIER TECLA] NO");
-            option = sc.nextLine();                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+            option = sc.nextLine();                                                                                                                                                                                                                                                                                                        
         }
     }
 
@@ -78,7 +76,7 @@ public class TripBookingDetailsConsoleAdapter  {
                 tb -> {
                     ConsoleUtils.limpiarConsola();
                     System.out.println("*************** DETALLES DE RESERVA ***************");
-                    System.out.println(MessageFormat.format("[*] ID : {0}\n[*] ID DE RESERVA DE VIAJE : {1}\n[*] ID DE CLIENTE: {2}\n[*] ID DE TARIFA DE VUELO: {3}", tb.getId(), tb.getIdTripBooking() + tb.getIdCustomer(), tb.getIdFlightFares()));
+                    System.out.println(MessageFormat.format("[*] ID : {0}\n[*] ID DE RESERVA DE VIAJE : {1}\n[*] ID DE CLIENTE: {2}\n[*] ID DE TARIFA DE VUELO: {3}", tb.getId(), tb.getIdTripBooking(), tb.getIdFlightFares()));
                     sc.nextLine();
                 },
                 () -> {
@@ -111,24 +109,20 @@ public class TripBookingDetailsConsoleAdapter  {
             Optional<TripBookingDetails> tripBookingDetail = tripBookingDetailsService.getTripBookingDetailsById(findId);
             tripBookingDetail.ifPresentOrElse(
                 tb -> {
+                    int seatNumber = 0;
                     ConsoleUtils.limpiarConsola();
                     System.out.println("***** ACTUALIZAR DETALLES DE RESERVA VIAJE *****");
                     System.out.println(MessageFormat.format(
                         "[] ID: {0}\n[] ID DE RESERVA DE VIAJE: {1}\n[] ID DE CLIENTE: {2}\n[] ID DE TARIFAS DE VUELO: {3}",
-                        tb.getId(), tb.getIdTripBooking(), tb.getIdCustomer(), tb.getIdFlightFares()
+                        tb.getId(), tb.getIdTripBooking(), tb.getIdFlightFares()
                     ));
+                     System.out.println("[*] INGRESE EL ID DE LA RESERVA VIAJE : ");
+                    String idTripBking = sc.nextLine();
     
-                    System.out.println("[?] INGRESE EL NUEVO ID DE LA RESERVA VIAJE: ");
-                    String updateIdTripBog = sc.nextLine();
-    
-                    System.out.println("[?] INGRESE EL NUEVO ID DE CLIENTE: ");
-                    String updateIdCusto = sc.nextLine();
-    
-                    System.out.println("[?] INGRESE EL NUEVO ID DE TARIFA DE VUELO: ");
-                    String updateIdFlightF = sc.nextLine();
-    
+                    System.out.println("[*] INGRESE EL ID DE TARIFA DE VUELO : ");
+                    String idFlightFare = sc.nextLine();
 
-                    TripBookingDetails updatedTripBookingDetails = new TripBookingDetails(findId, updateIdTripBog, updateIdCusto, updateIdFlightF);
+                    TripBookingDetails updatedTripBookingDetails = new TripBookingDetails(findId, seatNumber, idTripBking, idFlightFare);
                     tripBookingDetailsService.updateTripBookingDetails(updatedTripBookingDetails);
                     sc.nextLine();
 
@@ -184,7 +178,7 @@ public class TripBookingDetailsConsoleAdapter  {
         }   else {
             System.out.println("[*]  DETALLES DE RESERVA DE VIAJE REGISTRADOS");
             tripBookingDetailsService.getAllTripBookingDetails().forEach(tb -> {
-                System.out.println("[*]  ID: "+ tb.getId() + "ID DE RESERVA DE VIAJE: " + tb.getIdTripBooking()+ "ID DE CLIENTE : " + tb.getIdCustomer()+ "ID DE TARIFAS DE VUELO: " + tb.getIdFlightFares());
+                System.out.println("[*]  ID: "+ tb.getId() + "ID DE RESERVA DE VIAJE: " + tb.getIdTripBooking() + "ID DE TARIFAS DE VUELO: " + tb.getIdFlightFares());
             });
         }
         System.out.println("[*]  PRESIONE CUALQUIER TECLA PARA CONTINUAR...");

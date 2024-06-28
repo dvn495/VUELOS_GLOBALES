@@ -1,19 +1,16 @@
 package com.vuelos_globales.modules.menus;
 
-import com.vuelos_globales.modules.ConsoleUtils;
-
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.InputMismatchException;
 import java.util.Scanner;
+
+import com.vuelos_globales.modules.ConsoleUtils;
 
 
 public class CustomerMenu {
     public static void menu() {
         ConsoleUtils.limpiarConsola();
 
-        String[] customerOpc = {"Buscar Vuelos", "Administrar Reservas", "Pagos","Volver"};
+        String[] customerOpc = {"Administrar Vuelos", "Administrar Reservas", "Pagos","Volver"};
 
         int i = 0;
         for (String opc : customerOpc) {
@@ -34,12 +31,6 @@ public class CustomerMenu {
 
                 switch (opcMenu) {
                     case 1 -> {
-                        boolean isActiveSearchFlights = true;
-
-                        while (isActiveSearchFlights) {
-                            ConsoleUtils.limpiarConsola();
-                            System.out.println();
-                        }
 
                     }
 

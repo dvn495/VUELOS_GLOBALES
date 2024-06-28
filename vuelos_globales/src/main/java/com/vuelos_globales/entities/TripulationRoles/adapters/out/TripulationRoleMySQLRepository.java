@@ -26,7 +26,7 @@ public class TripulationRoleMySQLRepository implements TripulationRoleRepository
     @Override
     public void save(TripulationRole tripulationRole){
             try(Connection connection = DriverManager.getConnection(url, user, password)){
-                String query = "INSERT INTO tripulation_role (id, role) VALUES (?, ?)";
+                String query = "INSERT INTO tripulation_role (id, roleName) VALUES (?, ?)";
                 try (PreparedStatement statement = connection.prepareStatement(query)){
                     statement.setString(1, tripulationRole.getId());
                     statement.setString(2, tripulationRole.getRole());
@@ -41,7 +41,7 @@ public class TripulationRoleMySQLRepository implements TripulationRoleRepository
     @Override
     public void update(TripulationRole tripulationRole) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "UPDATE tripulation_role SET role = ? WHERE id = ?";
+            String query = "UPDATE tripulation_role SET roleName = ? WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, tripulationRole.getRole());
                 statement.setString(2, tripulationRole.getId());
@@ -56,14 +56,14 @@ public class TripulationRoleMySQLRepository implements TripulationRoleRepository
     @Override
     public Optional<TripulationRole> findById(String id) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT id, role FROM tripulation_role WHERE id = ?";
+            String query = "SELECT id, roleName FROM tripulation_role WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, id);
                 try (ResultSet resultSet = statement.executeQuery()) {
                     if (resultSet.next()) {
                         TripulationRole tripulationRole = new TripulationRole(
                             resultSet.getString("id"),
-                            resultSet.getString("role")
+                            resultSet.getString("roleName")
                         );
                         return Optional.of(tripulationRole);
                     }
@@ -92,13 +92,13 @@ public class TripulationRoleMySQLRepository implements TripulationRoleRepository
     public List<TripulationRole> findAll() {
         List<TripulationRole> tripulationRoles = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT id, role FROM tripulation_role";
+            String query = "SELECT id, roleName FROM tripulation_role";
             try (PreparedStatement statement = connection.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     TripulationRole tripulationRole = new TripulationRole(
                         resultSet.getString("id"),
-                        resultSet.getString("role")
+                        resultSet.getString("roleName")
                     );
                     tripulationRoles.add(tripulationRole);
                 }

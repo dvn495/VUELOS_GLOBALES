@@ -19,36 +19,44 @@ public class FlightFaresConsoleController {
 
     public void createFlightFare(){
         String option = "S";
-
+    
         while (option.equalsIgnoreCase("S")){
             ConsoleUtils.limpiarConsola();
-            System.out.println("[*]  INGRESE EL ID DE LA TARIFA DE VUELO");
+            System.out.println("[*] INGRESE EL ID DE LA TARIFA DE VUELO");
             String newId = sc.nextLine();
             Optional<FlightFares> flightFare = flightFaresService.getFlightFareById(newId);
             flightFare.ifPresentOrElse(
                 f -> {
-                    System.out.println("[!]  TARIFA DE VUELO YA EXISTENTE");
-                    System.out.println("[*]  PRESIONE CUALQUIER TECLA PARA CONTINUAR...");
+                    System.out.println("[!] TARIFA DE VUELO YA EXISTENTE");
+                    System.out.println("[*] PRESIONE CUALQUIER TECLA PARA CONTINUAR...");
                     sc.nextLine();
                 }, 
                 () -> {
-                    System.out.println("\n[*]  INGRESA UNA DESCRIPCION");
+                    System.out.println("\n[*] INGRESA UNA DESCRIPCION");
                     String newDescription = sc.nextLine();
-
-                    System.out.println("\n[*]  INGRESE LOS DETALLES");
+    
+                    System.out.println("\n[*] INGRESE LOS DETALLES");
                     String newDetails = sc.nextLine();
-
+    
                     System.out.println("\n[*] INGRESE EL VALOR DE LA TARIFA DE VUELO");
-                    double newValue = sc.nextDouble();
-
+                    String valueInput = sc.nextLine();
+                    Double newValue = null;
+                    try {
+                        newValue = Double.parseDouble(valueInput);
+                    } catch (NumberFormatException e) {
+                        System.out.println("[!] VALOR INVALIDO. INTENTE NUEVAMENTE.");
+                        return;
+                    }
+    
                     FlightFares flightfare = new FlightFares(newId, newDescription, newDetails, newValue);
                     flightFaresService.createFlightFare(flightfare);
                 }
             );
-            System.out.println("[*]  DESEA CREAR OTRA TARIFA DE VUELO? [S] SI | [CUALQUIER TECLA] NO");
+            System.out.println("[*] DESEA CREAR OTRA TARIFA DE VUELO? [S] SI | [CUALQUIER TECLA] NO");
             option = sc.nextLine(); 
         }
     }
+    
 
     public void searchFlightFare(){
         ConsoleUtils.limpiarConsola();

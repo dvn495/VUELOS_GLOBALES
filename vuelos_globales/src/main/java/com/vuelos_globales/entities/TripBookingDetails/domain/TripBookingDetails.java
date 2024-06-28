@@ -2,16 +2,16 @@ package com.vuelos_globales.entities.TripBookingDetails.domain;
 
 public class TripBookingDetails {
     private String id;
+    private int seatNumber;
     private String idTripBooking;
-    private String idCustomer;
     private String idFlightFares;
 
     public TripBookingDetails() {}
 
-    public TripBookingDetails(String id, String idTripBooking, String idCustomer, String idFlightFares) {
+    public TripBookingDetails(String id, int seatNumber, String idTripBooking, String idFlightFares) {
         this.id = id;
+        this.seatNumber = seatNumber;
         this.idTripBooking = idTripBooking;
-        this.idCustomer = idCustomer;
         this.idFlightFares = idFlightFares;
     }
 
@@ -36,17 +36,6 @@ public class TripBookingDetails {
         this.idTripBooking = idTripBooking;
     }
 
-
-    public String getIdCustomer() {
-        return idCustomer;
-    }
-
-
-    public void setIdCustomer(String idCustomer) {
-        this.idCustomer = idCustomer;
-    }
-
-
     public String getIdFlightFares() {
         return idFlightFares;
     }
@@ -56,6 +45,16 @@ public class TripBookingDetails {
         this.idFlightFares = idFlightFares;
     }
 
-            
+    // JAVI
+
+    public int getSeatNumber() {
+        return seatNumber;
+    }
+
+
+    public void setSeatNumber(int seatNumber) {
+        this.seatNumber = seatNumber;
+    }
+
     
 }
