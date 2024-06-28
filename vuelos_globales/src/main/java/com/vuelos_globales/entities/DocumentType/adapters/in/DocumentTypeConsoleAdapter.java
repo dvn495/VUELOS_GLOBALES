@@ -1,10 +1,9 @@
 package com.vuelos_globales.entities.DocumentType.adapters.in;
 
-import java.util.Scanner;
-
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
+import java.util.Scanner;
 
 import com.vuelos_globales.entities.DocumentType.application.DocumentTypeService;
 import com.vuelos_globales.entities.DocumentType.domain.DocumentType;
@@ -66,7 +65,8 @@ public class DocumentTypeConsoleAdapter {
             try {
                 ConsoleUtils.limpiarConsola();
                 System.out.println("*************** BUSCAR TIPO DE DOCUMENTO ***************");
-                System.out.println("[*] INGRESE EL ID DEL TIPO DE DOCUMENTO A BUSCAR: ");
+                getAllDocumentTypes();
+                System.out.println("\n[*] INGRESE EL ID DEL TIPO DE DOCUMENTO A BUSCAR: ");
                 int id = Integer.parseInt(sc.nextLine().trim());
 
                 Optional<DocumentType> documentType = docTypeService.getDocumentTypeById(id);
@@ -104,6 +104,7 @@ public class DocumentTypeConsoleAdapter {
         } else {
             try {
                 ConsoleUtils.limpiarConsola();
+                getAllDocumentTypes();
                 System.out.println("[?] INGRESE EL ID DEL TIPO DE DATO A BUSCAR: ");
                 int id = Integer.parseInt(sc.nextLine().trim());
 
@@ -150,9 +151,10 @@ public class DocumentTypeConsoleAdapter {
             System.out.println("[!] NO HAY NINGUN TIPO DE DOCUMENTO REGISTRADO");
             sc.nextLine();
         } else {
+            getAllDocumentTypes();
             try {
                 ConsoleUtils.limpiarConsola();
-                System.out.println("[?] INGRESE EL ID DEL TIPO DE DOCUMENTO A ELIMINAR: ");
+                System.out.println("\n[?] INGRESE EL ID DEL TIPO DE DOCUMENTO A ELIMINAR: ");
                 int id = Integer.parseInt(sc.nextLine().trim());
     
                 Optional<DocumentType> documentType = docTypeService.getDocumentTypeById(id);

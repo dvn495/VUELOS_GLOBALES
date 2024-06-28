@@ -4,12 +4,12 @@ public class Payment {
     private String id;
     private int amount;
     private int idPaymentMethod;
-    private int creditCardNumber;
+    private String creditCardNumber;
     private String idTripBookingDetails;
     
     public Payment() {}
 
-    public Payment(String id, int amount, int idPaymentMethod, int creditCardNumber, String idTripBookingDetails) {
+    public Payment(String id, int amount, int idPaymentMethod, String creditCardNumber, String idTripBookingDetails) {
         this.id = id;
         this.amount = amount;
         this.idPaymentMethod = idPaymentMethod;
@@ -41,11 +41,11 @@ public class Payment {
         this.idPaymentMethod = idPaymentMethod;
     }
 
-    public int getCreditCardNumber() {
+    public String getCreditCardNumber() {
         return creditCardNumber;
     }
 
-    public void setCreditCardNumber(int creditCardNumber) {
+    public void setCreditCardNumber(String creditCardNumber) {
         this.creditCardNumber = creditCardNumber;
     }
 

@@ -128,7 +128,9 @@ public class AdministratorMenu {
                     }
 
                     case 8 -> {
-                        //ELIMINAR UN AVION
+                        PlanesService planesService = new PlanesService(planesMySQLRepository, planesModelsMySQLRepository, statusMySQLRepository, manufacturesMySQLRepository);
+                        PlanesConsoleController planesConsoleController = new PlanesConsoleController(planesService);
+                        planesConsoleController.deletePlane();
                     }
 
                     case 9 -> {
@@ -148,7 +150,9 @@ public class AdministratorMenu {
                     }
 
                     case 13 -> {
-                        //ELIMINAR AEROPUERO
+                        AirportService airportService = new AirportService(airporMySQLRepository);
+                        AirportConsoleAdapter airportConsoleAdapter = new AirportConsoleAdapter(airportService);
+                        airportConsoleAdapter.deleteAirport();
                     }
 
                     case 14 -> {

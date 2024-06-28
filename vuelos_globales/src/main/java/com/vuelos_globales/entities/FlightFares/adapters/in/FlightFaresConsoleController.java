@@ -19,10 +19,9 @@ public class FlightFaresConsoleController {
 
     public void createFlightFare(){
         String option = "S";
-    
         while (option.equalsIgnoreCase("S")){
             ConsoleUtils.limpiarConsola();
-            System.out.println("[*] INGRESE EL ID DE LA TARIFA DE VUELO");
+            System.out.println("[*] INGRESE EL ID DE LA TARIFA DE VUELO [EJEMPLO: FF01]");
             String newId = sc.nextLine();
             Optional<FlightFares> flightFare = flightFaresService.getFlightFareById(newId);
             flightFare.ifPresentOrElse(
@@ -124,7 +123,8 @@ public class FlightFaresConsoleController {
         if(flightFaresList.isEmpty()){
             System.out.println("[!] NO HAY TARIFAS DE VUELO REGISTRADAS");
         }   else {
-            System.out.println("[*]  INGRESE EL ID DE LA TARIFA DE VUELO A ELIMINAR\n\n");
+            getAllFlightFares();
+            System.out.println("\n[*]  INGRESE EL ID DE LA TARIFA DE VUELO A ELIMINAR\n\n");
             String findId = sc.nextLine();
     
             Optional<FlightFares> flightfare = flightFaresService.getFlightFareById(findId);

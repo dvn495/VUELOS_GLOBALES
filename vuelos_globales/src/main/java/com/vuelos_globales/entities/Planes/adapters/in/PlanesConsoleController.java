@@ -313,13 +313,14 @@ public class PlanesConsoleController {
         }
     }
 
-    public void deletePlaneModels(){
+    public void deletePlane(){
         ConsoleUtils.limpiarConsola();
         List<Planes> models = planesService.findAll();
         if(models.isEmpty()){
             System.out.println("[!]  NO HAY MODELOS REGISTRADOS");
         }   else {
-            System.out.println("[*]  INGRESE EL ID DEL AVION A ELIMINAR\n\n");
+            getAllPlanes();
+            System.out.println("\n[*]  INGRESE EL ID DEL AVION A ELIMINAR\n\n");
             String findId = sc.nextLine();
 
             Optional<Planes> planeModels = planesService.findById(findId);

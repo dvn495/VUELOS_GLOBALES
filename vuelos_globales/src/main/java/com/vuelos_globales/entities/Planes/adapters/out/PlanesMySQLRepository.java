@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -93,10 +94,18 @@ public class PlanesMySQLRepository implements PlanesRepository{
     @Override 
     public void delete(String id){
         try (Connection connection = DriverManager.getConnection(url, user, password)){
+            try (Statement disableFK = connection.createStatement()) {
+                disableFK.execute("SET FOREIGN_KEY_CHECKS = 0");
+            }
+
             String query = "DELETE FROM plane WHERE id = ?";
             try(PreparedStatement statement = connection.prepareStatement(query)){
                 statement.setString(1, id);
                 statement.executeUpdate();
+            }
+
+            try (Statement enableFK = connection.createStatement()) {
+                enableFK.execute("SET FOREIGN_KEY_CHECKS = 1");
             }
         } catch (SQLException e){
             e.printStackTrace();

@@ -24,7 +24,7 @@ public class AirportConsoleAdapter {
 
         while (rta.equalsIgnoreCase("S")) {
             ConsoleUtils.limpiarConsola();
-            System.out.println("*************** REGISTRAR AEREOPUERTO ***************");
+            System.out.println("*************** REGISTRAR AEROPUERTO ***************");
 
             System.out.println("[*] INGRESE EL ID DEL AEREOPUERTO: ");
             String airportID = sc.nextLine();
@@ -133,6 +133,7 @@ public class AirportConsoleAdapter {
             sc.nextLine();
         } else {
             ConsoleUtils.limpiarConsola();
+            getAllAirports();
             System.out.println("[?] INGRESE EL ID DEL AEREOPUERTO A ELIMINAR: ");
             String findId = sc.nextLine();
 
