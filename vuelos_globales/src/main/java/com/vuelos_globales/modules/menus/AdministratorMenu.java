@@ -8,6 +8,7 @@ import com.vuelos_globales.entities.Airport.adapters.in.AirportConsoleAdapter;
 import com.vuelos_globales.entities.Airport.adapters.out.AirportMySQLRepository;
 import com.vuelos_globales.entities.Airport.application.AirportService;
 import com.vuelos_globales.entities.BookingStatus.adapters.out.BookingStatusMySQLRepository;
+import com.vuelos_globales.entities.Customer.adapters.out.CustomerMySQLRepository;
 import com.vuelos_globales.entities.Employee.adapters.out.EmployeeMySQLRepository;
 import com.vuelos_globales.entities.FlightConnection.adapters.in.FlightConnectionConsoleAdapter;
 import com.vuelos_globales.entities.FlightConnection.adapters.out.FlightConnectionMySQLRepository;
@@ -55,6 +56,7 @@ public class AdministratorMenu {
 
         //MySQL REPOSITORIES
 
+        CustomerMySQLRepository customerMySQLRepository = new CustomerMySQLRepository(url, username, password);
         AirlinesMySQLRepository airlinesMySQLRepository = new AirlinesMySQLRepository(url, username, password);
         TripulationRoleMySQLRepository tripulationRoleMySQLRepository = new TripulationRoleMySQLRepository(url, username, password);
         TripBookingMySQLRepository tripBookingMySQLRepository = new TripBookingMySQLRepository(url, username, password);
@@ -140,7 +142,7 @@ public class AdministratorMenu {
                     }
 
                     case 14 -> {
-                        TripService tripService = new TripService(tripMySQLRepository, bookingStatusMySQLRepository, tripBookingMySQLRepository);
+                        TripService tripService = new TripService(tripMySQLRepository, bookingStatusMySQLRepository, tripBookingMySQLRepository, airporMySQLRepository, customerMySQLRepository);
                         TripConsoleAdapter tripConsoleAdapter = new TripConsoleAdapter(tripService);
                         tripConsoleAdapter.searchTrip();
 

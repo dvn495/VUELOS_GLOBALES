@@ -1,10 +1,15 @@
 package com.vuelos_globales.entities.Trip.application;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import com.vuelos_globales.entities.Airport.domain.Airport;
+import com.vuelos_globales.entities.Airport.infrastructure.AirportRepository;
 import com.vuelos_globales.entities.BookingStatus.domain.BookingStatus;
 import com.vuelos_globales.entities.BookingStatus.infrastructure.BookingStatusRepository;
+import com.vuelos_globales.entities.Customer.domain.Customer;
+import com.vuelos_globales.entities.Customer.infrastructure.CustomerRepository;
 import com.vuelos_globales.entities.Trip.domain.Trip;
 import com.vuelos_globales.entities.Trip.infrastructure.TripRepository;
 import com.vuelos_globales.entities.TripBooking.domain.TripBooking;
@@ -15,12 +20,17 @@ public class TripService {
     private final TripRepository tripRepository;
     private final BookingStatusRepository bookingStatusRepository;
     private final TripBookingRepository tripBookingRepository;
+    private final AirportRepository airportRepository;
+    private final CustomerRepository customerRepository;
 
 
-    public TripService(TripRepository tripRepository, BookingStatusRepository bookingStatusRepository, TripBookingRepository tripBookingRepository) {
+    public TripService(TripRepository tripRepository, BookingStatusRepository bookingStatusRepository, TripBookingRepository tripBookingRepository,
+    AirportRepository airportRepository, CustomerRepository customerRepository) {
         this.tripRepository = tripRepository;
         this.bookingStatusRepository = bookingStatusRepository;
         this.tripBookingRepository = tripBookingRepository;
+        this.airportRepository = airportRepository;
+        this.customerRepository = customerRepository;
     }
 
     public void createTrip(Trip trip) {
@@ -72,6 +82,18 @@ public class TripService {
 
     public List<Trip> getAllTrips() {
         return tripRepository.findAll();
+    }
+
+    public List<Trip> getTripsByParameters(LocalDate tripDate, String idAirportA, String idAirportB) {
+        return tripRepository.findByCriteries(tripDate, idAirportA, idAirportB);
+    }
+
+    public List<Airport> getAllAirports() {
+        return airportRepository.findAll();
+    }
+
+    public List<Customer> getCustomers() {
+        return customerRepository.findAll();
     }
 
 }
