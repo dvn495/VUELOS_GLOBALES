@@ -35,7 +35,7 @@ public class TripBookingConsoleAdapter {
                     System.out.println(MessageFormat.format("[!] LA RESERVA CON ID (0) YA ESTA OCUPADA.", t.getId()));
                 },
                 () -> {
-                    ConsoleUtils.limpiarConsola();
+                    ConsoleUtils.esperarEntrada();
                     System.out.println("*************** REGISTRAR RESERVA DE VIAJE ***************");
 
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");

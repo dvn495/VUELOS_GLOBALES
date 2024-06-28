@@ -8,27 +8,27 @@ import com.vuelos_globales.entities.Customer.adapters.in.CustomerConsoleAdapter;
 import com.vuelos_globales.entities.Customer.adapters.out.CustomerMySQLRepository;
 import com.vuelos_globales.entities.Customer.application.CustomerService;
 import com.vuelos_globales.entities.DocumentType.adapters.out.DocTypeMySQLRepository;
-import com.vuelos_globales.entities.Trip.adapters.in.TripConsoleAdapter;
+import com.vuelos_globales.entities.FlightFares.adapters.out.FlightFaresMySQLRepository;
 import com.vuelos_globales.entities.Trip.adapters.out.TripMySQLRepository;
-import com.vuelos_globales.entities.Trip.application.TripService;
-import com.vuelos_globales.entities.TripBooking.adapters.in.TripBookingConsoleAdapter;
 import com.vuelos_globales.entities.TripBooking.adapters.out.TripBookingMySQLRepository;
-import com.vuelos_globales.entities.TripBooking.application.TripBookingService;
+import com.vuelos_globales.entities.TripBookingDetails.adapters.in.TripBookingDetailsConsoleAdapter;
+import com.vuelos_globales.entities.TripBookingDetails.adapters.out.TripBookingDetailsMySQLRepository;
+import com.vuelos_globales.entities.TripBookingDetails.application.TripBookingDetailsService;
 import com.vuelos_globales.modules.ConsoleUtils;
 
 public class SalesRepresentativeMenu {
 
     public static void menu() {
         ConsoleUtils.limpiarConsola();
-        System.out.println("------MENU REPRESENTANTE DE VENTAS ------");
+        System.out.println("------MENU REPRESENTANTE DE VENTAS ------\n\n");
 
-        String[] salesRepOpc = {"CREAR RESERVA DE VIAJE","CREAR CLIENTE","CONSULTAR INFORMACION DE CLIENTE","ACTUALIZAR INFORMACION DE CLIENTE","VOLVER"};
+        String[] salesRepOpc = {"CREAR RESERVA DE VIAJE","CONSULTAR INFORMACION DE CLIENTE","CONSULTAR RESERVA DE VUELO","REGISTRAR CLIENTE","ACTUALIZAR INFORMACION DE CLIENTE","ELIMINAR RESERVA DE VUELO","CONSULTAR INFORMACION DE VUELO","CONSULTAR ASIGNACION DE TRIPULACION","CONSULTAR ESCALAS DE UN TRAYECTO","CONSULTAR TIPO DE DOCUMENTO","VOLVER"};
 
         int i = 0;
 
         for (String opc : salesRepOpc) {
             i++;
-            System.out.println("       " + i + ". " + opc);
+            System.out.println("       [" + i + "]. " + opc);
         }
     }
 
@@ -44,7 +44,8 @@ public class SalesRepresentativeMenu {
         TripMySQLRepository tripMySQLRepository = new TripMySQLRepository(url, username, password);
         BookingStatusMySQLRepository bookingStatusMySQLRepository = new BookingStatusMySQLRepository(url, username, password);
         TripBookingMySQLRepository tripBookingMySQLRepository = new TripBookingMySQLRepository(url, username, password);
-
+        TripBookingDetailsMySQLRepository tripBookingDetailsMySQLRepository = new TripBookingDetailsMySQLRepository(url, username, password);
+        FlightFaresMySQLRepository flightFaresMySQLRepository = new FlightFaresMySQLRepository(url, username, password);
 
         boolean isActiveSalesRep = true;
 
@@ -56,37 +57,70 @@ public class SalesRepresentativeMenu {
                 int opcMenu = Integer.parseInt(sc.nextLine().trim());
 
                 switch (opcMenu) {
+
+                    // CREAR RESERVA DE VIAJE 
                     case 1 -> {
-                        TripBookingService tripBookingService = new TripBookingService(tripBookingMySQLRepository, tripMySQLRepository, bookingStatusMySQLRepository);
-                        TripBookingConsoleAdapter tripBookingConsoleAdapter = new TripBookingConsoleAdapter(tripBookingService);
-                        tripBookingConsoleAdapter.createTripBooking();
+                        TripBookingDetailsService tripBookingDetailsService = new TripBookingDetailsService(tripBookingDetailsMySQLRepository, tripMySQLRepository, customerMySQLRepository, flightFaresMySQLRepository);
+                        TripBookingDetailsConsoleAdapter tripBookingDetailsConsoleAdapter = new TripBookingDetailsConsoleAdapter(tripBookingDetailsService);
+                        tripBookingDetailsConsoleAdapter.createTripBookingDetails();
                     }
 
+                    // CONSULTAR INFORMACION DE CLIENTE
                     case 2 -> {
+                        CustomerService customerService = new CustomerService(customerMySQLRepository, docTypeMySQLRepository);
+                        CustomerConsoleAdapter customerConsoleAdapter = new CustomerConsoleAdapter(customerService);
+                        customerConsoleAdapter.searchCustomer();
+                    }
+
+                    //CONSULTAR RESERVA DE VUELO
+                    case 3 -> {
+                        
+                    }
+
+                    //REGISTRAR CLIENTE
+                    case 4 -> {
                         CustomerService customerService = new CustomerService(customerMySQLRepository, docTypeMySQLRepository);
                         CustomerConsoleAdapter customerConsoleAdapter = new CustomerConsoleAdapter(customerService);
                         customerConsoleAdapter.createCustomer();
                     }
 
-                    case 3 -> {
-                        CustomerService customerService = new CustomerService(customerMySQLRepository, docTypeMySQLRepository);
-                        CustomerConsoleAdapter customerConsoleAdapter = new CustomerConsoleAdapter(customerService);
-                        customerConsoleAdapter.searchCustomer();
-                    }
-                    case 4 -> {
+                    //ACTUALIZAR INFORMACION DE CLIENTE
+                    case 5 -> {
                         CustomerService customerService = new CustomerService(customerMySQLRepository, docTypeMySQLRepository);
                         CustomerConsoleAdapter customerConsoleAdapter = new CustomerConsoleAdapter(customerService);
                         customerConsoleAdapter.updateCustomer();
                     }
-                    case 5 -> {
-                        isActiveSalesRep = false;
-                    }
+
+                    //ELIMINAR RESERVA DE VUELO
                     case 6 -> {
-                        isActiveSalesRep = false;
+
                     }
+
+                    //CONSULTAR INFORMACION DE VUELO
                     case 7 -> {
+                        
+                    }
+
+                    //CONSULTAR ASIGNACION DE TRIPULACION
+                    case 8 -> {
+                        
+                    }
+
+                    //CONSULTAR ESCALAS DE UN TRAYECTO
+                    case 9-> {
+                        
+                    }
+
+                    //CONSULTAR TIPO DE DOCUMENTO
+                    case 10 -> {
+                        
+                    }
+                    
+                    //VOLVER AL MENU DE USUARIOS
+                    case 11 -> {
                         isActiveSalesRep = false;
                     }
+                    
 
                     default -> {
                         System.out.println("[!] Ingresaste una opción inválida.");
