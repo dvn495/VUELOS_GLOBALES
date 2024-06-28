@@ -1,9 +1,9 @@
 package com.vuelos_globales.entities.Airport.adapters.in;
 
-import java.util.Scanner;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
+import java.util.Scanner;
 
 import com.vuelos_globales.entities.Airport.application.AirportService;
 import com.vuelos_globales.entities.Airport.domain.Airport;
@@ -60,7 +60,7 @@ public class AirportConsoleAdapter {
         
         if (airports.isEmpty()) {
             ConsoleUtils.limpiarConsola();
-            System.out.println("[!] NO HAY NINGUN CLIENTE REGISTRADO");
+            System.out.println("[!] NO HAY NINGUN AEROPUERTO REGISTRADO");
             sc.nextLine();
         } else {
             ConsoleUtils.limpiarConsola();

@@ -11,4 +11,5 @@ public interface FlightConnectionRepository {
     Optional<FlightConnection> findById(String id);
     void delete(String id);
     List<FlightConnection> findAll();
+    Optional<FlightConnection> findByTrip(String id);
 }

@@ -1,14 +1,15 @@
 package com.vuelos_globales.entities.Trip.adapters.in;
 
-import com.vuelos_globales.entities.Trip.domain.Trip;
-import com.vuelos_globales.entities.Trip.application.TripService;
-import java.util.List;
-import java.util.Optional;
 import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
+
+import com.vuelos_globales.entities.Trip.application.TripService;
+import com.vuelos_globales.entities.Trip.domain.Trip;
 
 
 public class TripConsoleAdapter {
@@ -186,17 +187,19 @@ public class TripConsoleAdapter {
 
     public void getAllTrips() {
         List<Trip> trips = tripService.getAllTrips();
-        
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    
         if (trips.isEmpty()) {
             ConsoleUtils.limpiarConsola();
             System.out.println("[!] NO HAY NINGUN VIAJE REGISTRADO");
             sc.nextLine();
         } else {
             ConsoleUtils.limpiarConsola();
-            tripService.getAllTrips().forEach(t -> {
-                System.out.println(MessageFormat.format("[*] ID : {0}\n[*] FECHA DE VIAJE : {1}\n[*] PRECIO DE VIAJE: {2}\n", t.getId() + t.getTripDate() + t.getPrice()));
+            trips.forEach(t -> {
+                String formattedDate = t.getTripDate().format(formatter);
+                System.out.println(MessageFormat.format("[*] ID : {0}\n[*] FECHA DE VIAJE : {1}\n[*] PRECIO DE VIAJE: {2}\n", t.getId(), formattedDate, t.getPrice()));
             });
-            System.out.println("[*]  PRESIONE CUALQUIER TECLA PARA CONTINUAR...");
+            System.out.println("[*] PRESIONE CUALQUIER TECLA PARA CONTINUAR...");
             sc.nextLine();
         }
     }

@@ -112,4 +112,27 @@ public class TripCrewMySQLRepository implements TripCrewRepository {
         }
         return tripCrews;
     }
+
+    @Override
+    public Optional<TripCrew> findByIdTrip(String id) {
+        try (Connection connection = DriverManager.getConnection(url, user, password)) {
+            String query = "SELECT tc.idEmployee FROM trip_crews as tc JOIN flight_connection as f ON tc.idConnection = f.id JOIN trip as t ON f.idTrip = t.id WHERE t.id = ?";
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setString(1, id);
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (resultSet.next()) {
+                        TripCrew tripCrew = new TripCrew(
+                            resultSet.getString("id"),
+                            resultSet.getString("idEmployee"),
+                            resultSet.getString("idConnection")
+                        );
+                        return Optional.of(tripCrew);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
+    }
 }

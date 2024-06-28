@@ -1,17 +1,19 @@
 package com.vuelos_globales.entities.Employee.domain;
 
+import java.time.LocalDate;
+
 public class Employee {
     private String id;
     private String name;
     private String lastName;
-    private String ingressDate;
+    private LocalDate ingressDate;
     private String idRole;
     private String idAirline;
     private String idAirport;
     
     public Employee() {}
 
-    public Employee(String id, String name, String lastName, String ingressDate, String idRole, String idAirline,
+    public Employee(String id, String name, String lastName, LocalDate ingressDate, String idRole, String idAirline,
             String idAirport) {
         this.id = id;
         this.name = name;
@@ -46,11 +48,11 @@ public class Employee {
         this.lastName = lastName;
     }
 
-    public String getIngressDate() {
+    public LocalDate getIngressDate() {
         return ingressDate;
     }
 
-    public void setIngressDate(String ingressDate) {
+    public void setIngressDate(LocalDate ingressDate) {
         this.ingressDate = ingressDate;
     }
 

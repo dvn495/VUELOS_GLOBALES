@@ -31,9 +31,6 @@ public class Main {
             System.out.println(MessageFormat.format("       {0}. {1}", i, opc));
         }
     }
-
-
-    
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         boolean isActiveApp = true;
@@ -46,7 +43,6 @@ public class Main {
                 switch (opMain) {
                     case 1 -> {
                         AdministratorMenu.menu();
-                        AdministratorMenu.administratorMenu();
                         break;
                     }
     

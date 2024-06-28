@@ -1,14 +1,14 @@
 package com.vuelos_globales.entities.Trip.application;
 
-import com.vuelos_globales.entities.TripBooking.domain.TripBooking;
-import com.vuelos_globales.entities.TripBooking.infrastructure.TripBookingRepository;
+import java.util.List;
+import java.util.Optional;
+
 import com.vuelos_globales.entities.BookingStatus.domain.BookingStatus;
 import com.vuelos_globales.entities.BookingStatus.infrastructure.BookingStatusRepository;
 import com.vuelos_globales.entities.Trip.domain.Trip;
 import com.vuelos_globales.entities.Trip.infrastructure.TripRepository;
-
-import java.util.List;
-import java.util.Optional;
+import com.vuelos_globales.entities.TripBooking.domain.TripBooking;
+import com.vuelos_globales.entities.TripBooking.infrastructure.TripBookingRepository;
 
 public class TripService {
 

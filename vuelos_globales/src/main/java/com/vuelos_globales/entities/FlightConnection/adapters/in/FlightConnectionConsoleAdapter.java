@@ -1,12 +1,12 @@
 package com.vuelos_globales.entities.FlightConnection.adapters.in;
 
-import java.util.Scanner;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
+import java.util.Scanner;
 
-import com.vuelos_globales.entities.FlightConnection.domain.FlightConnection;
 import com.vuelos_globales.entities.FlightConnection.application.FlightConnectionService;
+import com.vuelos_globales.entities.FlightConnection.domain.FlightConnection;
 import com.vuelos_globales.modules.ConsoleUtils;
 
 public class FlightConnectionConsoleAdapter {
@@ -185,5 +185,30 @@ public class FlightConnectionConsoleAdapter {
             System.out.println("[*]  PRESIONE CUALQUIER TECLA PARA CONTINUAR...");
             sc.nextLine();
         }
+    }
+
+    public void getFlightConnectionByTrip(){
+        ConsoleUtils.limpiarConsola();
+
+        List<FlightConnection> flightConnections = flightConnectionService.getAllFlightConnections();
+        if (flightConnections.isEmpty()){
+            System.out.println("[!] NO HAY NINGUN TRAMO REGISTRADO");
+        }   else{
+            System.out.println("[***] CONSULTAR INFORMACION DE TRAYECTO [***]");
+            System.out.println("\n[*] INGRESE EL ID DEL VUELO QUE DESEA CONOCER EL TRAYECTO");
+            String findIdTrip = sc.nextLine();
+
+            Optional<FlightConnection> connection = flightConnectionService.getFlightCOnnectionByTrip(findIdTrip);
+                
+            connection.ifPresentOrElse( 
+                f -> {
+                    System.out.println(MessageFormat.format("\n[*] ID : {0}\n[*] ORDEN : {1}\n[*] VIAJE : {2}\n[*] AVION : {3}\n[*] AEREOPUERTO SALIDA : {4}\n[*] AEREOPUERTO LLEGADA : {5}",f.getId(), f.getConnectionOrder(), f.getIdTrip(), f.getIdPlane(), f.getIdAirportA(), f.getIdArportB()));
+                },
+                () -> {
+                    System.out.println("\n[!] NO SE ENCONTRO NINGUNA CONEXION RELACIONADA CON ESTE VUELO\n");
+                } 
+            );
+        }   
+        ConsoleUtils.esperarEntrada();
     }
 }

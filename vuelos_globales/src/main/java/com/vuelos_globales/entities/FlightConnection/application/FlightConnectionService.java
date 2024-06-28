@@ -33,4 +33,8 @@ public class FlightConnectionService {
         return flightConnectionRepository.findAll();
     }
 
+    public Optional<FlightConnection> getFlightCOnnectionByTrip(String id){
+        return flightConnectionRepository.findByTrip(id);
+    }
+
 }

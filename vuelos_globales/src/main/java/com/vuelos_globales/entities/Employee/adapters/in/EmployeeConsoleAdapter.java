@@ -1,12 +1,15 @@
 package com.vuelos_globales.entities.Employee.adapters.in;
 
-import java.util.Scanner;
 import java.text.MessageFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Optional;
+import java.util.Scanner;
 
-import com.vuelos_globales.entities.Employee.domain.Employee;
 import com.vuelos_globales.entities.Employee.application.EmployeeService;
+import com.vuelos_globales.entities.Employee.domain.Employee;
 import com.vuelos_globales.modules.ConsoleUtils;
 
 public class EmployeeConsoleAdapter {
@@ -41,8 +44,20 @@ public class EmployeeConsoleAdapter {
                     System.out.println("[*] INGRESE EL APELLIDO DEL EMPLEADO: ");
                     String employeeLastName = sc.nextLine();
     
-                    System.out.println("[*] INGRESE LA FECHA DE INGRESO DEL EMPLEADO: ");
-                    String employeeIngress = sc.nextLine();
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                    LocalDate employeeIngress = null;
+                    boolean isActiveDate = false;
+                    String newDate = "";
+                    while (!isActiveDate) {
+                        System.out.println("[*] INGRESE LA FECHA DE INGRESO DEL EMPLEADO: ");
+                        newDate = sc.nextLine();
+                        try {
+                            employeeIngress = LocalDate.parse(newDate, formatter);
+                            isActiveDate = true;
+                        } catch (DateTimeParseException e) {
+                            System.out.println("Fecha ingresada no válida. Use el formato dd-MM-yyyy.");
+                        }
+                    }
     
                     System.out.println("[*] INGRESE EL ROL DEL EMPLEADO: ");
                     String employeeRole = sc.nextLine();
@@ -118,8 +133,21 @@ public class EmployeeConsoleAdapter {
                 System.out.println("[*] INGRESE EL APELLIDO DEL EMPLEADO: ");
                 String employeeLastName = sc.nextLine();
 
-                System.out.println("[*] INGRESE LA FECHA DE INGRESO DEL EMPLEADO: ");
-                String employeeIngress = sc.nextLine();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                LocalDate employeeIngress = null;
+                    boolean isActiveDate = false;
+                    String newDate = "";
+                    while (!isActiveDate) {
+                        System.out.println("[*] INGRESE LA FECHA DE INGRESO DEL EMPLEADO: ");
+                        newDate = sc.nextLine();
+                        try {
+                            employeeIngress = LocalDate.parse(newDate, formatter);
+                            isActiveDate = true;
+                        } catch (DateTimeParseException e) {
+                            System.out.println("Fecha ingresada no válida. Use el formato dd-MM-yyyy.");
+                        }
+                    }
+                
 
                 System.out.println("[*] INGRESE EL ROL DEL EMPLEADO: ");
                 String employeeRole = sc.nextLine();

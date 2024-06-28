@@ -110,7 +110,7 @@ public class FlightConnectionMySQLRepository implements FlightConnectionReposito
                 while (resultSet.next()) {
                     FlightConnection flightConnection = new FlightConnection(
                         resultSet.getString("id"),
-                        resultSet.getInt("conectionOrder"),
+                        resultSet.getInt("connectionOrder"),
                         resultSet.getString("idTrip"),
                         resultSet.getString("idPlane"),
                         resultSet.getString("idAirportA"),
@@ -124,4 +124,33 @@ public class FlightConnectionMySQLRepository implements FlightConnectionReposito
         }
         return flightConnections;
     }
+
+    @Override
+    public Optional<FlightConnection> findByTrip(String id) {
+        try (Connection connection = DriverManager.getConnection(url, user, password)) {
+            String query = "SELECT id, connectionOrder, idTrip, idPlane, idAirportA, idAirportB FROM flight_connection WHERE idTrip = ?  ORDER BY connectionOrder";
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setString(1, id);
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (resultSet.next()) {
+                        FlightConnection flightConnection = new FlightConnection(
+                            resultSet.getString("id"),
+                            resultSet.getInt("connectionOrder"),
+                            resultSet.getString("idTrip"),
+                            resultSet.getString("idPlane"),
+                            resultSet.getString("idAirportA"),
+                            resultSet.getString("idAirportB")
+                        );
+                        return Optional.of(flightConnection);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
+    }
+
+    
+
 }
