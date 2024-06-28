@@ -66,7 +66,7 @@ public class TripBookingConsoleAdapter {
                     String newIdCustomer = sc.nextLine();
 
                     TripBooking newTripBooking = new TripBooking(id, fechaReserva, newIdTrip, newIdStatus, newIdCustomer);
-                    tripBookingService.updateTripBooking(newTripBooking);
+                    tripBookingService.createTripBooking(newTripBooking);
                 });
             System.out.println("[?] DESEA AÑADIR OTRA RESERVA DE VIAJE? [S] - SI | [INGRESE CUALQUIER TECLA] - NO");
             rta = sc.nextLine();

@@ -12,11 +12,52 @@ public class CustomerMenu {
 
         String[] customerOpc = {"Administrar Vuelos", "Administrar Reservas", "Pagos","Volver"};
 
-        int i = 0;
-        for (String opc : customerOpc) {
-            i++;
-            System.out.println(MessageFormat.format("       {0}. {1}", i, opc));
+        ConsoleUtils.listarOpc(customerOpc);
+    }
+
+    public static void flightsMenu() {
+        Scanner sc = new Scanner(System.in);
+        boolean isActiveFlights = true;
+
+        while (isActiveFlights) {
+            ConsoleUtils.limpiarConsola();
+            System.out.println("******************** ADMINISTRAR VUELOS ********************");
+            String[] flightsOpc = {"Filtrar Vuelo", "Consultar Vuelo", "Seleccionar Vuelos", "Cancelar Reserva", "Modificar Reserva", "Volver"};
+
+            ConsoleUtils.listarOpc(flightsOpc);
+            int op = Integer.parseInt(sc.nextLine());
+
+            // MENU DE ADMINISTRACION DE VUELOS. COMENZAR CON BUSCAR VUELOS
+
+            switch (op) {
+                case 1 -> {
+                    // BUSCAR VUELO findByParameters(tripDate, idCiudadA, idCiudadB)
+                }
+                case 2 -> {
+                    // getTripBookingById(id)
+                }
+                case 3 -> {
+                    // selectTripBooking()
+                }
+                case 4 -> {
+                    // cancelTripBooking(id)
+                }
+                case 5 -> {
+                    // updateTripBooking
+                }
+                case 6 -> {
+                    isActiveFlights = false;
+                }
+            
+                default -> {
+                    ConsoleUtils.limpiarConsola();
+                    System.out.println("[!] OPCION INVALIDA");
+                    sc.nextLine();
+                }
+
+            }
         }
+
     }
     
     public static void customerMenu() {
@@ -31,7 +72,7 @@ public class CustomerMenu {
 
                 switch (opcMenu) {
                     case 1 -> {
-
+                        flightsMenu();
                     }
 
                     case 2 -> {
