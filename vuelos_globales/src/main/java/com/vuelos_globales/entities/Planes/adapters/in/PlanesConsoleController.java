@@ -248,11 +248,12 @@ public class PlanesConsoleController {
 
         if(planeList.isEmpty()){
 
-            System.out.println("[!]  NO HAY MODELOS REGISTRADOS");
+            System.out.println("[!]  NO HAY AVIONES REGISTRADOS");
+            ConsoleUtils.esperarEntrada();
 
         }  else {
 
-            System.out.println("[*]  INGRESE EL ID DEL MODELO A EDITAR\n\n");
+            System.out.println("[*]  INGRESE EL ID DEL AVION A EDITAR\n\n");
             String findId = sc.nextLine();
 
             Optional<Planes> model = planesService.findById(findId);
@@ -261,56 +262,184 @@ public class PlanesConsoleController {
                 System.out.println("  [*]  ID: "+ f.getId() + "\n  [*]  PLACAS: " + f.getPlates() + "\n  [*]  CAPACIDAD DEL AVION: " + f.getCapacity() + "\n  [*]  FECHA DE FABRICACION: "+ f.getFabricationDate() + "\n  [*]  ID DEL MODELO" + f.getIdModel() + "\n  [*]  ID DEL ESTADO:" + f.getIdStatus());
 
                 boolean isActive = true;
-                    System.out.println("\n[*]  INGRESE LAS PLACAS DEL AVION");
-                    String newPlates = sc.nextLine();
+                System.out.println("\n[*]  INGRESE LAS PLACAS DEL AVION");
+                String newPlates = sc.nextLine();
 
-                    int newCapacity = 0;
+                int newCapacity = 0;
 
-                    while (isActive){
-                        System.out.println("\n[*]  INGRESE LA CAPACIDAD DEL AVION (SOLO NUMEROS ENTEROS)");
-                        try {
-                            newCapacity = (Integer.parseInt(sc.nextLine()));
-                            isActive = false;
-                        }   catch (NumberFormatException e) {
-                            System.out.println("Por favor, ingrese un número válido.\n Presione cualquier tecla para continuar...");
-                            sc.nextLine();
+                while (isActive){
+                    System.out.println("\n[*]  INGRESE LA CAPACIDAD DEL AVION (SOLO NUMEROS ENTEROS)");
+                    try {
+                        newCapacity = (Integer.parseInt(sc.nextLine()));
+                        isActive = false;
+                    }   catch (NumberFormatException e) {
+                        System.out.println("Por favor, ingrese un número válido.\n Presione cualquier tecla para continuar...");
+                        sc.nextLine();
+                    }  
+                    
+                }
+
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                LocalDate fechaCreacion = null;
+                boolean isActiveDate = false;
+                String newDate = "";
+
+                while (!isActiveDate) {
+                    System.out.println("\n[*] INGRESE LA FECHA DE FABRICACION (dd-MM-yyyy)");
+                    newDate = sc.nextLine();
+
+                    try {
+                        fechaCreacion = LocalDate.parse(newDate, formatter);
+                        isActiveDate = true;
+                    } catch (DateTimeParseException e) {
+                        System.out.println("Fecha ingresada no válida. Use el formato dd-MM-yyyy.");
+                    }
+                }
+
+                // MODELOS
+
+                boolean isActiveModels = true;
+                String newIdModel = "";
+
+                while (isActiveModels) {
+                    List<PlaneModels> planeModels = planesService.findAllModels();
+                    if(planeModels.isEmpty()){
+                        System.out.println("|  [!]  NO HAY MODELOS REGISTRADOS\n\n|  [!] REGISTRE UN MODELO");
+                        System.out.println("|  [*]  PRESIONE CUALQUIER TECLA PARA CONTINUAR...");
+                        sc.nextLine();
+                        String optionModel = "S";
+
+                        while(optionModel.equalsIgnoreCase("S")){
+                            System.out.println("\n|  [*]  INGRESE EL ID DEL MODELO");
+                            String findModelId = sc.nextLine();
+
+                            Optional<PlaneModels> models = planesService.findByIdModel(findModelId);
+                            models.ifPresentOrElse(
+                                
+                                g ->  {
+
+                                    System.out.println("|  [!]  MODELO YA EXISTENTE");
+                                    System.out.println("|  [*]  PRESIONE CUALQUIER TECLA PARA CONTINUAR...");
+                                    sc.nextLine();
+                                },
+                                ()-> {
+
+                                    System.out.println("\n|  [*]  INGRESE EL NOMBRE DEL MODELO");
+                                    String newModel = sc.nextLine();
+
+                                    //FABRICANTES
+                                    
+                                    List<Manufactures> manufactures = planesService.getAllManufactures();
+                                    if(manufactures.isEmpty()){
+                                        System.out.println("\n  |  [!]  NO HAY FABRICANTES REGISTRADOS\n\n  |  [!] REGISTRE UN FABRICANTE");
+                                        sc.nextLine();
+                                        String optionManufacturer = "S";
+
+                                        while(optionManufacturer.equalsIgnoreCase("S")){
+                                            System.out.println("\n  |   [*]  INGRESE UN ID PARA EL FABRICANTE");
+                                            String findManufacturerId = sc.nextLine();
+
+                                            Optional<PlaneModels> manufacturer = planesService.findByIdModel(findManufacturerId);
+                                            manufacturer.ifPresentOrElse(
+                                                g ->  {
+                                                    System.out.println("  |  [!]  FABRICANTE YA EXISTENTE");
+                                                    System.out.println("  |  [*]  PRESIONE CUALQUIER TECLA PARA CONTINUAR...");
+                                                    sc.nextLine();
+                                                },
+                                                ()-> {
+                                                    System.out.println("  |  [*]  INGRESE EL NOMBRE DEL FABRICANTE A CREAR");
+                                                    String nameManufacture =  sc.nextLine();
+                                            
+                                                    Manufactures newManufacture = new Manufactures(findManufacturerId, nameManufacture);
+                                                    planesService.createManufacturer(newManufacture);
+                                                }
+                                            );
+                                            System.out.println("  |  [*]  DESEA REGISTRAR OTRO FABRICANTE? [S] SI | [CUALQUIER TECLA] NO");
+                                            optionManufacturer = sc.nextLine();   
+                                        }  
+                                        
+                                    }
+                                    System.out.println("\n  |  [*]  FABRICANTES REGISTRADOS\n");            
+                                    planesService.getAllManufactures().forEach(q -> {
+                                        System.out.println("\n  |    [*]  ID: "+ q.getId() + "\n  |    [*]NOMBRE: " + q.getManufacturer());
+                                    });
+                                    System.out.println("\n|  [*]  INGRESE EL ID DEL FABRICANTE DEL MODELO");
+                                    String newIdManufacturer = sc.nextLine();
+                                    
+                                    PlaneModels planes = new PlaneModels(findModelId, newModel, newIdManufacturer);
+                                    planesService.createPlaneModels(planes);
+                                }
+                            );
+                            System.out.println("\n|  [*]  DESEA REGISTRAR OTRO MODELO? [S] SI | [CUALQUIER TECLA] NO");
+                            optionModel = sc.nextLine();   
                         }  
-                        
-                    }
 
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-                    LocalDate fechaCreacion = null;
-                    boolean isActiveDate = false;
-                    String newDate = "";
-
-                    while (!isActiveDate) {
-                        System.out.println("\n[*] INGRESE LA FECHA DE FABRICACION (dd-MM-yyyy)");
-                        System.out.print("Ingrese la fecha de creación: ");
-                        newDate = sc.nextLine();
-
-                        try {
-                            fechaCreacion = LocalDate.parse(newDate, formatter);
-                            isActiveDate = true;
-                        } catch (DateTimeParseException e) {
-                            System.out.println("Fecha ingresada no válida. Use el formato dd-MM-yyyy.");
-                        }
-                    }
-
+                    } 
+                    System.out.println("\n|  [*]  MODELOS REGISTRADOS\n");
+                    planesService.findAllModels().forEach(a -> {
+                        System.out.println("\n|    [*]  ID DEL MODELO: "+ f.getId() + "\n|    [*]  MODELO: " + a.getModel() + "\n|    [*]  ID DEL FABRICANTE: " + a.getIdManufacturer());
+                    });
                     System.out.println("\n[*]  INGRESE EL ID DEL MODELO DEL AVION");
-                    String newIdModel = sc.nextLine();
+                    newIdModel = sc.nextLine();
+                    isActiveModels = false;
+                }
 
-                    System.out.println("\n[*]  INGRESE EL ID DEL ESTADO");
-                    String newIdStatus = sc.nextLine();
+                //ESTADOS
+
+                boolean isActiveState = true;
+                String newIdStatus = "";
+                while (isActiveState) {
+                    List<Status> statuses = planesService.getAllStatuses();
+                    if(statuses.isEmpty()){
+                        System.out.println("|  [!]  NO HAY ESTADOS REGISTRADOS\n\n[!] REGISTRE UN ESTADO");
+                        System.out.println("|  [*]  PRESIONE CUALQUIER TECLA PARA CONTINUAR...");
+                        sc.nextLine();
+                        String optionStatus = "S";
+
+                        while(optionStatus.equalsIgnoreCase("S")){
+                            System.out.println("\n|  [*]  INGRESE EL ID DEL ESTADO");
+                            String findStatusId = sc.nextLine();
+
+                            Optional<Status> status = planesService.getStatusById(findStatusId);
+                            status.ifPresentOrElse(
+                                g ->  {
+                                    System.out.println("|  [!]  ESTADO YA EXISTENTE");
+                                    System.out.println("|  [*]  PRESIONE CUALQUIER TECLA PARA CONTINUAR...");
+                                    sc.nextLine();
+                                },
+                                ()-> {
+
+                                    System.out.println("|  [*]  INGRESE EL NOMBRE DEL ESTADO: ");
+                                    String statusName = sc.nextLine();
+                    
+                                    Status newStatus = new Status(findStatusId, statusName);
+                                    planesService.createStatus(newStatus);
+                                    System.out.println("|  [*] ESTADO CREADO CORRECTAMENTE");
+                                }
+                            );
+                            System.out.println("|  [*]  DESEA REGISTRAR OTRO ESTADO? [S] SI | [CUALQUIER TECLA] NO");
+                            optionStatus = sc.nextLine();   
+                        }  
+
+                    } 
+                    System.out.println("\n|  [*]  ESTADOS REGISTRADOS\n");
+                    planesService.getAllStatuses().forEach(b -> {
+                        System.out.println(MessageFormat.format("\n|    [*] ID : {0} \n|    [*] ESTADO : {1}", b.getId(), b.getStatus()));
+                    });
+
+                    System.out.println("\n[*]  INGRESE EL ID DEL ESTADO PARA EL AVION");
+                    newIdStatus = sc.nextLine();
+                    isActiveState = false;
+                }
 
                       
                     Planes planes = new Planes(findId, newPlates, newCapacity, fechaCreacion, newIdModel, newIdStatus);
-                    planesService.createPlanes(planes);
+                    planesService.updatePlanes(planes);
             },
             () -> System.out.println("[!]  MODELO NO ENCONTRADO")
         );
-        System.out.println("[*]  PRESIONE CUALQUIER TECLA PARA CONTINUAR...");
-        sc.nextLine();
         }
+        ConsoleUtils.esperarEntrada();
     }
 
     public void deletePlane(){

@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -89,15 +90,24 @@ public class FlightConnectionMySQLRepository implements FlightConnectionReposito
     @Override
     public void delete(String id) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "DELETE id, connectionOrder, idTrip, idPlane, idAirportA, idAirportB FROM flight_connection WHERE id = ?";
+            try (Statement disableFK = connection.createStatement()) {
+                disableFK.execute("SET FOREIGN_KEY_CHECKS = 0");
+            }
+
+            String query = "DELETE FROM flight_connection WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, id);
                 statement.executeUpdate();
+            }
+
+            try (Statement enableFK = connection.createStatement()) {
+                enableFK.execute("SET FOREIGN_KEY_CHECKS = 1");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
 
     @Override
     public List<FlightConnection> findAll() {

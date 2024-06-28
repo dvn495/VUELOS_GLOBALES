@@ -134,7 +134,7 @@ public class AirportConsoleAdapter {
         } else {
             ConsoleUtils.limpiarConsola();
             getAllAirports();
-            System.out.println("[?] INGRESE EL ID DEL AEREOPUERTO A ELIMINAR: ");
+            System.out.println("\n[?] INGRESE EL ID DEL AEREOPUERTO A ELIMINAR: ");
             String findId = sc.nextLine();
 
             Optional<Airport> airport = airportService.getAirportById(findId);

@@ -43,10 +43,10 @@ public class AdministratorMenu {
         String banner = "----------MENU ADMINISTRADOR----------";
   
         String[] administratorOpc = {"REGISTRAR AVION", "ASIGNAR TRIPULACION A TRAYECTO","CONSULTAR INFORMACION DE AVION","CONSULTAR INFORMACION DE TRAYECTO", "REGISTRAR AEROPUERTO",
-        "CONSULTAR INFORMACION DE UN AEROPUERTO","ACTUALIZAR INFORMACION DE AVION","ELIMINAR AVION","ASIGNAR AERONAVE A TRAYECTO","ACTUALIZAR INFORMACION DE TRAYECTO","ELIMINAR TRAYECTO",
-        "ACTUALIZAR INFORMACION DE AEROPUERTO","ELIMINAR AEROPUERTO", "CONSULTAR INFORMACION DE VUELO ","CONSULTAR ASIGNACION DE TRIPULACION","CONSULTAR ESCALAS DE UN PROYECTO",
-        "ACTUALIZAR INFORMACION DE ESCALA","ELIMINAR ESCALA","REGISTRAR TARIFA DE VUELO","ACTUALIZAR INFORMACION DE TARIFA DE VUELO","ELIMINAR TARIFA DE VUELO","CONSULTAR TARIFA DE VUELO", 
-        "REGISTRAR TIPO DE DOCUMENTO","ACTUALIZAR TIPO DE DOCUMENTO","ELIMINAR TIPO DE DOCUMENTO ", "CONSULTAR TIPO DE DOCUMENTO","VOLVER"};
+        "CONSULTAR INFORMACION DE UN AEROPUERTO","ACTUALIZAR INFORMACION DE AVION","ELIMINAR AVION","ACTUALIZAR INFORMACION DE AEROPUERTO","ELIMINAR AEROPUERTO", "CONSULTAR INFORMACION DE VUELO ",
+        "CONSULTAR ASIGNACION DE TRIPULACION","CONSULTAR ESCALAS DE UN PROYECTO", "ACTUALIZAR INFORMACION DE ESCALA","ELIMINAR ESCALA","REGISTRAR TARIFA DE VUELO",
+        "ACTUALIZAR INFORMACION DE TARIFA DE VUELO","ELIMINAR TARIFA DE VUELO","CONSULTAR TARIFA DE VUELO", "REGISTRAR TIPO DE DOCUMENTO",
+        "ACTUALIZAR TIPO DE DOCUMENTO","ELIMINAR TIPO DE DOCUMENTO ", "CONSULTAR TIPO DE DOCUMENTO","VOLVER"};
     
         Scanner sc = new Scanner(System.in);
         String url = "jdbc:mysql://localhost:3306/airport_database";
@@ -124,7 +124,9 @@ public class AdministratorMenu {
                     }
 
                     case 7 -> {
-                        //ACTUALIZAR INFORMACION DE AVION
+                        PlanesService planesService = new PlanesService(planesMySQLRepository, planesModelsMySQLRepository, statusMySQLRepository, manufacturesMySQLRepository);
+                        PlanesConsoleController planesConsoleController = new PlanesConsoleController(planesService);
+                        planesConsoleController.updatePlane();
                     }
 
                     case 8 -> {
@@ -134,104 +136,98 @@ public class AdministratorMenu {
                     }
 
                     case 9 -> {
-                        // ASIGNAR AERONAVE A TRAYECTO
+                        AirportService airportService = new AirportService(airporMySQLRepository);
+                        AirportConsoleAdapter airportConsoleAdapter = new AirportConsoleAdapter(airportService);
+                        airportConsoleAdapter.updateAirport();
                     }
 
                     case 10 -> {
-                        //ACTUALIZAR INFORMACION DE TRAYECTO
-                    }
-
-                    case 11 -> {
-                        //ELIMINAR TRAYECTO
-                    }
-
-                    case 12 -> {
-                        //ACTUALIZAR INFORMACION DE AEROPUERTO
-                    }
-
-                    case 13 -> {
                         AirportService airportService = new AirportService(airporMySQLRepository);
                         AirportConsoleAdapter airportConsoleAdapter = new AirportConsoleAdapter(airportService);
                         airportConsoleAdapter.deleteAirport();
                     }
 
-                    case 14 -> {
+                    case 11 -> {
                         TripService tripService = new TripService(tripMySQLRepository, bookingStatusMySQLRepository, tripBookingMySQLRepository, airporMySQLRepository, customerMySQLRepository);
                         TripConsoleAdapter tripConsoleAdapter = new TripConsoleAdapter(tripService);
                         tripConsoleAdapter.searchTrip();
 
                     }
 
-                    case 15 -> {
+                    case 12 -> {
                         TripCrewService tripCrewService = new TripCrewService(tripCrewMySQLRepository, employeeMySQLRepository, flightConnectionMySQLRepository, 
                         tripulationRoleMySQLRepository, airlinesMySQLRepository, airporMySQLRepository, planesMySQLRepository, tripMySQLRepository);
                         TripCrewConsoleAdapter tripCrewConsoleController = new TripCrewConsoleAdapter(tripCrewService);
                         tripCrewConsoleController.searchTripCrewByTrip();
                     }
 
-                    case 16 -> {
+                    case 13 -> {
                         FlightConnectionService flightConnectionService = new FlightConnectionService(flightConnectionMySQLRepository);
                         FlightConnectionConsoleAdapter flightConnectionConsoleAdapter = new FlightConnectionConsoleAdapter(flightConnectionService);
                         flightConnectionConsoleAdapter.getFlightConnectionByTrip();
                     }
 
-                    case 17 -> {
-                        //ACTUALIZAR INFORMACION DE ESCALA
+                    case 14 -> {
+                        FlightConnectionService flightConnectionService = new FlightConnectionService(flightConnectionMySQLRepository);
+                        FlightConnectionConsoleAdapter flightConnectionConsoleAdapter = new FlightConnectionConsoleAdapter(flightConnectionService);
+                        flightConnectionConsoleAdapter.updateFlightConnection();
                     }
 
-                    case 18 -> {
-                        //ELIMINAR ESCALA
+                    case 15 -> {
+                        FlightConnectionService flightConnectionService = new FlightConnectionService(flightConnectionMySQLRepository);
+                        FlightConnectionConsoleAdapter flightConnectionConsoleAdapter = new FlightConnectionConsoleAdapter(flightConnectionService);
+                        flightConnectionConsoleAdapter.deleteFlightConnection();
                     }
 
-                    case 19 -> {
+                    case 16 -> {
                         FlightFaresService flightFaresService = new FlightFaresService(flightFaresMySQLRepository);
                         FlightFaresConsoleController flightFaresConsoleController = new FlightFaresConsoleController(flightFaresService);
                         flightFaresConsoleController.createFlightFare();
                     }
 
-                    case 20 -> {
+                    case 17 -> {
                         FlightFaresService flightFaresService = new FlightFaresService(flightFaresMySQLRepository);
                         FlightFaresConsoleController flightFaresConsoleController = new FlightFaresConsoleController(flightFaresService);
                         flightFaresConsoleController.updateFlightFare();
                     }
                     
-                    case 21 -> {
+                    case 18 -> {
                         FlightFaresService flightFaresService = new FlightFaresService(flightFaresMySQLRepository);
                         FlightFaresConsoleController flightFaresConsoleController = new FlightFaresConsoleController(flightFaresService);
                         flightFaresConsoleController.deleteFlightFare();
                     }
 
-                    case 22 -> {
+                    case 19 -> {
                         FlightFaresService flightFaresService = new FlightFaresService(flightFaresMySQLRepository);
                         FlightFaresConsoleController flightFaresConsoleController = new FlightFaresConsoleController(flightFaresService);
                         flightFaresConsoleController.searchFlightFare();
                     }
 
-                    case 23 -> {
+                    case 20 -> {
                         DocumentTypeService documentTypeService = new DocumentTypeService(docTypeMySQLRepository);
                         DocumentTypeConsoleAdapter documentTypeConsoleAdapter = new DocumentTypeConsoleAdapter(documentTypeService);
                         documentTypeConsoleAdapter.createDocType();
                     }
 
-                    case 24 -> {
+                    case 21 -> {
                         DocumentTypeService documentTypeService = new DocumentTypeService(docTypeMySQLRepository);
                         DocumentTypeConsoleAdapter documentTypeConsoleAdapter = new DocumentTypeConsoleAdapter(documentTypeService);
                         documentTypeConsoleAdapter.updateDocumentType();
                     }
 
-                    case 25 -> {
+                    case 22 -> {
                         DocumentTypeService documentTypeService = new DocumentTypeService(docTypeMySQLRepository);
                         DocumentTypeConsoleAdapter documentTypeConsoleAdapter = new DocumentTypeConsoleAdapter(documentTypeService);
                         documentTypeConsoleAdapter.deleteDocumentType();
                     }
 
-                    case 26 -> {
+                    case 23 -> {
                         DocumentTypeService documentTypeService = new DocumentTypeService(docTypeMySQLRepository);
                         DocumentTypeConsoleAdapter documentTypeConsoleAdapter = new DocumentTypeConsoleAdapter(documentTypeService);
                         documentTypeConsoleAdapter.searchDocumentType();
                     }
 
-                    case 27 -> {
+                    case 24 -> {
                         isActiveAdministrator = false;
                     }
                         

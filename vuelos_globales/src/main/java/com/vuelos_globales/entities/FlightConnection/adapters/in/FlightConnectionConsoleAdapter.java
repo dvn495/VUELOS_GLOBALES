@@ -154,6 +154,9 @@ public class FlightConnectionConsoleAdapter {
             System.out.println("[?] INGRESE EL ID DEL TRAMO A ELIMINAR: ");
             String findId = sc.nextLine();
 
+            flightConnectionService.deleteFlightConnection(findId);
+            ConsoleUtils.esperarEntrada();
+
             Optional<FlightConnection> flightConnection = flightConnectionService.getFlightConnectionById(findId);
             flightConnection.ifPresentOrElse(
                 c -> {

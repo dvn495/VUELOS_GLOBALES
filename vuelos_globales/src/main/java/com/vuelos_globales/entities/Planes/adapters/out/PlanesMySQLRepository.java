@@ -48,6 +48,10 @@ public class PlanesMySQLRepository implements PlanesRepository{
     public void update(Planes planes){
         java.sql.Date sqlDate = java.sql.Date.valueOf(planes.getFabricationDate());
         try (Connection connection = DriverManager.getConnection(url, user, password)){
+            try (Statement disableFK = connection.createStatement()) {
+                disableFK.execute("SET FOREIGN_KEY_CHECKS = 0");
+            }
+
             String query = "UPDATE plane SET plates = ?,capacity = ?, fabricationDate = ?, idModel = ?, idStatus = ? WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)){
                 statement.setString(1, planes.getPlates());
@@ -57,6 +61,10 @@ public class PlanesMySQLRepository implements PlanesRepository{
                 statement.setString(5, planes.getIdStatus());
                 statement.setString(6, planes.getId());
                 statement.executeUpdate();
+            }
+
+            try (Statement enableFK = connection.createStatement()) {
+                enableFK.execute("SET FOREIGN_KEY_CHECKS = 1");
             }
         } catch (SQLException e){
             e.printStackTrace();
