@@ -21,14 +21,15 @@ public class CustomerMySQLRepository implements CustomerRepository {
 
     @Override
     public void save(Customer customer) {
-        String query = "INSERT INTO customer (id, name, lastName, age, idDocumentType) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO customer (id, name, lastName, age, documentNumber, idDocumentType) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection connection = DriverManager.getConnection(url, user, password);
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, customer.getId());
             statement.setString(2, customer.getName());
             statement.setString(3, customer.getLastName());
             statement.setInt(4, customer.getAge());
-            statement.setInt(5, customer.getIdDocumentType());
+            statement.setInt(5, customer.getDocumentNumber());
+            statement.setInt(6, customer.getIdDocumentType());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -53,7 +54,7 @@ public class CustomerMySQLRepository implements CustomerRepository {
 
     @Override
     public Optional<Customer> findById(String id) {
-        String query = "SELECT id, name, lastName, age, idDocumentType FROM customer WHERE id = ?";
+        String query = "SELECT id, name, lastName, age, documentNumber, idDocumentType FROM customer WHERE id = ?";
         try (Connection connection = DriverManager.getConnection(url, user, password);
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, id);
@@ -64,6 +65,7 @@ public class CustomerMySQLRepository implements CustomerRepository {
                             resultSet.getString("name"),
                             resultSet.getString("lastName"),
                             resultSet.getInt("age"),
+                            resultSet.getInt("documentNumber"),
                             resultSet.getInt("idDocumentType")
                     );
                     return Optional.of(customer);
@@ -90,7 +92,7 @@ public class CustomerMySQLRepository implements CustomerRepository {
     @Override
     public List<Customer> findAll() {
         List<Customer> customers = new ArrayList<>();
-        String query = "SELECT id, name, lastName, age, idDocumentType FROM customer";
+        String query = "SELECT id, name, lastName, age, documentNumber, idDocumentType FROM customer";
         try (Connection connection = DriverManager.getConnection(url, user, password);
              PreparedStatement statement = connection.prepareStatement(query);
              ResultSet resultSet = statement.executeQuery()) {
@@ -100,6 +102,7 @@ public class CustomerMySQLRepository implements CustomerRepository {
                         resultSet.getString("name"),
                         resultSet.getString("lastName"),
                         resultSet.getInt("age"),
+                        resultSet.getInt("documentNumber"),
                         resultSet.getInt("idDocumentType")
                 );
                 customers.add(customer);

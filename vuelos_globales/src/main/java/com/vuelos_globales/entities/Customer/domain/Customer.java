@@ -5,15 +5,17 @@ public class Customer {
     private String name;
     private String lastName;
     private int age;
+    private int documentNumber;
     private int idDocumentType;
     
     public Customer() {}
 
-    public Customer(String id, String name, String lastName, int age, int idDocumentType) {
+    public Customer(String id, String name, String lastName, int age, int documentNumber, int idDocumentType) {
         this.id = id;
         this.name = name;
         this.lastName = lastName;
         this.age = age;
+        this.documentNumber = documentNumber;
         this.idDocumentType = idDocumentType;
     }
 
@@ -49,6 +51,14 @@ public class Customer {
         this.age = age;
     }
 
+    public int getDocumentNumber() {
+        return documentNumber;
+    }
+
+    public void setDocumentNumber(int documentNumber) {
+        this.documentNumber = documentNumber;
+    }
+
     public int getIdDocumentType() {
         return idDocumentType;
     }
@@ -61,3 +71,4 @@ public class Customer {
     
     
 }
+
