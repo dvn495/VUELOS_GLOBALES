@@ -99,7 +99,6 @@ public class TripCrewConsoleAdapter {
             System.out.println("*************** BUSCAR TRIPULACION DE VIAJE ***************");
             System.out.println("[?] INGRESE EL ID DE LA TRIPULACION DE VIAJE A BUSCAR: ");
             String findId = sc.nextLine();
-
             Optional<TripCrew> tripCrew = tripCrewService.getTripCrewById(findId);
             tripCrew.ifPresentOrElse(
                 tc -> {
@@ -230,6 +229,7 @@ public class TripCrewConsoleAdapter {
                     ConsoleUtils.limpiarConsola();
                     System.out.println("*************** TRIPULACION DE VIAJE ***************");
                     System.out.println(MessageFormat.format("[*] ID : {0}\n[*] ID DE EMPLEADO: {1}\n[*] ID DE CONEXION: {2}\n", tc.getId(), tc.getIdEmployee(), tc.getIdConnection()));
+                    ConsoleUtils.esperarEntrada();
                 },
                 () -> {
                     ConsoleUtils.limpiarConsola();

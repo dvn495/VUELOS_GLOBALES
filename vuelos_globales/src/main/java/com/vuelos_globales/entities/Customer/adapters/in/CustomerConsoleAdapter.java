@@ -104,6 +104,7 @@ public class CustomerConsoleAdapter {
 
             System.out.println("[?] DESEA AÑADIR OTRO CLIENTE? [S] - SI | [INGRESE CUALQUIER TECLA] - NO");
             rta = sc.nextLine();
+            ConsoleUtils.limpiarConsola();
         }
     }
 
