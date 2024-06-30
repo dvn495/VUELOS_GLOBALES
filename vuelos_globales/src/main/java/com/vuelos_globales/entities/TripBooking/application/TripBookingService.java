@@ -8,7 +8,15 @@ import com.vuelos_globales.entities.BookingStatus.infrastructure.BookingStatusRe
 import com.vuelos_globales.entities.Trip.domain.Trip;
 import com.vuelos_globales.entities.Trip.infrastructure.TripRepository;
 import com.vuelos_globales.entities.TripBooking.domain.TripBooking;
+import com.vuelos_globales.entities.Customer.domain.Customer;
 import com.vuelos_globales.entities.TripBooking.infrastructure.TripBookingRepository;
+import com.vuelos_globales.entities.TripBookingDetails.domain.TripBookingDetails;
+import com.vuelos_globales.entities.TripBookingDetails.infrastructure.TripBookingDetailsRepository;
+import com.vuelos_globales.entities.Customer.infrastructure.CustomerRepository;
+import com.vuelos_globales.entities.FlightConnection.domain.FlightConnection;
+import com.vuelos_globales.entities.FlightConnection.infrastructure.FlightConnectionRepository;
+import com.vuelos_globales.entities.FlightFares.domain.FlightFares;
+import com.vuelos_globales.entities.FlightFares.infrastructure.FlightFaresRepository;
 import com.vuelos_globales.entities.Customer.infrastructure.CustomerRepository;
 import com.vuelos_globales.entities.Customer.domain.Customer;
 import com.vuelos_globales.entities.Planes.domain.Planes;
@@ -16,17 +24,24 @@ import com.vuelos_globales.entities.Planes.infrastructure.PlanesRepository;
 
 public class TripBookingService {
     private final TripRepository tripRepository;
+    private final CustomerRepository customerRepository;
     private final TripBookingRepository tripBookingRepository;
     private final BookingStatusRepository bookingStatusRepository;
-    private final CustomerRepository customerRepository;
+    private final FlightFaresRepository flightFaresRepository;
+    private final TripBookingDetailsRepository tripBookingDetailsRepository;
+    private final FlightConnectionRepository flightConnectionRepository;
     private final PlanesRepository planesRepository;
     
-    public TripBookingService(TripBookingRepository tripBookingRepository, TripRepository tripRepository, BookingStatusRepository bookingStatusRepository, CustomerRepository customerRepository, PlanesRepository planesRepository) {
+    public TripBookingService(TripBookingRepository tripBookingRepository, TripRepository tripRepository, BookingStatusRepository bookingStatusRepository, CustomerRepository customerRepository, PlanesRepository planesRepository, FlightFaresRepository flightFaresRepository, TripBookingDetailsRepository tripBookingDetailsRepository, FlightConnectionRepository flightConnectionRepository) {
         this.tripBookingRepository = tripBookingRepository;
         this.tripRepository = tripRepository;
         this.bookingStatusRepository = bookingStatusRepository;
         this.customerRepository = customerRepository;
+        this.flightFaresRepository = flightFaresRepository;
+        this.tripBookingDetailsRepository = tripBookingDetailsRepository;
+        this.flightConnectionRepository = flightConnectionRepository;
         this.planesRepository = planesRepository;
+        
     }
 
     public void createTripBooking(TripBooking tripBooking){
@@ -40,6 +55,54 @@ public class TripBookingService {
 
     public Optional<TripBooking> getTripBookingById(String id){
         return tripBookingRepository.findById(id);
+    }
+
+    // FlightConnection
+
+    public Optional<FlightConnection> getFlightConnectionById(String id) {
+        return flightConnectionRepository.findById(id);
+    }
+
+    public List<FlightConnection> getAllFlightConnections() {
+        return flightConnectionRepository.findAll();
+    }
+
+    public Optional<FlightConnection> getFlightCOnnectionByTrip(String id){
+        return flightConnectionRepository.findByTrip(id);
+    }
+
+    //Trip Booking Detailss
+
+    public void createTripBookingDetails(TripBookingDetails tripBookingDetails){
+        tripBookingDetailsRepository.save(tripBookingDetails);
+    }
+
+    public Optional<TripBookingDetails> getTripBookingDetailsById(String id) {
+        return tripBookingDetailsRepository.findById(id);
+    }
+
+    public List<TripBookingDetails> getAllTripBookingDetails() {
+        return tripBookingDetailsRepository.findAll();
+    }
+
+    // Flight Fares
+
+    public void createFlighFareId(FlightFares flightFares) {
+        flightFaresRepository.save(flightFares);
+    }
+
+    public Optional<FlightFares> getFlightFaresById(String id) {
+        return flightFaresRepository.findById(id);
+    }
+
+    public List<FlightFares> getAllFlightFares() {
+        return flightFaresRepository.findAll();
+    }
+
+    //  Customer
+
+    public void createCustomer(Customer customer) {
+        customerRepository.save(customer);
     }
 
 
@@ -67,9 +130,15 @@ public class TripBookingService {
         return bookingStatusRepository.findById(id);
     }
 
-    public List<BookingStatus> getAllBookingStatuss() {
+    public List<BookingStatus> getAllBookingStatuses() {
         return bookingStatusRepository.findAll();
     }
+
+    public List<String> getAllBookingStatusesStr() {
+        return tripBookingRepository.findAllBookingTypes();
+    }
+    
+
 
     //
 
@@ -107,12 +176,6 @@ public class TripBookingService {
 
     public int getCapacity(String id) {
         return planesRepository.getMaxCapacity(id);
-    }
-    
-    // BOOKING STATUS
-
-    public List<String> getAllBookingStatuses() {
-        return tripBookingRepository.findAllBookingTypes();
     }
 
 }

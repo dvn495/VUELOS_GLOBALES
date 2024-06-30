@@ -25,6 +25,9 @@ import com.vuelos_globales.entities.Customer.application.CustomerService;
 import com.vuelos_globales.entities.City.adapters.out.CityMySQLRepository;
 import com.vuelos_globales.entities.Planes.adapters.out.PlanesMySQLRepository;
 import com.vuelos_globales.entities.DocumentType.adapters.out.DocTypeMySQLRepository;
+import com.vuelos_globales.entities.FlightFares.adapters.out.FlightFaresMySQLRepository;
+import com.vuelos_globales.entities.TripBookingDetails.adapters.out.TripBookingDetailsMySQLRepository;
+import com.vuelos_globales.entities.FlightConnection.adapters.out.FlightConnectionMySQLRepository;
 
 import com.vuelos_globales.modules.ConsoleUtils;
 
@@ -41,14 +44,16 @@ public class CustomerMenu {
     static AirportMySQLRepository airportMySQLRepository = new AirportMySQLRepository(url, username, password);
     static CustomerMySQLRepository customerMySQLRepository = new CustomerMySQLRepository(url, username, password);
     static CityMySQLRepository cityMySQLRepository = new CityMySQLRepository(url, username, password);
-    static TripBookingMySQLRepository tripBookingMySQLRepository2 = new TripBookingMySQLRepository(url, username, password);
     static PlanesMySQLRepository planesMySQLRepository = new PlanesMySQLRepository(url, username, password);
     static DocTypeMySQLRepository documentTypeMySQLRepository = new DocTypeMySQLRepository(url, username,password);
+    static FlightFaresMySQLRepository flightFaresMySQLRepository = new FlightFaresMySQLRepository(url, username, password);
+    static TripBookingDetailsMySQLRepository tripBookingDetailsMySQLRepository = new TripBookingDetailsMySQLRepository(url, username, password);
+    static FlightConnectionMySQLRepository flightConnectionMySQLRepository = new FlightConnectionMySQLRepository(url, username, password);
     
     // IMPORTACION DE SERVICIOS
     static TripService tripService = new TripService(tripMySQLRepository,bookingStatusMySQLRepository,tripBookingMySQLRepository, airportMySQLRepository, customerMySQLRepository, cityMySQLRepository);
 
-    static TripBookingService tripBookingService = new TripBookingService(tripBookingMySQLRepository, tripMySQLRepository, bookingStatusMySQLRepository, customerMySQLRepository, planesMySQLRepository);
+    static TripBookingService tripBookingService = new TripBookingService(tripBookingMySQLRepository, tripMySQLRepository, bookingStatusMySQLRepository, customerMySQLRepository, planesMySQLRepository, flightFaresMySQLRepository, tripBookingDetailsMySQLRepository, flightConnectionMySQLRepository);
 
     static CustomerService customerService = new CustomerService(customerMySQLRepository, documentTypeMySQLRepository);
 

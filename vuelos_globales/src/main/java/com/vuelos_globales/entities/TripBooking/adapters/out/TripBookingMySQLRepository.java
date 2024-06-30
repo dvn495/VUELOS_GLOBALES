@@ -12,6 +12,7 @@ import java.util.Optional;
 
 import com.vuelos_globales.entities.TripBooking.domain.TripBooking;
 import com.vuelos_globales.entities.TripBooking.infrastructure.TripBookingRepository;
+import com.vuelos_globales.entities.FlightFares.domain.FlightFares;
 
 public class TripBookingMySQLRepository implements TripBookingRepository {
     private final String url;
@@ -104,7 +105,7 @@ public class TripBookingMySQLRepository implements TripBookingRepository {
     public List<TripBooking> findAll() {
         List<TripBooking> tripBookings = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT id, bookingDate, idTrip, idBookingStatus FROM trip_booking";
+            String query = "SELECT id, bookingDate, idTrip, idBookingStatus, idCustomer FROM trip_booking";
             try (PreparedStatement statement = connection.prepareStatement(query);
                  ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
@@ -124,6 +125,38 @@ public class TripBookingMySQLRepository implements TripBookingRepository {
             e.printStackTrace();
         }
         return tripBookings;
+    }
+
+    
+    @Override
+    public Optional<FlightFares> findFlightFareByTripBId(String id) {
+        Optional<FlightFares> flightFare = Optional.empty();
+        String query = "SELECT ff.id, ff.description, ff.details, ff.value " +
+                       "FROM trip_booking tb " +
+                       "JOIN trip_booking_details tbd ON tb.id = tbd.idTripBooking " +
+                       "JOIN flight_fares ff ON tbd.idFlightFares = ff.id " +
+                       "WHERE tb.id = ?";
+        
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            
+            statement.setString(1, id);
+            
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    String flightFaresId = resultSet.getString("id");
+                    String description = resultSet.getString("description");
+                    String details = resultSet.getString("details");
+                    double value = resultSet.getDouble("value");
+                    
+                    flightFare = Optional.of(new FlightFares(flightFaresId, description, details, value));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); 
+        }
+
+        return flightFare;
     }
 
     @Override

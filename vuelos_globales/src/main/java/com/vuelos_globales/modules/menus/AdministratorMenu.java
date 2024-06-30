@@ -157,8 +157,7 @@ public class AdministratorMenu {
                     }
 
                     case 12 -> {
-                        TripCrewService tripCrewService = new TripCrewService(tripCrewMySQLRepository, employeeMySQLRepository, flightConnectionMySQLRepository, 
-                        tripulationRoleMySQLRepository, airlinesMySQLRepository, airporMySQLRepository, planesMySQLRepository, tripMySQLRepository);
+                        TripCrewService tripCrewService = new TripCrewService(tripCrewMySQLRepository, employeeMySQLRepository, flightConnectionMySQLRepository, tripulationRoleMySQLRepository, airlinesMySQLRepository, airporMySQLRepository, planesMySQLRepository, tripMySQLRepository);
                         TripCrewConsoleAdapter tripCrewConsoleController = new TripCrewConsoleAdapter(tripCrewService);
                         tripCrewConsoleController.searchTripCrewByTrip();
                     }

@@ -21,8 +21,9 @@ public class BookingStatusService {
         return bookingStatusRepository.findById(id);
     }
 
-    public List<BookingStatus> getAllBookingStatuss() {
+    public List<BookingStatus> getAllBookingStatuses() {
         return bookingStatusRepository.findAll();
     }
     
 }
+
