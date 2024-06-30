@@ -13,4 +13,5 @@ public interface TripBookingRepository {
     void delete(String id);
     List<TripBooking> findAll();
     Optional<FlightFares> findFlightFareByTripBId(String id);
+    List<String> findAllBookingTypes(); 
 }

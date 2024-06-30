@@ -33,6 +33,7 @@ import com.vuelos_globales.entities.TripCrew.adapters.in.TripCrewConsoleAdapter;
 import com.vuelos_globales.entities.TripCrew.adapters.out.TripCrewMySQLRepository;
 import com.vuelos_globales.entities.TripCrew.application.TripCrewService;
 import com.vuelos_globales.entities.TripulationRoles.adapters.out.TripulationRoleMySQLRepository;
+import com.vuelos_globales.entities.City.adapters.out.CityMySQLRepository;
 import com.vuelos_globales.modules.ConsoleUtils;
 
 
@@ -71,6 +72,7 @@ public class AdministratorMenu {
         StatusMySQLRepository statusMySQLRepository = new StatusMySQLRepository(url, username, password); 
         PlanesMySQLRepository planesMySQLRepository = new PlanesMySQLRepository(url, username, password);
         PlaneModelsMySQLRepository planesModelsMySQLRepository = new PlaneModelsMySQLRepository(url, username, password);
+        CityMySQLRepository cityMySQLRepository = new CityMySQLRepository(url, username, password);
 
         boolean isActiveAdministrator = true;
 
@@ -148,7 +150,7 @@ public class AdministratorMenu {
                     }
 
                     case 11 -> {
-                        TripService tripService = new TripService(tripMySQLRepository, bookingStatusMySQLRepository, tripBookingMySQLRepository, airporMySQLRepository, customerMySQLRepository);
+                        TripService tripService = new TripService(tripMySQLRepository, bookingStatusMySQLRepository, tripBookingMySQLRepository, airporMySQLRepository, customerMySQLRepository, cityMySQLRepository);
                         TripConsoleAdapter tripConsoleAdapter = new TripConsoleAdapter(tripService);
                         tripConsoleAdapter.searchTrip();
 

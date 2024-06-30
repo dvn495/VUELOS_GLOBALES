@@ -3,12 +3,72 @@ package com.vuelos_globales.modules.menus;
 import java.text.MessageFormat;
 import java.util.Scanner;
 
+// Servicio
+
+import com.vuelos_globales.entities.Trip.application.TripService;
+import com.vuelos_globales.entities.TripBooking.application.TripBookingService;
+import com.vuelos_globales.entities.DocumentType.application.DocumentTypeService;
+
+// Console Controler
+
+import com.vuelos_globales.entities.Trip.adapters.in.TripConsoleAdapter;
+import com.vuelos_globales.entities.TripBooking.adapters.in.TripBookingConsoleAdapter;
+
+// IMPORTACIONES DE REPOSITORIOS MYSQL
+
+import com.vuelos_globales.entities.Trip.adapters.out.TripMySQLRepository;
+import com.vuelos_globales.entities.BookingStatus.adapters.out.BookingStatusMySQLRepository;
+import com.vuelos_globales.entities.TripBooking.adapters.out.TripBookingMySQLRepository;
+import com.vuelos_globales.entities.Airport.adapters.out.AirportMySQLRepository;
+import com.vuelos_globales.entities.Customer.adapters.out.CustomerMySQLRepository;
+import com.vuelos_globales.entities.Customer.application.CustomerService;
+import com.vuelos_globales.entities.City.adapters.out.CityMySQLRepository;
+import com.vuelos_globales.entities.Planes.adapters.out.PlanesMySQLRepository;
+import com.vuelos_globales.entities.DocumentType.adapters.out.DocTypeMySQLRepository;
+import com.vuelos_globales.entities.FlightFares.adapters.out.FlightFaresMySQLRepository;
+import com.vuelos_globales.entities.TripBookingDetails.adapters.out.TripBookingDetailsMySQLRepository;
+import com.vuelos_globales.entities.FlightConnection.adapters.out.FlightConnectionMySQLRepository;
+
 import com.vuelos_globales.modules.ConsoleUtils;
 
 
 public class CustomerMenu {
+    static String url = "jdbc:mysql://localhost:3306/airport_database";
+    static String username = "campus2023";
+    static String password = "campus2023";
+    
+    // INICIALIZACION REPOSITORIOS
+    static TripMySQLRepository tripMySQLRepository = new TripMySQLRepository(url, username, password);
+    static TripBookingMySQLRepository tripBookingMySQLRepository = new TripBookingMySQLRepository(url, username, password);
+    static BookingStatusMySQLRepository bookingStatusMySQLRepository = new BookingStatusMySQLRepository(url, username, password);
+    static AirportMySQLRepository airportMySQLRepository = new AirportMySQLRepository(url, username, password);
+    static CustomerMySQLRepository customerMySQLRepository = new CustomerMySQLRepository(url, username, password);
+    static CityMySQLRepository cityMySQLRepository = new CityMySQLRepository(url, username, password);
+    static PlanesMySQLRepository planesMySQLRepository = new PlanesMySQLRepository(url, username, password);
+    static DocTypeMySQLRepository documentTypeMySQLRepository = new DocTypeMySQLRepository(url, username,password);
+    static FlightFaresMySQLRepository flightFaresMySQLRepository = new FlightFaresMySQLRepository(url, username, password);
+    static TripBookingDetailsMySQLRepository tripBookingDetailsMySQLRepository = new TripBookingDetailsMySQLRepository(url, username, password);
+    static FlightConnectionMySQLRepository flightConnectionMySQLRepository = new FlightConnectionMySQLRepository(url, username, password);
+    
+    // IMPORTACION DE SERVICIOS
+    static TripService tripService = new TripService(tripMySQLRepository,bookingStatusMySQLRepository,tripBookingMySQLRepository, airportMySQLRepository, customerMySQLRepository, cityMySQLRepository);
+
+    static TripBookingService tripBookingService = new TripBookingService(tripBookingMySQLRepository, tripMySQLRepository, bookingStatusMySQLRepository, customerMySQLRepository, planesMySQLRepository, flightFaresMySQLRepository, tripBookingDetailsMySQLRepository, flightConnectionMySQLRepository);
+
+    static CustomerService customerService = new CustomerService(customerMySQLRepository, documentTypeMySQLRepository);
+
+    static DocumentTypeService documentTypeService = new DocumentTypeService(documentTypeMySQLRepository);
+
+    // INICIALIZACION CONSOLE CONTROLLERS
+    static TripConsoleAdapter tripConsoleAdapter = new TripConsoleAdapter(tripService);
+    static TripBookingConsoleAdapter tripBookingConsoleAdapter = new TripBookingConsoleAdapter(tripBookingService, customerService);
+
+    static Scanner sc = new Scanner(System.in);
+
     public static void menu() {
         ConsoleUtils.limpiarConsola();
+
+        System.out.println("******************** MENU CLIENTE ********************");
 
         String[] customerOpc = {"Administrar Vuelos", "Administrar Reservas", "Pagos","Volver"};
 
@@ -16,13 +76,12 @@ public class CustomerMenu {
     }
 
     public static void flightsMenu() {
-        Scanner sc = new Scanner(System.in);
         boolean isActiveFlights = true;
 
         while (isActiveFlights) {
             ConsoleUtils.limpiarConsola();
             System.out.println("******************** ADMINISTRAR VUELOS ********************");
-            String[] flightsOpc = {"Filtrar Vuelo", "Consultar Vuelo", "Seleccionar Vuelos", "Cancelar Reserva", "Modificar Reserva", "Volver"};
+            String[] flightsOpc = {"Filtrar Vuelo", "Consultar Vuelo", "Seleccionar Vuelo",  "Volver"};
 
             ConsoleUtils.listarOpc(flightsOpc);
             int op = Integer.parseInt(sc.nextLine());
@@ -31,21 +90,21 @@ public class CustomerMenu {
 
             switch (op) {
                 case 1 -> {
-                    // BUSCAR VUELO findByParameters(tripDate, idCiudadA, idCiudadB)
+                    // BUSCAR VUELO POR PARAMETROS
+                    tripConsoleAdapter.getTripsByParameters();
                 }
                 case 2 -> {
-                    // getTripBookingById(id)
+                    // Buscar Viaje por ID
+                    ConsoleUtils.limpiarConsola();
+                    System.out.println("******************** CONSULTAR VUELO ********************");
+                    tripConsoleAdapter.searchTrip();
                 }
                 case 3 -> {
-                    // selectTripBooking()
+                    // SELECCIONAR VUELO
+                    tripBookingConsoleAdapter.selectTripBooking();
                 }
+
                 case 4 -> {
-                    // cancelTripBooking(id)
-                }
-                case 5 -> {
-                    // updateTripBooking
-                }
-                case 6 -> {
                     isActiveFlights = false;
                 }
             
@@ -76,11 +135,12 @@ public class CustomerMenu {
                     }
 
                     case 2 -> {
+                        // "Cancelar Reserva", "Modificar Reserva",
                         
                     }
                     
                     case 3 -> {
-                        
+                    
                     }
 
                     case 4 -> {

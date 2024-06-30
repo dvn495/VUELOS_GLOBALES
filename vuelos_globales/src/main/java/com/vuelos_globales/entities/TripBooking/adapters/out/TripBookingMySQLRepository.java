@@ -158,5 +158,30 @@ public class TripBookingMySQLRepository implements TripBookingRepository {
 
         return flightFare;
     }
+
+    @Override
+    public List<String> findAllBookingTypes() {
+        List<String> bookingTypes = new ArrayList<>();
+        try (Connection connection = DriverManager.getConnection(url, user, password)) {
+            String query = "SELECT bookingStatus FROM booking_status";
+            try (PreparedStatement statement = connection.prepareStatement(query);
+                    ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    bookingTypes.add(resultSet.getString("bookingStatus"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bookingTypes;
+    }
+
+/*     @Override
+    public void confirmBooking(TripBooking tripBooking) {
+        try (Connection connection = DriverManager.getConnection(url, user, password)) {
+            String query = "UPDATE trip_booking SET idBookingStatus = 3 WHERE id = ?";
+
+        }
+    } */
 }
 

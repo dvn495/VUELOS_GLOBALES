@@ -7,7 +7,8 @@ import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
-
+import com.vuelos_globales.modules.ConsoleUtils;
+import com.vuelos_globales.entities.City.domain.City;
 import com.vuelos_globales.entities.Trip.application.TripService;
 import com.vuelos_globales.entities.Trip.domain.Trip;
 
@@ -90,8 +91,7 @@ public class TripConsoleAdapter {
                 t -> {
                     ConsoleUtils.limpiarConsola();
                     System.out.println("*************** VIAJE ***************");
-                    System.out.println(MessageFormat.format(
-                        "[*] ID : {0}\n[*] FECHA DE VIAJE : {1}\n[*] PRECIO DE VIAJE: {2}\n",t.getId(), t.getTripDate(), t.getPrice()));
+                    System.out.println(MessageFormat.format("[*] ID : {0}\n[*] FECHA DE VIAJE : {1}\n[*] PRECIO DE VIAJE: {2}\n", t.getId(), t.getTripDate(), t.getPrice()));
                     sc.nextLine();
                 },
                 () -> {
@@ -206,20 +206,80 @@ public class TripConsoleAdapter {
         }
     }
 
-    public class ConsoleUtils {
-        public static void limpiarConsola() {
-            try {
-                if (System.getProperty("os.name").contains("Windows")) {
-                    new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-                } else {
-                    System.out.print("\033[H\033[2J");
-                    System.out.flush();
+    public void getTripsByParameters() {
+        List<Trip> trips = tripService.getAllTrips();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    
+        if (trips.isEmpty()) {
+            ConsoleUtils.limpiarConsola();
+            System.out.println("[!] NO HAY NINGUN VIAJE REGISTRADO");
+            sc.nextLine();
+        } else {
+            ConsoleUtils.limpiarConsola();
+            LocalDate tripDate = null;
+            boolean isActiveDate = true;
+            String newDate = "";
+
+            while (isActiveDate) {
+                ConsoleUtils.limpiarConsola();
+                System.out.println("\n[*] INGRESE LA FECHA DEL VIAJE (dd-mm-yyyy)");
+                newDate = sc.nextLine();
+
+                try {
+                    tripDate = LocalDate.parse(newDate, formatter);
+                } catch (DateTimeParseException e) {
+                    System.out.println("[!] FECHA INVALIDA. FORMATO: (dd-mm-yyyy).");
+                    sc.nextLine();
                 }
-            } catch (Exception e) {
-                System.out.println("Error al intentar limpiar la consola: " + e.getMessage());
             }
+
+            // MOSTRAR CIUDADES
+
+            boolean isActiveCity = true;
+            String idCityA = "";
+            String idCityB = "";
+            while (isActiveCity) {
+                List<City> cities = tripService.getAllCities();
+                if (cities.isEmpty()) {
+                    ConsoleUtils.limpiarConsola();
+                    System.out.println("[!] NO HAY NINGUNA CIUDAD REGISTRADA");
+                } else {
+                    ConsoleUtils.limpiarConsola();
+                    cities.forEach(c -> {
+                        System.out.println(MessageFormat.format("       [*] ID : {0} - CIUDAD: {1}", c.getId(), c.getCityName()));
+                    });
+
+                    System.out.println("[*] INGRESE EL ID DE LA CIUDAD DE PARTIDA: ");
+                    idCityA = sc.nextLine();
+
+                    System.out.println("[*] INGRESE EL ID DE LA CIUDAD DE LLEGADA: ");
+                    idCityB = sc.nextLine();
+                    if (idCityB.equalsIgnoreCase(idCityA)) {
+                        ConsoleUtils.limpiarConsola();
+                        System.out.println("[!] LAS CIUDADES DE PARTIDA Y LLEGADA NO PUEDEN SE IGUALES");
+                        ConsoleUtils.esperarEntrada();
+                    } else {
+                        Optional<List<Trip>> matchTrips = tripService.getTripsByParameters(tripDate, idCityA, idCityB);
+
+                        matchTrips.ifPresentOrElse(
+                            t -> {
+                                System.out.println("[*] VIAJES QUE COINCIDIERON:");
+                                ConsoleUtils.limpiarConsola();
+                                t.forEach(trip -> {
+                                    System.out.println(MessageFormat.format("       [*] ID : {0} - FECHA : {1}", trip.getId(), trip.getTripDate()));
+                                });
+                                ConsoleUtils.esperarEntrada();
+                            }, 
+                            () -> {
+                                ConsoleUtils.limpiarConsola();
+                                System.out.println("[!] NO HAY NINGUN VIAJE QUE CUENTE CON ESTOS PARAMETROS");
+                                ConsoleUtils.esperarEntrada();
+                            });
+                            isActiveCity = false;
+                    }
+                }
+            }
+
         }
     }
-
-
 }

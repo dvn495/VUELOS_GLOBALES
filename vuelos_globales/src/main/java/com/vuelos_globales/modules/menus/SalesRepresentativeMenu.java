@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import com.vuelos_globales.entities.Airport.adapters.out.AirportMySQLRepository;
 import com.vuelos_globales.entities.BookingStatus.adapters.out.BookingStatusMySQLRepository;
+import com.vuelos_globales.entities.City.adapters.out.CityMySQLRepository;
 import com.vuelos_globales.entities.Customer.adapters.in.CustomerConsoleAdapter;
 import com.vuelos_globales.entities.Customer.adapters.out.CustomerMySQLRepository;
 import com.vuelos_globales.entities.Customer.application.CustomerService;
@@ -14,6 +15,7 @@ import com.vuelos_globales.entities.FlightConnection.adapters.in.FlightConnectio
 import com.vuelos_globales.entities.FlightConnection.adapters.out.FlightConnectionMySQLRepository;
 import com.vuelos_globales.entities.FlightConnection.application.FlightConnectionService;
 import com.vuelos_globales.entities.FlightFares.adapters.out.FlightFaresMySQLRepository;
+import com.vuelos_globales.entities.Planes.adapters.out.PlanesMySQLRepository;
 import com.vuelos_globales.entities.Trip.adapters.in.TripConsoleAdapter;
 import com.vuelos_globales.entities.Trip.adapters.out.TripMySQLRepository;
 import com.vuelos_globales.entities.Trip.application.TripService;
@@ -67,7 +69,7 @@ public class SalesRepresentativeMenu {
         TripulationRoleMySQLRepository tripulationRoleMySQLRepository = new TripulationRoleMySQLRepository(url, username, password);
         TripCrewMySQLRepository tripCrewMySQLRepository = new TripCrewMySQLRepository(url, username, password);
         AirlinesMySQLRepository airlinesMySQLRepository = new AirlinesMySQLRepository(url, username, password);
-
+        CityMySQLRepository cityMySQLRepository = new CityMySQLRepository(url, username, password);
 
         boolean isActiveSalesRep = true;
 
@@ -82,8 +84,9 @@ public class SalesRepresentativeMenu {
 
                     // CREAR RESERVA DE VIAJE 
                     case 1 -> {
-                        TripBookingService tripBookingService = new TripBookingService(tripBookingMySQLRepository, customerMySQLRepository, tripMySQLRepository, bookingStatusMySQLRepository, flightFaresMySQLRepository, tripBookingDetailsMySQLRepository, flightConnectionMySQLRepository);
-                        TripBookingConsoleAdapter tripBookingConsoleAdapter = new TripBookingConsoleAdapter(tripBookingService);
+                        CustomerService customerService = new CustomerService(customerMySQLRepository, docTypeMySQLRepository);
+                        TripBookingService tripBookingService = new TripBookingService(tripBookingMySQLRepository, tripMySQLRepository, bookingStatusMySQLRepository, customerMySQLRepository, planesMySQLRepository, flightFaresMySQLRepository, tripBookingDetailsMySQLRepository, flightConnectionMySQLRepository);
+                        TripBookingConsoleAdapter tripBookingConsoleAdapter = new TripBookingConsoleAdapter(tripBookingService, customerService);
                         tripBookingConsoleAdapter.createTripBooking();
                     }
 
@@ -98,8 +101,9 @@ public class SalesRepresentativeMenu {
 
                     //CONSULTAR RESERVA DE VUELO
                     case 3 -> {
-                        TripBookingService tripBookingService = new TripBookingService(tripBookingMySQLRepository, customerMySQLRepository, tripMySQLRepository, bookingStatusMySQLRepository, flightFaresMySQLRepository, tripBookingDetailsMySQLRepository, flightConnectionMySQLRepository);
-                        TripBookingConsoleAdapter tripBookingConsoleAdapter = new TripBookingConsoleAdapter(tripBookingService);
+                        CustomerService customerService = new CustomerService(customerMySQLRepository, docTypeMySQLRepository);
+                        TripBookingService tripBookingService = new TripBookingService(tripBookingMySQLRepository, tripMySQLRepository, bookingStatusMySQLRepository, customerMySQLRepository, planesMySQLRepository, flightFaresMySQLRepository, tripBookingDetailsMySQLRepository, flightConnectionMySQLRepository);
+                        TripBookingConsoleAdapter tripBookingConsoleAdapter = new TripBookingConsoleAdapter(tripBookingService, customerService);
                         tripBookingConsoleAdapter.searchTripBooking();
                     }
 
@@ -119,14 +123,15 @@ public class SalesRepresentativeMenu {
 
                     //ELIMINAR RESERVA DE VUELO
                     case 6 -> {
-                        TripBookingService tripBookingService = new TripBookingService(tripBookingMySQLRepository, customerMySQLRepository, tripMySQLRepository, bookingStatusMySQLRepository, flightFaresMySQLRepository, tripBookingDetailsMySQLRepository, flightConnectionMySQLRepository);
-                        TripBookingConsoleAdapter tripBookingConsoleAdapter = new TripBookingConsoleAdapter(tripBookingService);
+                        CustomerService customerService = new CustomerService(customerMySQLRepository, docTypeMySQLRepository);
+                        TripBookingService tripBookingService = new TripBookingService(tripBookingMySQLRepository, tripMySQLRepository, bookingStatusMySQLRepository, customerMySQLRepository, planesMySQLRepository, flightFaresMySQLRepository, tripBookingDetailsMySQLRepository, flightConnectionMySQLRepository);
+                        TripBookingConsoleAdapter tripBookingConsoleAdapter = new TripBookingConsoleAdapter(tripBookingService, customerService);
                         tripBookingConsoleAdapter.deleteTripBooking();
                     }
 
                     //CONSULTAR INFORMACION DE VUELO
                     case 7 -> {
-                        TripService tripService = new TripService(tripMySQLRepository, bookingStatusMySQLRepository, tripBookingMySQLRepository, airportMySQLRepository, customerMySQLRepository);
+                        TripService tripService = new TripService(tripMySQLRepository, bookingStatusMySQLRepository, tripBookingMySQLRepository, airportMySQLRepository, customerMySQLRepository, cityMySQLRepository);
                         TripConsoleAdapter tripConsoleAdapter = new TripConsoleAdapter(tripService);
                         tripConsoleAdapter.searchTrip();
                     }
