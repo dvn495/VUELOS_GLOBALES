@@ -6,12 +6,12 @@ public class TripBooking {
     private String id;
     private LocalDate bookinDate; // Revisar tipo de dato despues
     private String idTrip;
-    private String idBookingStatus;
+    private int idBookingStatus;
     private String idCustomer;
 
     public TripBooking() {}
 
-    public TripBooking(String id, LocalDate bookinDate, String idTrip, String idBookingStatus, String idCustomer) {
+    public TripBooking(String id, LocalDate bookinDate, String idTrip, int idBookingStatus, String idCustomer) {
         this.id = id;
         this.bookinDate = bookinDate;
         this.idTrip = idTrip;
@@ -46,11 +46,11 @@ public class TripBooking {
         this.idTrip = idTrip;
     }
 
-    public String getIdBookingStatus() {
+    public int getIdBookingStatus() {
         return idBookingStatus;
     }
 
-    public void setIdBookingStatus(String idBookingStatus) {
+    public void setIdBookingStatus(int idBookingStatus) {
         this.idBookingStatus = idBookingStatus;
     }
 

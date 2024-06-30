@@ -1,5 +1,6 @@
 package com.vuelos_globales.entities.Trip.application;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,23 +14,26 @@ import com.vuelos_globales.entities.Trip.domain.Trip;
 import com.vuelos_globales.entities.Trip.infrastructure.TripRepository;
 import com.vuelos_globales.entities.TripBooking.domain.TripBooking;
 import com.vuelos_globales.entities.TripBooking.infrastructure.TripBookingRepository;
+import com.vuelos_globales.entities.City.infrastructure.CityRepository;
+import com.vuelos_globales.entities.City.domain.City;
 
 public class TripService {
-
     private final TripRepository tripRepository;
     private final BookingStatusRepository bookingStatusRepository;
     private final TripBookingRepository tripBookingRepository;
     private final AirportRepository airportRepository;
     private final CustomerRepository customerRepository;
+    private final CityRepository cityRepository;
 
 
     public TripService(TripRepository tripRepository, BookingStatusRepository bookingStatusRepository, TripBookingRepository tripBookingRepository,
-    AirportRepository airportRepository, CustomerRepository customerRepository) {
+    AirportRepository airportRepository, CustomerRepository customerRepository, CityRepository cityRepository) {
         this.tripRepository = tripRepository;
         this.bookingStatusRepository = bookingStatusRepository;
         this.tripBookingRepository = tripBookingRepository;
         this.airportRepository = airportRepository;
         this.customerRepository = customerRepository;
+        this.cityRepository = cityRepository;
     }
 
     public void createTrip(Trip trip) {
@@ -91,6 +95,16 @@ public class TripService {
         return customerRepository.findAll();
     }
 
-    
+    // CIUDAD
+
+    public List<City> getAllCities() {
+        return cityRepository.findAll();
+    }
+
+    // getTripsByParameters()
+
+    public Optional<List<Trip>> getTripsByParameters(LocalDate tripDate, String idCityA, String idCityB){
+        return tripRepository.findByParameters(tripDate, idCityA, idCityB);
+    }
 
 }

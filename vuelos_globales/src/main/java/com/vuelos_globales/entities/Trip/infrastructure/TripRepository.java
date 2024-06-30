@@ -1,5 +1,6 @@
 package com.vuelos_globales.entities.Trip.infrastructure;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,4 +12,5 @@ public interface TripRepository {
     Optional<Trip> findById(String id);
     void delete(String id);
     List<Trip> findAll();
+    Optional<List<Trip>> findByParameters(LocalDate tripDate, String idCityA, String idCityB);
 }

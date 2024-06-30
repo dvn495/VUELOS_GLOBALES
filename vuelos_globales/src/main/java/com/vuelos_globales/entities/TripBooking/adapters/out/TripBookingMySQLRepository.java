@@ -33,7 +33,7 @@ public class TripBookingMySQLRepository implements TripBookingRepository {
                 statement.setString(1, tripBooking.getId());
                 statement.setDate(2, sqlDate);
                 statement.setString(3, tripBooking.getIdTrip());
-                statement.setString(4, tripBooking.getIdBookingStatus());
+                statement.setInt(4, tripBooking.getIdBookingStatus());
                 statement.setString(5, tripBooking.getIdCustomer());
                 statement.executeUpdate();
             }
@@ -50,7 +50,7 @@ public class TripBookingMySQLRepository implements TripBookingRepository {
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setDate(1, sqlDate);
                 statement.setString(2, tripBooking.getIdTrip());
-                statement.setString(3, tripBooking.getIdBookingStatus());
+                statement.setInt(3, tripBooking.getIdBookingStatus());
                 statement.setString(4, tripBooking.getIdCustomer());
                 statement.setString(5, tripBooking.getId());
                 statement.executeUpdate();
@@ -74,7 +74,7 @@ public class TripBookingMySQLRepository implements TripBookingRepository {
                             resultSet.getString("id"),
                             bookingDate,
                             resultSet.getString("idTrip"),
-                            resultSet.getString("idBookingStatus"),
+                            resultSet.getInt("idBookingStatus"),
                             resultSet.getString("idCustomer")
                         );
                         return Optional.of(tripBooking);
@@ -114,7 +114,7 @@ public class TripBookingMySQLRepository implements TripBookingRepository {
                         resultSet.getString("id"),
                         bookingDate,
                         resultSet.getString("idTrip"),
-                        resultSet.getString("idBookingStatus"),
+                        resultSet.getInt("idBookingStatus"),
                         resultSet.getString("idCustomer")
                     );
                     tripBookings.add(tripBooking);
@@ -125,5 +125,30 @@ public class TripBookingMySQLRepository implements TripBookingRepository {
         }
         return tripBookings;
     }
+
+    @Override
+    public List<String> findAllBookingTypes() {
+        List<String> bookingTypes = new ArrayList<>();
+        try (Connection connection = DriverManager.getConnection(url, user, password)) {
+            String query = "SELECT bookingStatus FROM booking_status";
+            try (PreparedStatement statement = connection.prepareStatement(query);
+                    ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    bookingTypes.add(resultSet.getString("bookingStatus"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bookingTypes;
+    }
+
+/*     @Override
+    public void confirmBooking(TripBooking tripBooking) {
+        try (Connection connection = DriverManager.getConnection(url, user, password)) {
+            String query = "UPDATE trip_booking SET idBookingStatus = 3 WHERE id = ?";
+
+        }
+    } */
 }
 

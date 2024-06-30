@@ -12,4 +12,5 @@ public interface PlanesRepository {
     Optional<Planes> findById(String id);
     void delete(String id);
     List<Planes> findAll();
+    int getMaxCapacity(String id);
 }
