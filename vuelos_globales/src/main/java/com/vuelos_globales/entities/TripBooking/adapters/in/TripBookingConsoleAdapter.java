@@ -24,6 +24,8 @@ import com.vuelos_globales.entities.Planes.domain.Planes;
 
 import com.vuelos_globales.entities.Customer.adapters.in.CustomerConsoleAdapter;
 import com.vuelos_globales.entities.Customer.application.CustomerService;
+import com.vuelos_globales.entities.Payment.adapters.in.PaymentConsoleController;
+import com.vuelos_globales.entities.Payment.application.PaymentService;
 
 public class TripBookingConsoleAdapter {
     Scanner sc = new Scanner(System.in);
@@ -32,10 +34,13 @@ public class TripBookingConsoleAdapter {
 
     private final CustomerService customerService;
 
+    private final PaymentService paymentService;
 
-    public TripBookingConsoleAdapter(TripBookingService tripBookingService, CustomerService customerService) {
+
+    public TripBookingConsoleAdapter(TripBookingService tripBookingService, CustomerService customerService, PaymentService paymentService) {
         this.tripBookingService = tripBookingService;
         this.customerService = customerService;
+        this.paymentService = paymentService;
     }
 
     public void createTripBooking() {
@@ -484,6 +489,7 @@ public class TripBookingConsoleAdapter {
                                                         System.out.println();
                                                     }
                                                 }
+                                                System.out.println("\n[?] INGRESA EL NUMERO DE ASIENTO: ");
                                                 seatNumber = Integer.parseInt(sc.nextLine());
                                                 mapa.remove(seatNumber);
 
@@ -492,7 +498,7 @@ public class TripBookingConsoleAdapter {
                                                 System.out.println("[*] SELECCIONE EL ESTADO DE LA RESERVA");
                                                 int j = 1;
                                                 for (String bs : tripBookingService.getAllBookingStatusesStr()) {
-                                                    System.out.println(MessageFormat.format("{0} , {1}", j++, bs));
+                                                    System.out.println(MessageFormat.format("{0} . {1}", j++, bs));
                                                 }
                                                 int bookingStatus = Integer.parseInt(sc.nextLine());
 
@@ -525,6 +531,31 @@ public class TripBookingConsoleAdapter {
                                     }
                                 });
                     });
+        }
+    }
+
+    public void cancelTripBooking() {
+        List<TripBooking> bookings = tripBookingService.getAllTripBookings();
+        
+        if (bookings.isEmpty()) {
+            ConsoleUtils.limpiarConsola();
+            System.out.println("[!] NO HAY NINGUNA RESERVA CREADA.");
+            sc.nextLine();
+        } else {
+            System.out.println("[*] RESERVAS REGISTRADAS");
+            bookings.forEach(tb -> {
+                System.out.println(MessageFormat.format("[{0}] - {1}", tb.getId(), tb.getIdBookingStatus()));
+            });
+
+            System.out.println("[?] INGRESA EL ID DE LA RESERVA A CANCELAR: ");
+            String idCancel = sc.nextLine();
+            Optional<TripBooking> matchTrip = tripBookingService.getTripBookingById(idCancel);
+            matchTrip.ifPresentOrElse(tb -> {
+                ConsoleUtils.limpiarConsola();
+                tripBookingService.cancelTripBooking(idCancel);
+                System.out.println(MessageFormat.format("[!] LA RESERVA IDENTIFICADA : {0} HA SIDO CANCELADA!", tb.getId()));
+                sc.nextLine();
+            }, null); 
         }
     }
 }

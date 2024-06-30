@@ -30,6 +30,10 @@ import com.vuelos_globales.entities.TripulationRoles.adapters.out.TripulationRol
 import com.vuelos_globales.entities.Airlines.adapters.out.AirlinesMySQLRepository;
 import com.vuelos_globales.entities.Planes.adapters.out.PlanesMySQLRepository;
 import com.vuelos_globales.entities.TripCrew.application.TripCrewService;
+import com.vuelos_globales.entities.Payment.adapters.out.PaymentMySQLRepository;
+import com.vuelos_globales.entities.Payment.application.PaymentService;
+import com.vuelos_globales.entities.PaymentMethod.adapters.out.PayMethodMySQLRepository;
+
 import com.vuelos_globales.modules.ConsoleUtils;
 
 public class SalesRepresentativeMenu {
@@ -70,6 +74,11 @@ public class SalesRepresentativeMenu {
         TripCrewMySQLRepository tripCrewMySQLRepository = new TripCrewMySQLRepository(url, username, password);
         AirlinesMySQLRepository airlinesMySQLRepository = new AirlinesMySQLRepository(url, username, password);
         CityMySQLRepository cityMySQLRepository = new CityMySQLRepository(url, username, password);
+        PaymentMySQLRepository paymentMySQLRepository = new PaymentMySQLRepository(url, username, password);
+        PayMethodMySQLRepository payMethodMySQLRepository = new PayMethodMySQLRepository(url, username, password);
+
+        PaymentService paymentService = new PaymentService(paymentMySQLRepository, payMethodMySQLRepository, tripBookingMySQLRepository);
+
 
         boolean isActiveSalesRep = true;
 
@@ -86,7 +95,7 @@ public class SalesRepresentativeMenu {
                     case 1 -> {
                         CustomerService customerService = new CustomerService(customerMySQLRepository, docTypeMySQLRepository);
                         TripBookingService tripBookingService = new TripBookingService(tripBookingMySQLRepository, tripMySQLRepository, bookingStatusMySQLRepository, customerMySQLRepository, planesMySQLRepository, flightFaresMySQLRepository, tripBookingDetailsMySQLRepository, flightConnectionMySQLRepository);
-                        TripBookingConsoleAdapter tripBookingConsoleAdapter = new TripBookingConsoleAdapter(tripBookingService, customerService);
+                        TripBookingConsoleAdapter tripBookingConsoleAdapter = new TripBookingConsoleAdapter(tripBookingService, customerService, paymentService);
                         tripBookingConsoleAdapter.createTripBooking();
                     }
 
@@ -103,7 +112,7 @@ public class SalesRepresentativeMenu {
                     case 3 -> {
                         CustomerService customerService = new CustomerService(customerMySQLRepository, docTypeMySQLRepository);
                         TripBookingService tripBookingService = new TripBookingService(tripBookingMySQLRepository, tripMySQLRepository, bookingStatusMySQLRepository, customerMySQLRepository, planesMySQLRepository, flightFaresMySQLRepository, tripBookingDetailsMySQLRepository, flightConnectionMySQLRepository);
-                        TripBookingConsoleAdapter tripBookingConsoleAdapter = new TripBookingConsoleAdapter(tripBookingService, customerService);
+                        TripBookingConsoleAdapter tripBookingConsoleAdapter = new TripBookingConsoleAdapter(tripBookingService, customerService, paymentService);
                         tripBookingConsoleAdapter.searchTripBooking();
                     }
 
@@ -125,7 +134,7 @@ public class SalesRepresentativeMenu {
                     case 6 -> {
                         CustomerService customerService = new CustomerService(customerMySQLRepository, docTypeMySQLRepository);
                         TripBookingService tripBookingService = new TripBookingService(tripBookingMySQLRepository, tripMySQLRepository, bookingStatusMySQLRepository, customerMySQLRepository, planesMySQLRepository, flightFaresMySQLRepository, tripBookingDetailsMySQLRepository, flightConnectionMySQLRepository);
-                        TripBookingConsoleAdapter tripBookingConsoleAdapter = new TripBookingConsoleAdapter(tripBookingService, customerService);
+                        TripBookingConsoleAdapter tripBookingConsoleAdapter = new TripBookingConsoleAdapter(tripBookingService, customerService, paymentService);
                         tripBookingConsoleAdapter.deleteTripBooking();
                     }
 
