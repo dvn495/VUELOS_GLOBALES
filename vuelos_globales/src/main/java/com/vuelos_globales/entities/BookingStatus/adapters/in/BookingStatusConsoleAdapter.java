@@ -48,7 +48,7 @@ public class BookingStatusConsoleAdapter {
     }
 
     public void searchBookingStatus() {
-        List<BookingStatus> bookingStatuses = bookingStatusService.getAllBookingStatuss();
+        List<BookingStatus> bookingStatuses = bookingStatusService.getAllBookingStatuses();
         
         if (bookingStatuses.isEmpty()) {
             ConsoleUtils.limpiarConsola();
@@ -80,7 +80,7 @@ public class BookingStatusConsoleAdapter {
     }
 
     public void getAllBookingStatuss() {
-        List<BookingStatus> bookingStatuses = bookingStatusService.getAllBookingStatuss();
+        List<BookingStatus> bookingStatuses = bookingStatusService.getAllBookingStatuses();
         
         if (bookingStatuses.isEmpty()) {
             ConsoleUtils.limpiarConsola();
@@ -88,7 +88,7 @@ public class BookingStatusConsoleAdapter {
             sc.nextLine();
         } else {
             ConsoleUtils.limpiarConsola();
-            bookingStatusService.getAllBookingStatuss().forEach(e -> {
+            bookingStatusService.getAllBookingStatuses().forEach(e -> {
                System.out.println(MessageFormat.format("[*] ID : {0}\n[*] ESTADO : {1}", e.getId(), e.getBookingStatus())); 
             });
             System.out.println("[*]  PRESIONE CUALQUIER TECLA PARA CONTINUAR...");
@@ -96,3 +96,4 @@ public class BookingStatusConsoleAdapter {
         }
     }
 }
+

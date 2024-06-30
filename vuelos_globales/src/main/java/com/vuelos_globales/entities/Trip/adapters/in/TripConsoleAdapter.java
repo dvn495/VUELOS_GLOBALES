@@ -72,35 +72,37 @@ public class TripConsoleAdapter {
     }
 
 
-    public void searchTrip(){
+    public void searchTrip() {
         List<Trip> trips = tripService.getAllTrips();
-
-        if(trips.isEmpty()){
+    
+        if (trips.isEmpty()) {
             ConsoleUtils.limpiarConsola();
             System.out.println("[!] NO HAY NINGUN VIAJE REGISTRADO");
             sc.nextLine();
         } else {
             ConsoleUtils.limpiarConsola();
             System.out.println("*************** BUSCAR VIAJE ***************");
-            System.out.println("[?] INGRESE EL ID DE LA VIAJE A BUSCAR: ");
+            System.out.println("[?] INGRESE EL ID DEL VIAJE A BUSCAR: ");
             String findId = sc.nextLine();
-
+    
             Optional<Trip> trip = tripService.getTripById(findId);
             trip.ifPresentOrElse(
                 t -> {
                     ConsoleUtils.limpiarConsola();
                     System.out.println("*************** VIAJE ***************");
-                    System.out.println(MessageFormat.format("[*] ID : {0}\n[*] FECHA DE VIAJE : {1}\n[*] PRECIO DE VIAJE: {2}\n", t.getId() + t.getTripDate() + t.getPrice()));
+                    System.out.println(MessageFormat.format(
+                        "[*] ID : {0}\n[*] FECHA DE VIAJE : {1}\n[*] PRECIO DE VIAJE: {2}\n",t.getId(), t.getTripDate(), t.getPrice()));
                     sc.nextLine();
                 },
                 () -> {
                     ConsoleUtils.limpiarConsola();
-                    System.out.println("[!]  VIAJE NO ENCONTRADO");
+                    System.out.println("[!] VIAJE NO ENCONTRADO");
                     sc.nextLine();
-                });
-                ConsoleUtils.limpiarConsola();
-                System.out.println("[*]  PRESIONE CUALQUIER TECLA PARA CONTINUAR...");
-                sc.nextLine();
+                }
+            );
+            ConsoleUtils.limpiarConsola();
+            System.out.println("[*] PRESIONE CUALQUIER TECLA PARA CONTINUAR...");
+            sc.nextLine();
         }
     }
 

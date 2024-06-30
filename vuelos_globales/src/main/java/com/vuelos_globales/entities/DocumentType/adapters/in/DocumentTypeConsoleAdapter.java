@@ -74,7 +74,7 @@ public class DocumentTypeConsoleAdapter {
                     d -> {
                         ConsoleUtils.limpiarConsola();
                         System.out.println("*************** TIPO DE DOCUMENTO ***************");
-                        System.out.println(MessageFormat.format("[*] ID : {0}\n[*] TIPO DE DOCUMENTO :", d.getId(), d.getDocumentType()));
+                        System.out.println(MessageFormat.format("[*] ID : {0}\n[*] TIPO DE DOCUMENTO : {1}", d.getId(), d.getDocumentType()));
                         sc.nextLine();
                     },
                     () -> {
