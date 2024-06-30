@@ -147,4 +147,22 @@ public class PlanesMySQLRepository implements PlanesRepository{
         }
         return Planes;
     }
+
+    @Override
+    public int getMaxCapacity(String id) {
+        int maxCapacity = 0;
+        try (Connection connection =  DriverManager.getConnection(url, user, password)){
+            String query = "SELECT capacity FROM plane WHERE id = ?";
+            try (PreparedStatement statement = connection.prepareStatement(query)){
+                statement.setString(1, id);
+                ResultSet resultSet = statement.executeQuery();
+                if (resultSet.next()){
+                    maxCapacity = resultSet.getInt("capacity");
+                }
+            }
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
+            return maxCapacity;
+    }
 }

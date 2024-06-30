@@ -4,6 +4,7 @@ import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -17,13 +18,24 @@ import com.vuelos_globales.entities.FlightFares.domain.FlightFares;
 import com.vuelos_globales.entities.Trip.domain.Trip;
 import com.vuelos_globales.entities.FlightConnection.domain.FlightConnection;
 
+import com.vuelos_globales.entities.Planes.domain.Planes;
+
+// INYECCIONES
+
+import com.vuelos_globales.entities.Customer.adapters.in.CustomerConsoleAdapter;
+import com.vuelos_globales.entities.Customer.application.CustomerService;
+
 public class TripBookingConsoleAdapter {
     Scanner sc = new Scanner(System.in);
 
     private final TripBookingService tripBookingService;
 
-    public TripBookingConsoleAdapter(TripBookingService tripBookingService) {
+    private final CustomerService customerService;
+
+
+    public TripBookingConsoleAdapter(TripBookingService tripBookingService, CustomerService customerService) {
         this.tripBookingService = tripBookingService;
+        this.customerService = customerService;
     }
 
     public void createTripBooking() {
@@ -170,7 +182,7 @@ public class TripBookingConsoleAdapter {
     private void searchTripBookingById() {
         List<TripBooking> tripBookings = tripBookingService.getAllTripBookings();
     
-        if (tripBookings.isEmpty()) {
+        if  (tripBookings.isEmpty())  {
             ConsoleUtils.limpiarConsola();
             System.out.println("[!] NO HAY NINGUNA RESERVA DE VUELO REGISTRADA");
             sc.nextLine();
@@ -262,16 +274,15 @@ public class TripBookingConsoleAdapter {
            
     
 
-
-    public void updateTripBooking(){
+    public void updateTripBooking() {
         ConsoleUtils.limpiarConsola();
         List<TripBooking> tripBookings = tripBookingService.getAllTripBookings();
 
-        if(tripBookings.isEmpty()){
+        if (tripBookings.isEmpty()) {
 
             System.out.println("[!]  NO HAY RESERVA DE VUELO REGISTRADAS");
 
-        }  else {
+        } else {
 
             System.out.println("[*]  INGRESE EL ID DEL RESERVA DE VUELO A EDITAR\n\n");
             String findId = sc.nextLine();
@@ -281,47 +292,46 @@ public class TripBookingConsoleAdapter {
             t -> {
                 System.out.println(MessageFormat.format("[*] ID : {0}\n[*] FECHA DE RESERVA : {1}\n[*] ID DE VUELO: {2}\n[*] ID DE ESTADO DE RESERVA: {3}\n[*] ID DEL CLIENTE: {4}", t.getId(), t.getBookingDate() + t.getIdTrip(), t.getIdBookingStatus(), t.getIdCustomer()));
 
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-                    LocalDate fechaReserva = null;
-                    boolean isActiveDate = false;
-                    String newDate = "";
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                        LocalDate fechaReserva = null;
+                        boolean isActiveDate = false;
+                        String newDate = "";
 
-                    while (!isActiveDate) {
-                        System.out.println("\n[*] INGRESE LA FECHA DE RESERVA DE VUELO (dd-MM-yyyy)");
-                        System.out.print("INGRESE LA FECHA DE RESERVA DE VUELO: ");
-                        newDate = sc.nextLine();
+                        while (!isActiveDate) {
+                            System.out.println("\n[*] INGRESE LA FECHA DE RESERVA DE VIAJE (dd-MM-yyyy)");
+                            System.out.print("INGRESE LA FECHA DE RESERVA DE VIAJE: ");
+                            newDate = sc.nextLine();
 
-                        try {
-                            fechaReserva = LocalDate.parse(newDate, formatter);
-                            isActiveDate = true;
-                        } catch (DateTimeParseException e) {
-                            System.out.println("Fecha ingresada no válida. Use el formato dd-MM-yyyy.");
+                            try {
+                                fechaReserva = LocalDate.parse(newDate, formatter);
+                                isActiveDate = true;
+                            } catch (DateTimeParseException e) {
+                                System.out.println("Fecha ingresada no válida. Use el formato dd-MM-yyyy.");
+                            }
                         }
-                    }
-                    System.out.println("\n[*]  INGRESE EL ID DEL VUELO: ");
-                    String newIdTrip = sc.nextLine();
+                        System.out.println("\n[*]  INGRESE EL ID DEL VUELO: ");
+                        String newIdTrip = sc.nextLine();
 
-                    System.out.println("\n[*]  INGRESE EL ID DEL ESTADO DE RESERVA: ");
-                    int newIdStatus = sc.nextInt();
+                        System.out.println("\n[*]  INGRESE EL ID DEL ESTADO DE RESERVA: ");
+                        int newIdStatus = Integer.parseInt(sc.nextLine());
 
-                    System.out.println("\n[*]  INGRESE EL ID DEL CLIENTE: ");
-                    String newIdCustomer = sc.nextLine();
+                        System.out.println("\n[*]  INGRESE EL ID DEL CLIENTE: ");
+                        String newIdCustomer = sc.nextLine();
 
-                    TripBooking newTripBooking = new TripBooking(findId, fechaReserva, newIdTrip, newIdStatus, newIdCustomer);
-                    tripBookingService.updateTripBooking(newTripBooking);
-            },
-            () -> System.out.println("[!]  RESERVA DE VUELO NO ENCONTRADA")
-        );
-        System.out.println("[*]  PRESIONE CUALQUIER TECLA PARA CONTINUAR...");
-        sc.nextLine();
+                        TripBooking newTripBooking = new TripBooking(findId, fechaReserva, newIdTrip, newIdStatus,
+                                newIdCustomer);
+                        tripBookingService.updateTripBooking(newTripBooking);
+                    },
+                    () -> System.out.println("[!]  RESERVA DE VIAJE NO ENCONTRADA"));
+            System.out.println("[*]  PRESIONE CUALQUIER TECLA PARA CONTINUAR...");
+            sc.nextLine();
         }
     }
 
-
-    public void deleteTripBooking(){
+    public void deleteTripBooking() {
         ConsoleUtils.limpiarConsola();
         List<TripBooking> tripBookings = tripBookingService.getAllTripBookings();
-        if(tripBookings.isEmpty()){
+        if (tripBookings.isEmpty()) {
             ConsoleUtils.limpiarConsola();
             System.out.println("[!] NO HAY NINGUNA RESERVA DE VUELO REGISTRADA");
             sc.nextLine();
@@ -329,7 +339,6 @@ public class TripBookingConsoleAdapter {
             ConsoleUtils.limpiarConsola();
             System.out.println("[*]  INGRESE EL ID DE LA RESERVA DE VUELO A ELIMINAR\n\n");
             String findId = sc.nextLine();
-
 
             Optional<TripBooking> tripBooking = tripBookingService.getTripBookingById(findId);
             tripBooking.ifPresentOrElse(
@@ -341,8 +350,7 @@ public class TripBookingConsoleAdapter {
                 () -> {
                     System.out.println("[!]  RESERVA DE VUELO NO ENCONTRADO");
 
-                }
-            );
+                    });
             System.out.println("[*]  PRESIONE CUALQUIER TECLA PARA CONTINUAR...");
             sc.nextLine();
         }
@@ -350,7 +358,7 @@ public class TripBookingConsoleAdapter {
 
     public void getAllTripBookings() {
         List<TripBooking> TripBookings = tripBookingService.getAllTripBookings();
-        
+
         if (TripBookings.isEmpty()) {
             ConsoleUtils.limpiarConsola();
             System.out.println("[!] NO HAY NINGUNA RESERVA DE VUELO REGISTRADO");
@@ -362,6 +370,161 @@ public class TripBookingConsoleAdapter {
             });
             System.out.println("[*]  PRESIONE CUALQUIER TECLA PARA CONTINUAR...");
             sc.nextLine();
+        }
+    }
+
+    public void getAllCustomers() {
+        List<Customer> customers = tripBookingService.getAllCustomers();
+        if (customers.isEmpty()) {
+            ConsoleUtils.limpiarConsola();
+            System.out.println("[!] NO HAY NINGUN CLIENTE REGISTRADO");
+            sc.nextLine();
+        } else {
+            ConsoleUtils.limpiarConsola();
+            System.out.println("[*] VUELOS DISPONIBLES");
+            customers.forEach(c -> {
+                System.out.println(
+                        MessageFormat.format("[*] ID : {0} - : {1}", c.getId(), c.getName() + c.getLastName()));
+            });
+        }
+    }
+
+    static boolean isActiveSel = true;
+    static int seatNumber = 0;
+    static LocalDate fechaReserva = null;
+    public void selectTripBooking() {
+        isActiveSel = true;
+        while (isActiveSel) {
+            ConsoleUtils.limpiarConsola();
+            System.out.println("[*] INGRESE UN ID PARA LA RESERVA DE VUELO");
+            String id = sc.nextLine();
+            tripBookingService.getTripBookingById(id).ifPresentOrElse(
+                    tb -> {
+                        System.out.println(MessageFormat.format("[!] EL ID {0} YA ESTA OCUPADO.", tb.getId()));
+                    },
+                    () -> {
+                        // TRIP DATE
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                        boolean isActiveDate = false;
+                        String newDate = "";
+
+                        while (!isActiveDate) {
+                            System.out.println("\n[*] INGRESE LA FECHA DE RESERVA DE VIAJE (dd-MM-yyyy)");
+                            System.out.print("INGRESE LA FECHA DE RESERVA DE VIAJE: ");
+                            newDate = sc.nextLine();
+
+                            try {
+                                fechaReserva = LocalDate.parse(newDate, formatter);
+                                isActiveDate = true;
+                            } catch (DateTimeParseException e) {
+                                System.out.println("Fecha ingresada no válida. Use el formato dd-MM-yyyy.");
+                            }
+                        }
+
+                        ConsoleUtils.limpiarConsola();
+                        System.out.println("[*] SELECCIONE UN VUELO: ");
+                        tripBookingService.getAllTrips().forEach(v -> {
+                            System.out.println(MessageFormat.format("[{0}] - {1}", v.getId(), v.getTripDate()));
+                        });
+                        System.out.println("[?] INGRESE EL ID DEL VUELO: ");
+                        String idTrip = sc.nextLine();
+
+                        ConsoleUtils.limpiarConsola();
+                        System.out.println("[*] CLIENTES: ");
+                        if (tripBookingService.getAllCustomers().isEmpty()) {
+                            System.out.println("[!] NO HAY NINGUN CLIENTE REGISTRADO");
+                            System.out.println("[?] DESEA REGISTRAR UN CLIENTE?  [S/N]");
+                            String answer = sc.nextLine();
+                            if (answer.equalsIgnoreCase("S")) {
+                                CustomerConsoleAdapter customerConsoleAdapter = new CustomerConsoleAdapter(
+                                        customerService);
+                                customerConsoleAdapter.createCustomer();
+                                isActiveSel = false;
+                            }
+
+                        } else {
+                            tripBookingService.getAllCustomers().forEach(c -> {
+                                System.out.println(
+                                        MessageFormat.format("[{0}] - {1}", c.getId(), c.getName() + c.getLastName()));
+                            });
+
+                        }
+                        System.out.println("[?] INGRESE EL ID DEL PASAJERO: ");
+                        String idCustomer = sc.nextLine();
+
+                        ConsoleUtils.limpiarConsola();
+
+                        System.out.println("[*] AVIONES DISPONIBLES");
+                        tripBookingService.getAllAirplanes().forEach(
+                                p -> {
+                                    System.out.println(MessageFormat.format("[{0}] - {1}", p.getId(), p.getPlates()));
+                                });
+
+                        System.out.println("[*] INGRESE EL ID DEL AVION");
+                        String planeId = sc.nextLine();
+                        tripBookingService.getPlaneById(planeId).ifPresentOrElse(
+                                a -> {
+
+                                    Optional<Planes> avion = tripBookingService.getPlaneById(planeId);
+                                    avion.ifPresentOrElse(
+                                            p -> {
+                                                ConsoleUtils.limpiarConsola();
+                                                System.out.println("[*] MAPA DE ASIENTOS DISPONIBLES DEL AVION");
+
+                                                int numAsientos = tripBookingService.getCapacity(planeId);
+                                                ArrayList<Object> mapa = new ArrayList<>();
+
+                                                for (int i = 1; i < numAsientos; i++) {
+                                                    mapa.add(i);
+                                                }
+
+                                                for (int i = 0; i < mapa.size(); i++) {
+                                                    System.out.print(mapa.get(i) + "\t");
+                                                    if ((i + 1) % 8 == 0) {
+                                                        System.out.println();
+                                                    }
+                                                }
+                                                seatNumber = Integer.parseInt(sc.nextLine());
+                                                mapa.remove(seatNumber);
+
+                                                // BOOKING STATUS
+                                                ConsoleUtils.limpiarConsola();
+                                                System.out.println("[*] SELECCIONE EL ESTADO DE LA RESERVA");
+                                                int j = 1;
+                                                for (String bs : tripBookingService.getAllBookingStatusesStr()) {
+                                                    System.out.println(MessageFormat.format("{0} , {1}", j++, bs));
+                                                }
+                                                int bookingStatus = Integer.parseInt(sc.nextLine());
+
+                                                TripBooking newTripBooking = new TripBooking(id, fechaReserva, idTrip, bookingStatus, idCustomer);
+                                                tripBookingService.createTripBooking(newTripBooking);
+
+                                                System.out.println("[*] LA RESERVA HA SIDO CREADA EXITOSAMENTE.");
+                                                sc.nextLine();
+
+                                                isActiveSel = false;
+
+                                            }, () -> {
+                                                ConsoleUtils.limpiarConsola();
+                                                System.out.println("[!] NO SE ENCONTRO EL AVION");
+                                                sc.nextLine();
+                                                isActiveSel = false;
+                                            });
+                                },
+                                () -> {
+                                    System.out.println(
+                                            "[!] NO SE HA ENCONTRADO EL CLIENTE. DESEAS REGISTRAR UNO NUEVO?  [S/N]");
+                                    String respuesta = sc.nextLine();
+                                    if (respuesta.equalsIgnoreCase("S")) {
+                                        CustomerConsoleAdapter customerConsoleAdapter = new CustomerConsoleAdapter(
+                                                customerService);
+
+                                        customerConsoleAdapter.createCustomer();
+                                    } else {
+                                        isActiveSel = false;
+                                    }
+                                });
+                    });
         }
     }
 }

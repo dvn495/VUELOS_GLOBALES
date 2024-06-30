@@ -114,4 +114,41 @@ public class TripMySQLRepository implements TripRepository {
         }
         return trips;
     }
+
+    @Override
+    public Optional<List<Trip>> findByParameters(LocalDate tripDate, String idCityA, String idCityB) {
+        List<Trip> matchTrips = new ArrayList<>();
+        String query = "SELECT t.id, t.tripDate, t.price " +
+                       "FROM flight_connection fc " +
+                       "JOIN trip t ON fc.idTrip = t.id " +
+                       "JOIN airport a ON fc.idAirportA = a.id " +
+                       "JOIN airport ab ON fc.idAirportB = ab.id " +
+                       "JOIN city c ON a.idCity = c.id " +
+                       "JOIN city cb ON ab.idCity = cb.id " +
+                       "WHERE t.tripDate = ? AND c.id = ? AND cb.id = ?";
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            
+            statement.setDate(1, java.sql.Date.valueOf(tripDate));
+            statement.setString(2, idCityA);
+            statement.setString(3, idCityB);
+            
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    java.sql.Date sqlDate = resultSet.getDate("tripDate");
+                    LocalDate newTripDate = sqlDate.toLocalDate();
+                    Trip trip = new Trip(
+                        resultSet.getString("id"),
+                        newTripDate,
+                        resultSet.getDouble("price")
+                    );
+                    matchTrips.add(trip);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return matchTrips.isEmpty() ? Optional.empty() : Optional.of(matchTrips);
+    }
+    
 }

@@ -11,11 +11,11 @@ public class TripBooking {
 
     public TripBooking() {}
 
-    public TripBooking(String id, LocalDate bookinDate, String idTrip, int newIdStatus, String idCustomer) {
+    public TripBooking(String id, LocalDate bookinDate, String idTrip, int idBookingStatus, String idCustomer) {
         this.id = id;
         this.bookinDate = bookinDate;
         this.idTrip = idTrip;
-        this.idBookingStatus = newIdStatus;
+        this.idBookingStatus = idBookingStatus;
         this.idCustomer = idCustomer;
     }
 
