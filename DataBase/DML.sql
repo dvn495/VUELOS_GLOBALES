@@ -105,3 +105,8 @@ INSERT INTO revision_employee (id, idEmployee, idRevision) VALUES
 ('RE03', 'E05', 'R03'),
 ('RE04', 'E05', 'R04'),
 ('RE05', 'E05', 'R05');
+
+insert into booking_status (id, bookingStatus) values 
+(1, "Pendiente"),
+(2, "Confirmado"),
+(3, "Cancelado");
