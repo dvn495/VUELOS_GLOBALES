@@ -26,8 +26,11 @@ import com.vuelos_globales.entities.City.adapters.out.CityMySQLRepository;
 import com.vuelos_globales.entities.Planes.adapters.out.PlanesMySQLRepository;
 import com.vuelos_globales.entities.DocumentType.adapters.out.DocTypeMySQLRepository;
 import com.vuelos_globales.entities.FlightFares.adapters.out.FlightFaresMySQLRepository;
+import com.vuelos_globales.entities.Payment.application.PaymentService;
 import com.vuelos_globales.entities.TripBookingDetails.adapters.out.TripBookingDetailsMySQLRepository;
 import com.vuelos_globales.entities.FlightConnection.adapters.out.FlightConnectionMySQLRepository;
+import com.vuelos_globales.entities.Payment.adapters.out.PaymentMySQLRepository;
+import com.vuelos_globales.entities.PaymentMethod.adapters.out.PayMethodMySQLRepository;
 
 import com.vuelos_globales.modules.ConsoleUtils;
 
@@ -49,6 +52,8 @@ public class CustomerMenu {
     static FlightFaresMySQLRepository flightFaresMySQLRepository = new FlightFaresMySQLRepository(url, username, password);
     static TripBookingDetailsMySQLRepository tripBookingDetailsMySQLRepository = new TripBookingDetailsMySQLRepository(url, username, password);
     static FlightConnectionMySQLRepository flightConnectionMySQLRepository = new FlightConnectionMySQLRepository(url, username, password);
+    static PaymentMySQLRepository paymentMySQLRepository = new PaymentMySQLRepository(url, username, password);
+    static PayMethodMySQLRepository payMethodMySQLRepository = new PayMethodMySQLRepository(url, username, password);
     
     // IMPORTACION DE SERVICIOS
     static TripService tripService = new TripService(tripMySQLRepository,bookingStatusMySQLRepository,tripBookingMySQLRepository, airportMySQLRepository, customerMySQLRepository, cityMySQLRepository);
@@ -59,9 +64,10 @@ public class CustomerMenu {
 
     static DocumentTypeService documentTypeService = new DocumentTypeService(documentTypeMySQLRepository);
 
+    static PaymentService paymentService = new PaymentService(paymentMySQLRepository, payMethodMySQLRepository, tripBookingMySQLRepository);
     // INICIALIZACION CONSOLE CONTROLLERS
     static TripConsoleAdapter tripConsoleAdapter = new TripConsoleAdapter(tripService);
-    static TripBookingConsoleAdapter tripBookingConsoleAdapter = new TripBookingConsoleAdapter(tripBookingService, customerService);
+    static TripBookingConsoleAdapter tripBookingConsoleAdapter = new TripBookingConsoleAdapter(tripBookingService, customerService, paymentService);
 
     static Scanner sc = new Scanner(System.in);
 
@@ -118,6 +124,42 @@ public class CustomerMenu {
         }
 
     }
+
+    public static void bookingsMenu() {
+        Scanner sc = new Scanner(System.in);
+        boolean isActiveBooking = true;
+        
+        while (isActiveBooking) {
+            ConsoleUtils.limpiarConsola();
+            System.out.println("*************** GESTION DE RESERVAS ***************");
+
+            String[] opcBookings = {"Cancelar Reserva", "Modificar Reserva", "Volver"};
+            ConsoleUtils.listarOpc(opcBookings);
+            int selBook = Integer.parseInt(sc.nextLine());
+
+            switch (selBook) {
+                case 1 -> {
+                    tripBookingConsoleAdapter.cancelTripBooking();
+                }
+                
+                case 2 -> {
+                    tripBookingConsoleAdapter.updateTripBooking();
+                }
+
+                case 3 -> {
+                    isActiveBooking = false;
+                }
+                    
+                default -> {
+                    ConsoleUtils.limpiarConsola();
+                    System.out.println("[!] OPCION INVALIDA");
+                    sc.nextLine();
+                }
+            }
+
+
+        }
+    }
     
     public static void customerMenu() {
         Scanner sc = new Scanner(System.in);
@@ -135,7 +177,7 @@ public class CustomerMenu {
                     }
 
                     case 2 -> {
-                        // "Cancelar Reserva", "Modificar Reserva",
+                        bookingsMenu();
                         
                     }
                     

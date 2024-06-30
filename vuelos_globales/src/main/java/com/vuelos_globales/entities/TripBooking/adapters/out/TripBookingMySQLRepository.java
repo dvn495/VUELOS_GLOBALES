@@ -12,6 +12,7 @@ import java.util.Optional;
 
 import com.vuelos_globales.entities.TripBooking.domain.TripBooking;
 import com.vuelos_globales.entities.TripBooking.infrastructure.TripBookingRepository;
+import com.mysql.cj.jdbc.Driver;
 import com.vuelos_globales.entities.FlightFares.domain.FlightFares;
 
 public class TripBookingMySQLRepository implements TripBookingRepository {
@@ -175,13 +176,51 @@ public class TripBookingMySQLRepository implements TripBookingRepository {
         }
         return bookingTypes;
     }
+    
+    @Override
+    public Optional<Integer> getBookingStatus(String id) {
+        try (Connection connection = DriverManager.getConnection(url, user, password)) {
+            String query = "SELECT idBookingStatus FROM trip_booking WHERE id = ?";
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setString(1, id);                
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    int bookingStatus = resultSet.getInt("idBookingStatus");
 
-/*     @Override
-    public void confirmBooking(TripBooking tripBooking) {
+                    return Optional.of(bookingStatus);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
+    }
+    
+    @Override
+    public void confirmBooking(String id) {
+        try (Connection connection = DriverManager.getConnection(url, user, password)) {
+            String query = "UPDATE trip_booking SET idBookingStatus = 2 WHERE id = ?";
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setString(1, id);
+                statement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void cancelBooking(String id) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
             String query = "UPDATE trip_booking SET idBookingStatus = 3 WHERE id = ?";
-
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setString(1, id);
+                statement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } */
+    }
 }
+
+
 

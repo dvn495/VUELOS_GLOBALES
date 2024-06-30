@@ -14,4 +14,7 @@ public interface TripBookingRepository {
     List<TripBooking> findAll();
     Optional<FlightFares> findFlightFareByTripBId(String id);
     List<String> findAllBookingTypes(); 
+    Optional<Integer> getBookingStatus(String id);
+    void cancelBooking(String id);
+    void confirmBooking(String id);
 }

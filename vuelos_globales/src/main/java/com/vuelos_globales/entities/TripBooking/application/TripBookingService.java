@@ -178,4 +178,7 @@ public class TripBookingService {
         return planesRepository.getMaxCapacity(id);
     }
 
+    public void cancelTripBooking(String id) {
+        tripBookingRepository.cancelBooking(id);
+    }
 }
