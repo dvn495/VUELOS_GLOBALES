@@ -90,7 +90,7 @@ public class PaymentConsoleController {
                     }
 
                     System.out.println("\n[*]  INGRESE EL ID DEL VIAJE: ");
-                    String newIdTrip = sc.nextLine();
+                    int newIdStatus = sc.nextInt();
 
                     System.out.println("\n[*]  INGRESE EL ID DEL ESTADO DE RESERVA: ");
                     int newIdStatus = sc.nextInt();
